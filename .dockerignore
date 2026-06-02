@@ -1,0 +1,6 @@
+tailwind-cli.exe
+node_modules
+.git
+.gitignore
+user_inputs.txt
+*.log

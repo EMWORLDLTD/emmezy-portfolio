@@ -1,0 +1,1747 @@
+<!doctype html>
+<html lang="en" class="h-full scroll-behavior-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emmezy Studio</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      cursor: none;
+    }
+
+    /* Hide default scrollbar on the right hand side */
+    #app {
+      -ms-overflow-style: none;
+      /* IE and Edge */
+      scrollbar-width: none;
+      /* Firefox */
+    }
+
+    #app::-webkit-scrollbar {
+      display: none;
+      /* Chrome, Safari and Opera */
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0f0f1e;
+      --surface: #ffffff0d;
+      --text: #f5f5f7;
+      --accent: #a78bfa;
+      --accent2: #fbbf24;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #16162a 100%);
+      background-attachment: fixed;
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(167, 139, 250, 0.08), transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(251, 191, 36, 0.08), transparent 50%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .font-heading {
+      font-family: 'Syne', sans-serif;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #a78bfa, #fbbf24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Custom Animations */
+    @keyframes float1 {
+
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(0deg)
+      }
+
+      50% {
+        transform: translate(30px, -40px) rotate(180deg)
+      }
+    }
+
+    @keyframes float2 {
+
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(0deg)
+      }
+
+      50% {
+        transform: translate(-40px, 30px) rotate(-180deg)
+      }
+    }
+
+    @keyframes float3 {
+
+      0%,
+      100% {
+        transform: translate(0, 0)
+      }
+
+      50% {
+        transform: translate(20px, 20px)
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    @keyframes rotateText {
+      from {
+        transform: rotate(0deg)
+      }
+
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    @keyframes floatVertical {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    @keyframes floatTilt {
+
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+
+      50% {
+        transform: rotate(1deg);
+      }
+    }
+
+    .animate-fade-up {
+      animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .floating-shape {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+
+    .glass-surface {
+      background: rgba(20, 20, 30, 0.6);
+      border: 1px solid rgba(139, 92, 246, 0.15);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Service T-Shape Classes */
+    .service-core {
+      background: linear-gradient(145deg, rgba(20, 20, 30, 0.9), rgba(30, 20, 45, 0.4));
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .service-core:hover {
+      transform: translateY(-6px);
+      border-color: #a78bfa;
+      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.15);
+    }
+
+    .service-support {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: transform 0.3s ease;
+    }
+
+    .service-support:hover {
+      transform: translateY(-4px);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #a78bfa, #7c3aed);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+    }
+
+    /* Custom Cursor WITH FIXED STACK DEPTH OVER MODAL */
+    .custom-cursor {
+      position: fixed;
+      width: 140px;
+      height: 140px;
+      pointer-events: none;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translate(-50%, -50%);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+      opacity: 0;
+    }
+
+    .cursor-hover {
+      transform: translate(-50%, -50%) scale(0.6);
+    }
+
+    .cursor-inner {
+      position: absolute;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(146, 108, 235, 0.15);
+      border: 2px solid #a78bfa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      backdrop-filter: blur(2px);
+    }
+
+    .cursor-text {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      animation: rotateText 14s linear infinite;
+    }
+
+    .cursor-text svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Stats Badges */
+    .stat-badge {
+      position: absolute;
+      padding: 12px 16px;
+      border-radius: 14px;
+      background: rgba(20, 20, 30, 0.9);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      z-index: 20;
+    }
+
+    .stat-badge .symbol-gradient {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Portfolio Classes */
+    .case-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .case-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(139, 92, 246, 0.3);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .metric-box {
+      background: rgba(139, 92, 246, 0.05);
+      border: 1px solid rgba(139, 92, 246, 0.15);
+      border-radius: 8px;
+      padding: 12px;
+      margin: 16px 0;
+    }
+
+    .tag-pill {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #9ca3af;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 11px;
+    }
+
+    /* Modal Layer Box Window Frame */
+    #case-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 5, 10, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-card {
+      background: rgba(20, 20, 30, 0.95);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      border-radius: 2rem;
+      max-width: 48rem;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .modal-card::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .modal-card::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .modal-card::-webkit-scrollbar-thumb {
+      background: rgba(139, 92, 246, 0.3);
+      border-radius: 10px;
+    }
+
+    /* Contact Gateway & Adaptive Dynamic Orb */
+    .gateway-container {
+      position: relative;
+      background: #11111a;
+      border: 1px solid rgba(139, 92, 246, 0.15);
+      border-radius: 32px;
+      overflow: hidden;
+    }
+
+    .gateway-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 70%);
+      top: -250px;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .responsive-orb-wrap {
+      display: inline-flex;
+      background: rgba(139, 92, 246, 0.08);
+      border: 1px solid rgba(139, 92, 246, 0.25);
+      backdrop-filter: blur(10px);
+      border-radius: 28px;
+      padding: 6px;
+      overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      outline: none;
+    }
+
+    @media (max-width: 639px) {
+      .responsive-orb-wrap {
+        flex-direction: column;
+        width: 100%;
+        max-width: 290px;
+        max-height: 58px;
+      }
+
+      .responsive-orb-wrap.is-expanded-mobile {
+        max-height: 130px;
+        background: rgba(139, 92, 246, 0.14);
+        box-shadow: 0 10px 30px rgba(139, 92, 246, 0.15);
+      }
+
+      .orb-secondary-label {
+        height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transform: translateY(-10px);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        padding: 0;
+        text-align: center;
+        width: 100%;
+      }
+
+      .responsive-orb-wrap.is-expanded-mobile .orb-secondary-label {
+        height: auto;
+        opacity: 1;
+        transform: translateY(0);
+        padding: 14px 0 6px 0;
+      }
+    }
+
+    @media (min-width: 640px) {
+      .responsive-orb-wrap {
+        flex-direction: row;
+        align-items: center;
+        max-width: 250px;
+        white-space: nowrap;
+      }
+
+      .responsive-orb-wrap:hover {
+        max-width: 480px;
+        background: rgba(139, 92, 246, 0.15);
+        box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+      }
+
+      .orb-secondary-label {
+        width: 0;
+        opacity: 0;
+        overflow: hidden;
+        transform: translateX(-20px);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        padding-right: 0;
+        padding-left: 0;
+      }
+
+      .responsive-orb-wrap:hover .orb-secondary-label {
+        width: 160px;
+        opacity: 1;
+        transform: translateX(0);
+        padding-right: 24px;
+        padding-left: 12px;
+      }
+    }
+
+    .orb-primary-btn {
+      background: linear-gradient(135deg, #a78bfa, #7c3aed);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 22px;
+      font-size: 14px;
+      font-weight: 600;
+      flex-shrink: 0;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+    }
+
+    .orb-secondary-link {
+      color: #a78bfa;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .orb-secondary-link:hover {
+      color: white;
+    }
+
+    .nav-link {
+      position: relative;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    @media (max-width: 1023px),
+    (hover: none) {
+      .custom-cursor {
+        opacity: 0;
+      }
+
+      html,
+      body {
+        cursor: auto !important;
+      }
+    }
+
+    /* === MERGED DESIGN SYSTEM (Option 2 + Option 3) === */
+    
+    /* 1. Film Grain Overlay */
+    .film-grain {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 99999;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      animation: grainJitter 0.15s steps(6) infinite;
+    }
+
+    @keyframes grainJitter {
+      0%, 100% { transform: translate(0, 0); }
+      10% { transform: translate(-1%, -1%); }
+      30% { transform: translate(1%, -2%); }
+      50% { transform: translate(-2%, 1%); }
+      70% { transform: translate(2%, 2%); }
+      90% { transform: translate(-1%, 2%); }
+    }
+
+    /* 2. Timeline Ping-Pong Playhead Line */
+    .timeline-divider-container {
+      width: 100%;
+      max-width: 64rem;
+      margin: 4rem auto;
+      padding: 0 1.5rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .timeline-playhead-line {
+      position: relative;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 20%, rgba(255, 255, 255, 0.08) 80%, transparent 100%);
+      overflow: visible;
+    }
+
+    .timeline-playhead-glow {
+      position: absolute;
+      top: -1px;
+      left: -180px;
+      width: 180px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent 0%, #a78bfa 50%, #fbbf24 85%, transparent 100%);
+      filter: drop-shadow(0 0 6px rgba(167, 139, 250, 0.8));
+      border-radius: 9999px;
+      animation: timelinePingPong 14s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes timelinePingPong {
+      0% {
+        left: -180px;
+        transform: scaleX(1);
+      }
+      48% {
+        left: 100%;
+        transform: scaleX(1);
+      }
+      50% {
+        left: 100%;
+        transform: scaleX(-1); /* Reverse direction of gradient colors on back-trip */
+      }
+      98% {
+        left: -180px;
+        transform: scaleX(-1);
+      }
+      100% {
+        left: -180px;
+        transform: scaleX(1);
+      }
+    }
+
+    /* 3. Magnetic Mouse Spotlight card glow (service cores & case studies) */
+    .case-card, .service-core {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .case-card::before, .service-core::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        300px circle at var(--mouse-x, 0) var(--mouse-y, 0),
+        rgba(167, 139, 250, 0.12),
+        transparent 80%
+      );
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .case-card:hover::before, .service-core:hover::before {
+      opacity: 1;
+    }
+
+    /* 4. Cohesive interactive hover/click colors for buttons using Option 2 gradient */
+    .btn-primary:hover, .orb-primary-btn:hover {
+      background: linear-gradient(135deg, #a78bfa, #fbbf24) !important;
+      box-shadow: 0 8px 25px rgba(251, 191, 36, 0.35) !important;
+    }
+
+    .btn-primary:active, .orb-primary-btn:active {
+      background: linear-gradient(135deg, #fbbf24, #a78bfa) !important;
+      transform: scale(0.95) !important;
+    }
+
+    /* 5. Glowing border outline tracing around profiles with fade-out */
+    .profile-glow-border {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 20;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    
+    .profile-glow-border rect {
+      filter: drop-shadow(0 0 5px rgba(167, 139, 250, 0.7));
+    }
+
+    /* Active State Triggered by Scroll/Hover */
+    .profile-glow-border.is-active {
+      opacity: 1;
+      animation: borderFadeOut 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    .profile-glow-border.is-active path {
+      animation: borderTrace 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    @keyframes borderTrace {
+      0% {
+        stroke-dashoffset: var(--dash-total, 500);
+      }
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    .case-flash-rect {
+      opacity: 0;
+    }
+    @keyframes caseFlash {
+      0%, 100% { opacity: 0; }
+      25%, 75% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .case-glow-border.is-flashing .case-flash-rect {
+      animation: caseFlash 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes borderFadeOut {
+      0%, 72% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { bg: '#0a0a0f', surface: '#14141f', accent: '#8b5cf6', accent2: '#f59e0b', } } }
+    }
+  </script>
+</head>
+
+<body class="h-full">
+
+  <!-- Merged Design: Film Grain Overlay Element -->
+  <div class="film-grain"></div>
+
+  <div id="customCursor" class="custom-cursor">
+    <div class="cursor-inner">
+      <i data-lucide="pen-tool"
+        style="width: 28px; height: 28px; color: #a78bfa; fill: rgba(146, 108, 235, 0.2); stroke-width: 2px;"></i>
+    </div>
+    <div class="cursor-text">
+      <svg viewbox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <path id="circlePath" d="M 70, 70 m -52, 0 a 52,52 0 1,1 104,0 a 52,52 0 1,1 -104,0" fill="none" />
+        </defs>
+        <text font-family="Syne, sans-serif" font-size="13" font-weight="700" fill="#a78bfa">
+          <textpath href="#circlePath" startoffset="0%" textlength="315" lengthadjust="spacing">
+            • EMMEZY STUDIO • CREATIVE LAB
+          </textpath>
+        </text>
+      </svg>
+    </div>
+  </div>
+
+  <div id="app" class="w-full h-full overflow-auto" style="background:var(--bg);">
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background:transparent;">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between backdrop-blur-md">
+        <a href="#"
+          class="font-heading font-bold text-lg sm:text-xl md:text-2xl gradient-text relative z-10 whitespace-nowrap">Emmezy
+          Studio</a>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="#services" class="nav-link text-sm text-gray-300 hover:text-white transition">Services</a>
+          <a href="#portfolio" class="nav-link text-sm text-gray-300 hover:text-white transition">Portfolio</a>
+          <a href="#about" class="nav-link text-sm text-gray-300 hover:text-white transition">About</a>
+          <a href="#testimonials" class="nav-link text-sm text-gray-300 hover:text-white transition">Testimonials</a>
+          <a href="#contact" class="btn-primary text-sm px-5 py-2 rounded-full text-white font-medium">Get In Touch</a>
+        </div>
+        <button id="mobile-toggle" class="md:hidden text-white">
+          <i data-lucide="menu" style="width:24px;height:24px;"></i>
+        </button>
+      </div>
+      <div id="mobile-menu"
+        class="hidden md:hidden px-6 pb-4 flex flex-col gap-3 bg-black/90 backdrop-blur-md absolute w-full left-0 top-16">
+        <a href="#services" class="text-gray-300 text-sm py-2">Services</a>
+        <a href="#portfolio" class="text-gray-300 text-sm py-2">Portfolio</a>
+        <a href="#about" class="text-gray-300 text-sm py-2">About</a>
+        <a href="#testimonials" class="text-gray-300 text-sm py-2">Testimonials</a>
+        <a href="#contact" class="text-gray-300 text-sm py-2">Contact</a>
+      </div>
+    </nav>
+
+    <section class="relative w-full overflow-hidden flex items-center" style="min-height:100vh;">
+      <div class="floating-shape"
+        style="width:500px;height:500px;background:rgba(139,92,246,0.15);top:-100px;right:-100px;animation:float1 12s ease-in-out infinite;">
+      </div>
+      <div class="floating-shape"
+        style="width:400px;height:400px;background:rgba(245,158,11,0.1);bottom:-50px;left:-100px;animation:float2 15s ease-in-out infinite;">
+      </div>
+      <div class="floating-shape"
+        style="width:250px;height:250px;background:rgba(139,92,246,0.1);top:40%;left:50%;animation:float3 10s ease-in-out infinite;">
+      </div>
+
+      <div
+        class="max-w-7xl mx-auto px-6 pt-32 pb-20 relative z-10 flex flex-col lg:flex-row items-center gap-12 lg:gap-16 animate-fade-up w-full">
+        <div class="flex-1 w-full lg:max-w-2xl">
+          <span
+            class="inline-block px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold tracking-wider mb-6 border uppercase"
+            style="border-color:rgba(139,92,246,0.3);background:rgba(139,92,246,0.08);color:#a78bfa; white-space: nowrap;">
+            ✦ Elevating Brand Quality &amp; Conversion
+          </span>
+          <h1 id="hero-headline"
+            class="font-heading font-semibold tracking-normal text-3xl sm:text-5xl lg:text-[52px] xl:text-[56px] leading-[1.15] text-white">
+            Motion Graphics &amp; Video Content That
+            <span class="gradient-text">Drive Action.</span>
+          </h1>
+          <p class="mt-6 text-gray-400 text-lg leading-relaxed max-w-xl">
+            I
+            <strong class="text-white font-semibold">partner with SaaS, Fintech, and creative agencies
+              globally</strong>
+            to transform complex ideas and raw footage into
+            <strong class="text-white font-semibold">high-impact motion graphics and cinematic video edits</strong>
+            that drive real action.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <a href="#portfolio" class="btn-primary px-8 py-3.5 rounded-full text-white font-semibold text-sm">View
+              Projects →</a>
+          </div>
+        </div>
+
+        <div class="flex-1 relative w-full max-w-md mx-auto mt-12 lg:mt-0">
+          <div class="relative w-[80%] mx-auto">
+
+            <div class="rounded-3xl overflow-hidden relative z-10 w-full border border-white/10"
+              style="aspect-ratio:3/4;">
+              <!-- Glowing SVG Trace Border -->
+              <svg class="profile-glow-border absolute inset-0 w-full h-full pointer-events-none z-20" viewBox="0 0 100 133.3" preserveAspectRatio="none">
+                <path d="M 0.5 124.8 L 0.5 8.5 A 8 8 0 0 1 8.5 0.5 L 91.5 0.5 A 8 8 0 0 1 99.5 8.5 L 99.5 124.8 A 8 8 0 0 1 91.5 132.8 L 8.5 132.8 A 8 8 0 0 1 0.5 124.8 Z" fill="none" stroke="url(#glowGradHero)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-dasharray="450" stroke-dashoffset="450" style="--dash-total: 450;" />
+                <defs>
+                  <linearGradient id="glowGradHero" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#a78bfa" />
+                    <stop offset="100%" stop-color="#fbbf24" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <img src="https://i.ibb.co/ZsrFknN/My-DP.webp?v=hero" alt="Olaitan Emmanuel"
+                class="w-full h-full object-cover block" loading="eager" decoding="sync" oncontextmenu="return false"
+                draggable="false" style="user-select: none; -webkit-user-drag: none;">
+            </div>
+
+            <div class="stat-badge" style="top:15%; left:-20%; animation: floatVertical 4s ease-in-out infinite 0.3s;">
+              <div class="text-white text-xl font-bold">60<span class="symbol-gradient">+</span></div>
+              <div class="text-xs text-gray-400">Projects Globally</div>
+            </div>
+            <div class="stat-badge text-right"
+              style="top:45%; right:-25%; animation: floatVertical 4s ease-in-out infinite 0.5s;">
+              <div class="text-white text-xl font-bold">100<span class="symbol-gradient">%</span></div>
+              <div class="text-xs text-gray-400">Satisfaction</div>
+            </div>
+
+            <div class="absolute -bottom-8 left-0 right-0 mx-auto w-[110%] rounded-2xl p-5 text-center z-30"
+              style="margin-left:-5%; animation: floatTilt 4s ease-in-out infinite; background:rgba(20,20,30,0.85); border:1px solid rgba(139,92,246,0.2); backdrop-filter:blur(20px);">
+              <div class="font-heading font-bold text-lg text-white">Olaitan Emmanuel</div>
+              <div class="text-sm text-gray-400 mt-1">Motion Designer &amp; Video Editor</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Merged Design: Timeline Playhead Divider -->
+    <div class="timeline-divider-container">
+      <div class="timeline-playhead-line">
+        <div class="timeline-playhead-glow"></div>
+      </div>
+    </div>
+
+    <section class="max-w-6xl mx-auto px-6 py-12 relative z-10">
+      <div class="glass-surface rounded-3xl p-10 text-center relative overflow-hidden">
+        <div
+          class="absolute inset-0 bg-gradient-to-r from-transparent via-purple-900/10 to-transparent pointer-events-none">
+        </div>
+        <h2 class="font-heading font-bold text-2xl sm:text-3xl text-white mb-6 tracking-normal">
+          Great design catches the eye.
+          <span class="text-purple-400">Motion holds the attention.</span>
+        </h2>
+        <p class="text-gray-400 max-w-3xl mx-auto leading-relaxed text-base">
+          You handle the vision and the footage;
+          <strong class="text-white font-semibold">I handle the post-production.</strong>
+          Beautiful graphic design is the foundation, but whether you need to
+          <strong class="text-white font-semibold">animate a complex SaaS dashboard</strong>
+          in 90 seconds or edit a
+          <strong class="text-white font-semibold">high-converting social ad</strong>, I deliver the dynamic motion and
+          seamless video edits that make
+          your brand impossible to ignore and that
+          <strong class="text-purple-400 font-semibold">generate results.</strong>
+        </p>
+      </div>
+    </section>
+
+    <section id="services" class="max-w-5xl mx-auto px-6 py-20 relative z-10">
+      <div class="text-center mb-16">
+        <span class="text-xs font-bold tracking-widest uppercase text-gray-500 mb-2 block">What I Do</span>
+        <h2 class="font-heading font-bold text-3xl sm:text-4xl tracking-normal">Core Specialties</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="service-core rounded-3xl p-8 flex flex-col items-start text-left">
+          <span class="text-4xl mb-6 block">🎬</span>
+          <h3 class="font-heading font-bold text-2xl text-white mb-3">
+            Motion Design
+          </h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            From 2D explainer videos to SaaS UI animations, I design and
+            animate motion graphics that simplify your product and keep
+            viewers watching.
+          </p>
+        </div>
+        <div class="service-core rounded-3xl p-8 flex flex-col items-start text-left">
+          <span class="text-4xl mb-6 block">🎥</span>
+          <h3 class="font-heading font-bold text-2xl text-white mb-3">
+            Video Editing
+          </h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            I take your raw footage and edit it into polished, cinematic
+            content with seamless pacing, color grading, and dynamic VFX.
+          </p>
+        </div>
+        <div
+          class="service-support md:col-span-2 rounded-3xl p-8 flex flex-col md:flex-row items-center gap-6 text-center md:text-left mt-4">
+          <span class="text-4xl block">🎨</span>
+          <div>
+            <h3 class="font-heading font-bold text-xl text-gray-200 mb-2">
+              Supporting Service: Graphic Design
+            </h3>
+            <p class="text-gray-500 text-sm max-w-2xl">
+              Strategic visual design to support your video campaigns, from
+              YouTube thumbnails and social media assets to polished pitch
+              decks.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="portfolio" class="w-full py-24 relative"
+      style="background:linear-gradient(180deg,transparent,rgba(139,92,246,0.03),transparent);">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-12">
+          <span class="text-xs font-medium px-4 py-1.5 rounded-full"
+            style="background:rgba(245,158,11,0.08);color:#fbbf24;border:1px solid rgba(245,158,11,0.2);">Portfolio</span>
+          <h2 class="font-heading font-bold text-2xl sm:text-3xl mt-6 tracking-normal">
+            Featured <span class="gradient-text">Case Studies</span>
+          </h2>
+        </div>
+        <div class="flex justify-center gap-3 mb-4 flex-wrap" id="primary-filters">
+          <button onclick="filterPrimary('all')" data-dept="all"
+            class="port-tab-primary px-6 py-2.5 rounded-full text-xs font-medium border border-purple-500/30 bg-purple-500/10 text-white transition">
+            All Works
+          </button>
+          <button onclick="filterPrimary('motion')" data-dept="motion"
+            class="port-tab-primary px-6 py-2.5 rounded-full text-xs font-medium border border-white/10 text-gray-400 hover:text-white transition">
+            Motion Design
+          </button>
+          <button onclick="filterPrimary('video')" data-dept="video"
+            class="port-tab-primary px-6 py-2.5 rounded-full text-xs font-medium border border-white/10 text-gray-400 hover:text-white transition">
+            Video Editing
+          </button>
+          <button onclick="filterPrimary('graphics')" data-dept="graphics"
+            class="port-tab-primary px-6 py-2.5 rounded-full text-xs font-medium border border-white/10 text-gray-400 hover:text-white transition">
+            Graphic Design
+          </button>
+        </div>
+        <div
+          class="flex justify-center gap-2 mb-12 flex-wrap min-h-[40px] transition-all duration-300 opacity-0 transform translate-y-4"
+          id="secondary-filters"></div>
+        <div id="portfolio-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"></div>
+      </div>
+    </section>
+
+    <section id="process" class="w-full py-24 relative overflow-hidden">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <span class="text-xs font-medium px-4 py-1.5 rounded-full"
+            style="background:rgba(139,92,246,0.08);color:var(--accent);border:1px solid rgba(139,92,246,0.2);">Our
+            Workflow</span>
+          <h2 class="font-heading font-bold text-2xl sm:text-3xl mt-6 tracking-normal">
+            How We Bring Your
+            <span class="gradient-text">Visions to Life</span>
+          </h2>
+          <p class="text-gray-400 mt-4 max-w-xl mx-auto text-sm">
+            A highly coordinated, four-stage design process designed for
+            smooth communication and reliable quality.
+          </p>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+          <div class="hidden lg:block absolute top-[52px] left-[12%] right-[12%] h-px"
+            style="background:linear-gradient(90deg,transparent,rgba(139,92,246,0.2),transparent);"></div>
+          <div
+            class="rounded-2xl p-6 glass-surface relative z-10 group hover:-translate-y-1 transition-all duration-300"
+            style="background:rgba(139,92,246,0.05);border:1px solid rgba(139,92,246,0.1);">
+            <div
+              class="w-12 h-12 rounded-full flex items-center justify-center mb-4 text-purple-400 group-hover:text-purple-300 transition-all"
+              style="background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.25);">
+              <i data-lucide="compass" class="w-5 h-5"></i>
+            </div>
+            <span class="text-xs font-mono text-purple-400 font-bold block mb-2">STAGE 01</span>
+            <h3 class="font-heading font-bold text-base mb-2">
+              Discovery &amp; Planning
+            </h3>
+            <p class="text-gray-400 text-xs leading-relaxed">
+              I learn about your goals, audience, timeline, and project
+              requirements to create a clear direction for the project.
+            </p>
+          </div>
+          <div
+            class="rounded-2xl p-6 glass-surface relative z-10 group hover:-translate-y-1 transition-all duration-300"
+            style="background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.1);">
+            <div
+              class="w-12 h-12 rounded-full flex items-center justify-center mb-4 text-amber-400 group-hover:text-amber-300 transition-all"
+              style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.25);">
+              <i data-lucide="lightbulb" class="w-5 h-5"></i>
+            </div>
+            <span class="text-xs font-mono text-amber-400 font-bold block mb-2">STAGE 02</span>
+            <h3 class="font-heading font-bold text-base mb-2">
+              Creative Direction
+            </h3>
+            <p class="text-gray-400 text-xs leading-relaxed">
+              I develop concepts, moodboards, and visual directions for your
+              approval before production begins.
+            </p>
+          </div>
+          <div
+            class="rounded-2xl p-6 glass-surface relative z-10 group hover:-translate-y-1 transition-all duration-300"
+            style="background:rgba(139,92,246,0.05);border:1px solid rgba(139,92,246,0.1);">
+            <div
+              class="w-12 h-12 rounded-full flex items-center justify-center mb-4 text-purple-400 group-hover:text-purple-300 transition-all"
+              style="background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.25);">
+              <i data-lucide="cpu" class="w-5 h-5"></i>
+            </div>
+            <span class="text-xs font-mono text-purple-400 font-bold block mb-2">STAGE 03</span>
+            <h3 class="font-heading font-bold text-base mb-2">
+              Design &amp; Production
+            </h3>
+            <p class="text-gray-400 text-xs leading-relaxed">
+              I create and refine your designs, animations, or video content
+              while keeping you updated throughout the process.
+            </p>
+          </div>
+          <div
+            class="rounded-2xl p-6 glass-surface relative z-10 group hover:-translate-y-1 transition-all duration-300"
+            style="background:rgba(16,185,129,0.05);border:1px solid rgba(16,185,129,0.1);">
+            <div
+              class="w-12 h-12 rounded-full flex items-center justify-center mb-4 text-emerald-400 group-hover:text-emerald-300 transition-all"
+              style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.25);">
+              <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+            </div>
+            <span class="text-xs font-mono text-emerald-400 font-bold block mb-2">STAGE 04</span>
+            <h3 class="font-heading font-bold text-base mb-2">
+              Delivery &amp; Support
+            </h3>
+            <p class="text-gray-400 text-xs leading-relaxed">
+              I deliver the final files in the formats you need and ensure
+              everything is ready for immediate use.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="w-full py-24">
+      <div class="max-w-5xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-16">
+        <div class="flex-shrink-0 relative">
+          <div class="w-64 h-72 rounded-3xl overflow-hidden flex items-center justify-center relative border border-white/10"
+            style="background:linear-gradient(135deg,#1a1a2e,#16162a);">
+            <!-- Glowing SVG Trace Border -->
+            <svg class="profile-glow-border absolute inset-0 w-full h-full pointer-events-none z-20" viewBox="0 0 100 112.5" preserveAspectRatio="none">
+              <path d="M 0.5 102.0 L 0.5 10.5 A 10 10 0 0 1 10.5 0.5 L 89.5 0.5 A 10 10 0 0 1 99.5 10.5 L 99.5 102.0 A 10 10 0 0 1 89.5 112.0 L 10.5 112.0 A 10 10 0 0 1 0.5 102.0 Z" fill="none" stroke="url(#glowGradAbout)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-dasharray="405" stroke-dashoffset="405" style="--dash-total: 405;" />
+              <defs>
+                <linearGradient id="glowGradAbout" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#a78bfa" />
+                  <stop offset="100%" stop-color="#fbbf24" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <img src="https://i.ibb.co/ZsrFknN/My-DP.webp" alt="Emmezy Creative Director"
+              class="w-full h-full object-cover" loading="lazy" oncontextmenu="return false" draggable="false"
+              style="user-select: none; -webkit-user-drag: none;" />
+          </div>
+          <div class="absolute -bottom-4 -right-4 w-24 h-24 rounded-2xl flex items-center justify-center z-30"
+            style="background:linear-gradient(135deg,var(--accent),var(--accent2));">
+            <span class="font-heading font-extrabold text-white text-lg">5+<br /><span
+                class="text-[10px] font-normal">YRS</span></span>
+          </div>
+        </div>
+        <div>
+          <span class="text-xs font-medium px-4 py-1.5 rounded-full"
+            style="background:rgba(139,92,246,0.08);color:var(--accent);border:1px solid rgba(139,92,246,0.2);">About
+            Me</span>
+          <h2 class="font-heading font-bold text-2xl sm:text-3xl mt-6 tracking-normal">
+            Crafting Visual <span class="gradient-text">Stories</span>
+          </h2>
+          <p id="about-text" class="text-gray-400 mt-6 leading-relaxed">
+            I help businesses communicate their value through strategic
+            design, motion graphics, and video content that attracts
+            attention, strengthens brand presence, and connects with the right
+            audience. With over 5 years of experience, I have worked on
+            branding, motion graphics, and video projects for businesses,
+            organizations, and entrepreneurs. My goal is to create visual
+            content that not only looks professional but also helps clients
+            build credibility, increase engagement, and achieve meaningful
+            results.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <span class="px-4 py-2 rounded-full text-xs"
+              style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.15);color:var(--accent);">Adobe
+              Creative Suite</span>
+            <span class="px-4 py-2 rounded-full text-xs"
+              style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.15);color:var(--accent2);">After
+              Effects</span>
+            <span class="px-4 py-2 rounded-full text-xs"
+              style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.15);color:var(--accent);">Premiere
+              Pro</span>
+            <span class="px-4 py-2 rounded-full text-xs"
+              style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.15);color:var(--accent2);">DaVinci
+              Resolve</span>
+            <span class="px-4 py-2 rounded-full text-xs"
+              style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.15);color:var(--accent);">Figma</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="testimonials" class="w-full py-24" style="background:rgba(20,20,31,0.5);">
+      <div class="max-w-5xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <span class="text-xs font-medium px-4 py-1.5 rounded-full"
+            style="background:rgba(245,158,11,0.08);color:var(--accent2);border:1px solid rgba(245,158,11,0.2);">Testimonials</span>
+          <h2 class="font-heading font-bold text-2xl sm:text-3xl mt-6 tracking-normal">
+            What Clients <span class="gradient-text">Say</span>
+          </h2>
+          <p class="text-gray-400 mt-4 max-w-lg mx-auto text-sm">
+            Here's what clients have said about working with me and the
+            results achieved through strategic design, motion graphics, and
+            video content.
+          </p>
+        </div>
+        <div class="relative overflow-hidden">
+          <div id="testimonial-track"
+            class="testimonial-track flex transition-transform duration-500 ease-in-out w-full">
+            <div class="flex-shrink-0 w-full px-2">
+              <div class="rounded-2xl p-6 sm:p-8 text-center glass-surface">
+                <div class="text-5xl mb-4">👩&zwj;💼</div>
+                <p class="text-gray-200 text-sm leading-relaxed italic max-w-md mx-auto">
+                  "Emmezy transformed our brand identity completely. The
+                  attention to detail and creative vision exceeded all
+                  expectations. Truly world-class work!"
+                </p>
+                <div class="mt-6 font-heading font-bold text-sm">
+                  Sarah Mitchell
+                </div>
+                <div class="text-xs text-gray-400 mt-1">CEO, BrightBrand</div>
+              </div>
+            </div>
+            <div class="flex-shrink-0 w-full px-2">
+              <div class="rounded-2xl p-6 sm:p-8 text-center glass-surface">
+                <div class="text-5xl mb-4">👨&zwj;💻</div>
+                <p class="text-gray-200 text-sm leading-relaxed italic max-w-md mx-auto">
+                  "The motion design work was incredible. Our engagement rates
+                  tripled after launching the animated content Emmezy created
+                  for us."
+                </p>
+                <div class="mt-6 font-heading font-bold text-sm">
+                  Alex Rivera
+                </div>
+                <div class="text-xs text-gray-400 mt-1">
+                  Marketing Director
+                </div>
+              </div>
+            </div>
+            <div class="flex-shrink-0 w-full px-2">
+              <div class="rounded-2xl p-6 sm:p-8 text-center glass-surface">
+                <div class="text-5xl mb-4">👩&zwj;🎨</div>
+                <p class="text-gray-200 text-sm leading-relaxed italic max-w-md mx-auto">
+                  "Working with Emmezy was seamless. From concept to delivery,
+                  every video was polished, professional, and truly
+                  cinematic."
+                </p>
+                <div class="mt-6 font-heading font-bold text-sm">
+                  Jessica Park
+                </div>
+                <div class="text-xs text-gray-400 mt-1">
+                  Founder, Visionix
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-center gap-3 mt-8 relative z-10">
+            <button onclick="prevTestimonial()"
+              class="w-10 h-10 rounded-full flex items-center justify-center transition hover:bg-purple-500/20"
+              style="border:1px solid rgba(139,92,246,0.3);">
+              <i data-lucide="chevron-left" style="width:18px;height:18px;color:var(--accent);"></i>
+            </button>
+            <button onclick="nextTestimonial()"
+              class="w-10 h-10 rounded-full flex items-center justify-center transition hover:bg-purple-500/20"
+              style="border:1px solid rgba(139,92,246,0.3);">
+              <i data-lucide="chevron-right" style="width:18px;height:18px;color:var(--accent);"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="w-full max-w-5xl mx-auto px-6 py-24">
+      <div
+        class="gateway-container flex flex-col justify-center items-center min-h-[450px] text-center relative py-16 animate-fade-up">
+        <div class="gateway-glow"></div>
+        <div class="relative z-10 px-6 max-w-2xl">
+          <span class="text-xs font-bold tracking-widest uppercase text-purple-400 mb-6 block">— Ready to Start</span>
+          <h2 class="font-heading font-bold text-3xl sm:text-5xl leading-snug tracking-normal">
+            Make Your Brand <br /><span class="gradient-text">Unforgettable.</span>
+          </h2>
+          <p class="text-gray-400 mt-6 text-base max-w-lg mx-auto">
+            Your product deserves to be understood in seconds. Let's talk
+            about what motion can do for your brand.
+          </p>
+        </div>
+
+        <div class="relative z-10 mt-10">
+          <div class="responsive-orb-wrap" id="ctaOrbContainer" tabindex="0">
+            <a href="https://cal.com/olaitan-emmanuel/30min" target="_blank" id="primaryCallLink"
+              class="orb-primary-btn block" onclick="handleMobileCTATap(event)">Book a Discovery Call ✦</a>
+            <div class="orb-secondary-label">
+              <a href="mailto:olaitanemmanuel21@gmail.com" class="orb-secondary-link block">Or Email Me Directly</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-center gap-4 mt-16 relative z-10">
+          <a href="#" class="w-11 h-11 rounded-full flex items-center justify-center transition hover:scale-110"
+            style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="instagram"
+              style="width:18px;height:18px;color:var(--accent);"></i></a>
+          <a href="#" class="w-11 h-11 rounded-full flex items-center justify-center transition hover:scale-110"
+            style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="linkedin"
+              style="width:18px;height:18px;color:var(--accent);"></i></a>
+          <a href="#" class="w-11 h-11 rounded-full flex items-center justify-center transition hover:scale-110"
+            style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="youtube"
+              style="width:18px;height:18px;color:var(--accent);"></i></a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="w-full py-12" style="border-top:1px solid rgba(139,92,246,0.08);">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div class="font-heading font-extrabold text-xl gradient-text">
+            Emmezy Studio
+          </div>
+          <div class="flex gap-8 text-xs text-gray-500">
+            <a href="#services" class="hover:text-white transition">Services</a>
+            <a href="#portfolio" class="hover:text-white transition">Portfolio</a>
+            <a href="#about" class="hover:text-white transition">About</a>
+            <a href="#contact" class="hover:text-white transition">Contact</a>
+          </div>
+          <div class="text-xs text-gray-600">
+            © 2026 Emmezy Studio. All rights reserved.
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <div id="case-modal-overlay" onclick="if(event.target === this) closeCaseModal()">
+    <div class="modal-card p-4 sm:p-6 md:p-8">
+      <div class="sticky top-0 right-0 flex justify-end z-50 h-0 w-full pointer-events-none">
+        <button onclick="closeCaseModal()"
+          class="pointer-events-auto translate-x-2 -translate-y-2 md:translate-x-4 md:-translate-y-4 text-gray-300 hover:text-white bg-white/10 hover:bg-white/25 w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all shadow-lg backdrop-blur-md border border-white/10">
+          ✕
+        </button>
+      </div>
+
+      <div
+        class="w-full h-56 md:h-72 bg-neutral-900 rounded-2xl mb-8 flex items-center justify-center border border-white/5 shadow-inner relative overflow-hidden">
+        <p class="text-neutral-500 font-medium text-sm tracking-wide flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse"></span>
+          Video Content Embed Pipeline
+        </p>
+      </div>
+
+      <h2 id="modal-title" class="text-xl md:text-2xl font-heading font-bold tracking-normal text-white mb-6">
+        Project Title
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-xs leading-relaxed">
+        <div class="p-4 bg-white/[0.03] rounded-xl border border-white/[0.05]">
+          <strong class="text-purple-400 text-[10px] tracking-wider uppercase block mb-1">01 / Brief</strong>
+          <p id="modal-brief" class="text-neutral-400"></p>
+        </div>
+        <div class="p-4 bg-white/[0.03] rounded-xl border border-white/[0.05]">
+          <strong class="text-purple-400 text-[10px] tracking-wider uppercase block mb-1">02 / Approach</strong>
+          <p id="modal-approach" class="text-neutral-400"></p>
+        </div>
+        <div class="p-4 bg-white/[0.03] rounded-xl border border-white/[0.05]">
+          <strong class="text-purple-400 text-[10px] tracking-wider uppercase block mb-1">03 / Outcome</strong>
+          <p id="modal-outcome" class="text-neutral-400"></p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 text-xs leading-relaxed">
+        <div class="p-4 border border-red-500/20 rounded-xl bg-red-950/10">
+          <strong class="text-red-400 font-bold tracking-wider uppercase block mb-1.5">✕ Before</strong>
+          <p id="modal-before" class="text-neutral-300"></p>
+        </div>
+        <div class="p-4 border border-emerald-500/20 rounded-xl bg-emerald-950/10">
+          <strong class="text-emerald-400 font-bold tracking-wider uppercase block mb-1.5">✓ After</strong>
+          <p id="modal-after" class="text-neutral-300"></p>
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <h3 class="text-[10px] font-bold uppercase tracking-widest text-neutral-500 mb-4">
+          Key Performance Results
+        </h3>
+        <div class="grid grid-cols-3 gap-2 sm:gap-4 text-center">
+          <div class="p-2 sm:p-4 bg-purple-900/10 rounded-xl border border-purple-500/10 backdrop-blur-sm flex flex-col justify-center min-h-[64px] sm:min-h-[90px]">
+            <div id="stat-1-val" class="text-sm xs:text-base sm:text-2xl md:text-3xl font-heading font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
+              0%
+            </div>
+            <div id="stat-1-lbl" class="text-[8px] xs:text-[9px] text-neutral-400 uppercase tracking-wider mt-1 leading-normal">
+              Metric
+            </div>
+          </div>
+          <div class="p-2 sm:p-4 bg-purple-900/10 rounded-xl border border-purple-500/10 backdrop-blur-sm flex flex-col justify-center min-h-[64px] sm:min-h-[90px]">
+            <div id="stat-2-val" class="text-sm xs:text-base sm:text-2xl md:text-3xl font-heading font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
+              0%
+            </div>
+            <div id="stat-2-lbl" class="text-[8px] xs:text-[9px] text-neutral-400 uppercase tracking-wider mt-1 leading-normal">
+              Metric
+            </div>
+          </div>
+          <div class="p-2 sm:p-4 bg-purple-900/10 rounded-xl border border-purple-500/10 backdrop-blur-sm flex flex-col justify-center min-h-[64px] sm:min-h-[90px]">
+            <div id="stat-3-val" class="text-sm xs:text-base sm:text-2xl md:text-3xl font-heading font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
+              0x
+            </div>
+            <div id="stat-3-lbl" class="text-[8px] xs:text-[9px] text-neutral-400 uppercase tracking-wider mt-1 leading-normal">
+              Metric
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-white/10">
+        <div id="modal-tools"
+          class="text-[10px] text-center text-purple-400 font-bold uppercase tracking-widest bg-purple-500/5 px-3 py-1.5 rounded-md border border-purple-500/10">
+          Stack
+        </div>
+        <a href="#contact" onclick="closeCaseModal()"
+          class="btn-primary w-full sm:w-auto px-6 py-2.5 rounded-xl font-bold text-center text-xs tracking-wider uppercase text-white">Book
+          Call Now</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sub-Categories Indexing Catalog
+    const portfolioCategories = {
+      motion: ['Explainer Videos', 'Logo Animation', 'UI Motion', '3D Animation'],
+      video: ['Promotional', 'Commercial', 'YouTube Editing'],
+      graphics: ['Brand Identity', 'Flyers & Posters', 'Product Design']
+    };
+
+    let currentPrimary = 'all';
+    let currentSecondary = 'all';
+
+    // Master Consolidated Projects Objects Databank
+    const portfolioData = [
+      {
+        id: 'beff-battery', dept: 'motion', sub: 'Explainer Videos',
+        thumb: 'https://i.ibb.co/30B3b30/placeholder-1.jpg',
+        badge: '⚡ Energy Tech • Motion Campaign',
+        title: 'Beff Battery Expert Center',
+        shortDesc: 'Translating complex energy tech metrics into a dynamic, user-centric 2D educational story.',
+        metric: '<strong>40% Support spikes reduced</strong> systematically',
+        tags: ['2D Animation', 'After Effects', 'Explainer'],
+        brief: 'Explain complex battery chemistry and solar storage logistics systematically to residential homeowners.',
+        approach: 'Deployed a high-end, narrative-driven 2D animation strategy to translate dry technical jargon into dynamic visuals.',
+        outcome: 'Delivered an interactive, intuitive campaign asset that reduced high manual inquiry spikes cleanly by 40%.',
+        before: '65% platform bounce rate, severe user confusion over features, and support lines overwhelmed with basic tech inquiries.',
+        after: '85% video retention achieved, smooth automated pre-education, and structured sales funnels clear of manual support blockages.',
+        stats: [{ val: '40%', lbl: 'Support Cut' }, { val: '85%', lbl: 'Retention' }, { val: '2.5x', lbl: 'Quote Requests' }],
+        tools: 'After Effects • Premiere Pro • Audition'
+      },
+      {
+        id: 'shelf21', dept: 'motion', sub: 'UI Motion',
+        thumb: 'https://i.ibb.co/yQn7wzY/placeholder-2.jpg',
+        badge: '🏫 EdTech • UI Motion Strategy',
+        title: 'Shelf21 Reward Experience',
+        shortDesc: 'Animating an integrated product ecosystem workflow to maximize continuous daily user tasks.',
+        metric: '<strong>+42% Engagement parameters</strong> recorded',
+        tags: ['UI Animation', 'Figma', 'EdTech'],
+        brief: 'Simplify and gamify the administrative visual user flow for an intuitive ongoing Teacher Reward Point System.',
+        approach: 'Designed structured micro-interactions and vector UI motion components to visually validate execution milestones.',
+        outcome: 'Increased daily engagement parameters with a clear, automated feedback engine loop.',
+        before: 'Inconsistent system task entries, abstract user interface clarity, and erratic user motivation trends.',
+        after: 'Systemized task execution cycle tracking and complete alignment with a balanced digital system economy.',
+        stats: [{ val: '+42%', lbl: 'Daily Tasks' }, { val: '60 PT', lbl: 'Daily Max' }, { val: '100%', lbl: 'User Clarity' }],
+        tools: 'Figma • After Effects • Illustrator'
+      },
+      {
+        id: 'kajota-video', dept: 'video', sub: 'Promotional',
+        thumb: 'https://i.ibb.co/L51L1Dq/placeholder-3.jpg',
+        badge: '📱 Social Media • Ad Campaign',
+        title: 'Kajota Commercial Showcase',
+        shortDesc: 'A high-converting promotional campaign built to drive client interactions via social channels.',
+        metric: '<strong>3x Content conversion metrics</strong> scaling up',
+        tags: ['VFX Editing', 'Color Grading', 'Premiere Pro'],
+        brief: 'Produce a visual campaign narrative capable of converting cold traffic on cross-platform digital spaces.',
+        approach: 'Implemented dynamic multi-layered transition layouts, custom pacing mechanics, and premium background SFX engineering.',
+        outcome: 'Generated record-high target interactions and user click-through benchmarks within weeks.',
+        before: 'Low asset view retention, high viewer scroll-past patterns, and weak audience retention logs.',
+        after: 'Immediate hooks driving sustained visibility timelines and direct client message click-through paths.',
+        stats: [{ val: '3.1x', lbl: 'CTR Increase' }, { val: '72%', lbl: 'Watch Time' }, { val: '+50%', lbl: 'Ad Conversions' }],
+        tools: 'Premiere Pro • DaVinci Resolve • After Effects'
+      },
+      {
+        id: 'queen-branding', dept: 'graphics', sub: 'Brand Identity',
+        thumb: 'https://i.ibb.co/ZsrFknN/My-DP.webp',
+        badge: '👑 Luxury • Identity Blueprint',
+        title: 'Queen EyinjuMi Empire Identity',
+        shortDesc: 'Premium corporate visual development bridging high-end catering and luxury fabric store branches.',
+        metric: '<strong>+65% Demographics recognition</strong> shift',
+        tags: ['Branding', 'Typography', 'Logo Design'],
+        brief: 'Unify two distinct high-end service categories—premium culinary arts and heritage textile retail—under one parent emblem.',
+        approach: 'Drafted tailored, symmetrical typography architectures paired with sharp vector brand guidelines to communicate premium status.',
+        outcome: 'Successfully reframed public perception to naturally attract premium, high-ticket clients.',
+        before: 'Fragmented presentation structures and disjointed client engagement models across branches.',
+        after: 'Unified authority status and clear high-end positioning matching premium pricing mechanics.',
+        stats: [{ val: '+65%', lbl: 'Recognition' }, { val: '100%', lbl: 'Consistency' }, { val: 'Premium', lbl: 'Tier Class' }],
+        tools: 'Illustrator • Photoshop • InDesign'
+      }
+    ];
+
+    function filterPrimary(dept) {
+      currentPrimary = dept;
+      currentSecondary = 'all';
+
+      document.querySelectorAll('.port-tab-primary').forEach(t => {
+        const targetDept = t.getAttribute('data-dept');
+        t.className = targetDept === dept
+          ? 'port-tab-primary px-6 py-2.5 rounded-full text-xs font-medium border border-purple-500/30 bg-purple-500/10 text-white transition'
+          : 'port-tab-primary px-6 py-2.5 rounded-full text-xs font-medium border border-white/10 text-gray-400 hover:text-white transition';
+      });
+
+      const secContainer = document.getElementById('secondary-filters');
+      if (dept === 'all') {
+        secContainer.style.opacity = '0';
+        secContainer.style.transform = 'translateY(10px)';
+        secContainer.style.pointerEvents = 'none';
+        setTimeout(() => secContainer.innerHTML = '', 300);
+      } else {
+        const subs = portfolioCategories[dept] || [];
+        secContainer.innerHTML = subs.map(s => `
+            <button onclick="filterSecondary('${s}')" data-sub="${s}" class="port-tab-secondary px-4 py-1.5 rounded-full text-xs font-medium border border-white/10 text-gray-400 hover:text-white transition">
+              ${s}
+            </button>
+          `).join('');
+
+        secContainer.style.pointerEvents = 'auto';
+        void secContainer.offsetWidth;
+        secContainer.style.opacity = '1';
+        secContainer.style.transform = 'translateY(0)';
+      }
+      renderPortfolio();
+    }
+
+    function filterSecondary(sub) {
+      if (currentSecondary === sub) {
+        currentSecondary = 'all';
+      } else {
+        currentSecondary = sub;
+      }
+
+      document.querySelectorAll('.port-tab-secondary').forEach(t => {
+        const targetSub = t.getAttribute('data-sub');
+        t.className = targetSub === currentSecondary
+          ? 'port-tab-secondary px-4 py-1.5 rounded-full text-xs font-medium border border-purple-500/30 bg-purple-500/10 text-white transition'
+          : 'port-tab-secondary px-4 py-1.5 rounded-full text-xs font-medium border border-white/10 text-gray-400 hover:text-white transition';
+      });
+      renderPortfolio();
+    }
+
+    function renderPortfolio() {
+      const grid = document.getElementById('portfolio-grid');
+      let items = portfolioData;
+
+      if (currentPrimary !== 'all') { items = items.filter(p => p.dept === currentPrimary); }
+      if (currentSecondary !== 'all') { items = items.filter(p => p.sub === currentSecondary); }
+
+      grid.innerHTML = items.map((p, i) => `
+          <div class="case-card relative">
+            <svg class="case-glow-border absolute inset-0 w-full h-full pointer-events-none z-20" preserveAspectRatio="none" style="border-radius:16px;">
+              <rect x="0" y="0" width="100%" height="100%" rx="16" fill="none" stroke="url(#glowGradCase-\${i})" stroke-width="1.5" class="case-flash-rect" />
+              <defs>
+                <linearGradient id="glowGradCase-\${i}" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#a78bfa" />
+                  <stop offset="100%" stop-color="#fbbf24" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="relative w-full overflow-hidden group" style="aspect-ratio:16/9;">
+              <div class="absolute inset-0 bg-cover bg-center transition-all duration-500 group-hover:scale-105" style="background-image:url('${p.thumb}');"></div>
+              <div class="absolute top-4 left-4 z-10 px-3 py-1 bg-black/70 backdrop-blur-md rounded-full text-[9px] font-bold text-purple-400 border border-purple-500/20 uppercase tracking-wider">${p.sub}</div>
+              <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center z-20">
+                <button onclick="openCaseModal('${p.id}')" class="btn-primary px-6 py-2.5 rounded-full text-white font-bold text-xs uppercase tracking-wider">
+                  View Case Study
+                </button>
+              </div>
+            </div>
+            <div class="p-6 flex flex-col flex-grow">
+              <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2 block">${p.badge}</span>
+              <h3 class="font-heading text-xl font-bold mb-3 leading-snug">${p.title}</h3>
+              <p class="text-xs text-gray-400 leading-relaxed mb-auto">${p.shortDesc}</p>
+              <div class="metric-box flex items-center gap-2">
+                <span class="text-purple-400 font-bold text-sm">📈</span>
+                <p class="text-xs text-gray-300">${p.metric}</p>
+              </div>
+              <div class="flex flex-wrap gap-2 mt-2">
+                ${p.tags.map(t => `<span class="tag-pill">${t}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+        `).join('');
+        
+      if (typeof sharedObserver !== 'undefined' && sharedObserver) {
+        document.querySelectorAll('.case-card').forEach(card => sharedObserver.observe(card));
+      }
+    }
+
+    function openCaseModal(projectId) {
+      const data = portfolioData.find(p => p.id === projectId);
+      if (!data) return;
+
+      document.getElementById('modal-title').textContent = data.title;
+      document.getElementById('modal-brief').textContent = data.brief;
+      document.getElementById('modal-approach').textContent = data.approach;
+      document.getElementById('modal-outcome').textContent = data.outcome;
+      document.getElementById('modal-before').textContent = data.before;
+      document.getElementById('modal-after').textContent = data.after;
+      document.getElementById('modal-tools').textContent = data.tools;
+
+      document.getElementById('stat-1-val').textContent = data.stats[0].val;
+      document.getElementById('stat-1-lbl').textContent = data.stats[0].lbl;
+      document.getElementById('stat-2-val').textContent = data.stats[1].val;
+      document.getElementById('stat-2-lbl').textContent = data.stats[1].lbl;
+      document.getElementById('stat-3-val').textContent = data.stats[2].val;
+      document.getElementById('stat-3-lbl').textContent = data.stats[2].lbl;
+
+      document.getElementById('case-modal-overlay').style.display = 'flex';
+      document.getElementById('app').style.overflow = 'hidden';
+    }
+
+    function closeCaseModal() {
+      document.getElementById('case-modal-overlay').style.display = 'none';
+      document.getElementById('app').style.overflow = 'auto';
+    }
+
+    // Interactive CTA Mobile Handle
+    function handleMobileCTATap(event) {
+      if (window.innerWidth < 640) {
+        const container = document.getElementById('ctaOrbContainer');
+        if (!container.classList.contains('is-expanded-mobile')) {
+          event.preventDefault();
+          container.classList.add('is-expanded-mobile');
+        }
+      }
+    }
+    document.addEventListener('click', function (event) {
+      const container = document.getElementById('ctaOrbContainer');
+      if (container && !container.contains(event.target)) {
+        container.classList.remove('is-expanded-mobile');
+      }
+    });
+
+    // Testimonial Engine
+    let currentTestimonial = 0;
+    let testimonialTimer;
+    function startTestimonialTimer() {
+      clearInterval(testimonialTimer);
+      testimonialTimer = setInterval(autoNextTestimonial, 5000);
+    }
+    function updateTestimonialPosition() {
+      document.getElementById('testimonial-track').style.transform = `translateX(-${currentTestimonial * 100}%)`;
+    }
+    function autoNextTestimonial() {
+      currentTestimonial = (currentTestimonial + 1) % 3; updateTestimonialPosition();
+    }
+    function nextTestimonial() {
+      currentTestimonial = (currentTestimonial + 1) % 3; updateTestimonialPosition(); startTestimonialTimer();
+    }
+    function prevTestimonial() {
+      currentTestimonial = (currentTestimonial - 1 + 3) % 3; updateTestimonialPosition(); startTestimonialTimer();
+    }
+
+    // Cursor animations
+    const cursor = document.getElementById('customCursor');
+    let cursorTimeout;
+
+    const isMobileDevice = () => {
+      return window.matchMedia("(max-width: 1023px)").matches || ('ontouchstart' in window);
+    };
+
+    // Standard Desktop mousemove
+    document.addEventListener('mousemove', (e) => {
+      if (!isMobileDevice()) {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+        cursor.style.opacity = '1';
+      }
+    });
+
+    document.addEventListener('mouseleave', () => {
+      if (!isMobileDevice()) {
+        cursor.style.opacity = '0';
+      }
+    });
+    document.addEventListener('mouseenter', () => {
+      if (!isMobileDevice()) {
+        cursor.style.opacity = '1';
+      }
+    });
+    document.addEventListener('mouseover', (e) => {
+      if (!isMobileDevice() && e.target.closest('a, button')) {
+        cursor.classList.add('cursor-hover');
+      }
+    });
+    document.addEventListener('mouseout', (e) => {
+      if (!isMobileDevice() && e.target.closest('a, button')) {
+        cursor.classList.remove('cursor-hover');
+      }
+    });
+
+    // Mobile/Touch click & tap handler
+    document.addEventListener('pointerdown', (e) => {
+      if (isMobileDevice()) {
+        // Move the custom cursor to the click/touch location
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+
+        // Check if user tapped an interactive link/button to apply scaling/decorations
+        if (e.target.closest('a, button, [role="button"]')) {
+          cursor.classList.add('cursor-hover');
+        } else {
+          cursor.classList.remove('cursor-hover');
+        }
+
+        // Show the cursor
+        cursor.style.opacity = '1';
+
+        // Fade out after 800ms so it doesn't distract the user
+        clearTimeout(cursorTimeout);
+        cursorTimeout = setTimeout(() => {
+          cursor.style.opacity = '0';
+        }, 800);
+      }
+    });
+
+    // Background Scroll Tracker
+    const appEl = document.getElementById('app');
+    appEl.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      nav.style.background = appEl.scrollTop > 50 ? 'rgba(10,10,15,0.9)' : 'transparent';
+      nav.style.backdropFilter = appEl.scrollTop > 50 ? 'blur(20px)' : 'none';
+    });
+
+    // Mobile Dropdown Menu Toggle
+    document.getElementById('mobile-toggle').addEventListener('click', () => { document.getElementById('mobile-menu').classList.toggle('hidden'); });
+    document.querySelectorAll('#mobile-menu a').forEach(a => a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden')));
+
+
+    // Event Delegation: Spotlight effect for Specialties AND Dynamic Case Studies
+    document.addEventListener('mousemove', e => {
+      const card = e.target.closest('.case-card, .service-core');
+      if (card) {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      }
+    });
+
+    // Intersection Observer for Profile Picture Border Glow Trace & Case Card Flashing
+    let sharedObserver = null;
+    if ('IntersectionObserver' in window) {
+      sharedObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const glowSvg = entry.target.querySelector('.profile-glow-border');
+          if (glowSvg) {
+            if (entry.isIntersecting) {
+              glowSvg.classList.remove('is-active');
+              void glowSvg.offsetWidth; // Force layout recalculation
+              glowSvg.classList.add('is-active');
+            } else {
+              glowSvg.classList.remove('is-active');
+            }
+          }
+          
+          if (entry.target.classList.contains('case-card')) {
+            const caseGlow = entry.target.querySelector('.case-glow-border');
+            if (caseGlow) {
+               if (entry.isIntersecting) {
+                 caseGlow.classList.remove('is-flashing');
+                 void caseGlow.offsetWidth;
+                 caseGlow.classList.add('is-flashing');
+               } else {
+                 caseGlow.classList.remove('is-flashing');
+               }
+            }
+          }
+        });
+      }, { threshold: 0.15 });
+
+      document.querySelectorAll('.rounded-3xl.overflow-hidden').forEach(container => {
+        if (container.querySelector('.profile-glow-border')) {
+          sharedObserver.observe(container);
+        }
+      });
+    } else {
+      document.querySelectorAll('.profile-glow-border').forEach(svg => svg.classList.add('is-active'));
+    }
+
+    // Desktop Hover Triggers for Profile Picture Glow
+    const isMobileDeviceCheck = () => {
+      return window.matchMedia("(max-width: 1023px)").matches || ('ontouchstart' in window);
+    };
+
+    document.querySelectorAll('.rounded-3xl.overflow-hidden').forEach(container => {
+      const glowSvg = container.querySelector('.profile-glow-border');
+      if (glowSvg) {
+        container.addEventListener('mouseenter', () => {
+          if (!isMobileDeviceCheck()) {
+            glowSvg.classList.remove('is-active');
+            void glowSvg.offsetWidth; // Force layout recalculation
+            glowSvg.classList.add('is-active');
+          }
+        });
+      }
+    });
+
+    // Initialization Context Renders
+    filterPrimary('all');
+    startTestimonialTimer();
+    lucide.createIcons();
+
+    // Element SDK Configuration Defaults Mapping Loop
+    const defaultConfig = {
+      about_text: "I help businesses communicate their value through strategic design, motion graphics, and video content that attracts attention, strengthens brand presence, and connects with the right audience. With over 5 years of experience, I have worked on branding, motion graphics, and video projects for businesses, organizations, and entrepreneurs. My goal is to create visual content that not only looks professional but also helps clients build credibility, increase engagement, and achieve meaningful results.",
+      background_color: '#0f0f1e',
+      surface_color: '#ffffff0d',
+      text_color: '#f5f5f7',
+      accent_color: '#a78bfa',
+      accent2_color: '#fbbf24',
+      font_family: 'Syne',
+      font_size: 16
+    };
+
+    function applyConfig(config) {
+      document.getElementById('about-text').textContent = config.about_text || defaultConfig.about_text;
+      document.documentElement.style.setProperty('--bg', config.background_color || defaultConfig.background_color);
+      document.documentElement.style.setProperty('--surface', config.surface_color || defaultConfig.surface_color);
+      document.documentElement.style.setProperty('--text', config.text_color || defaultConfig.text_color);
+      document.documentElement.style.setProperty('--accent', config.accent_color || defaultConfig.accent_color);
+      document.documentElement.style.setProperty('--accent2', config.accent2_color || defaultConfig.accent2_color);
+      const ff = config.font_family || defaultConfig.font_family;
+      document.querySelectorAll('.font-heading').forEach(el => el.style.fontFamily = `${ff}, sans-serif`);
+      const bs = config.font_size || defaultConfig.font_size;
+      document.body.style.fontSize = bs + 'px';
+    }
+
+    if (window.elementSdk) window.elementSdk.init({
+      defaultConfig,
+      onConfigChange: async (config) => applyConfig(config),
+      mapToCapabilities: (config) => ({
+        recolorables: [
+          { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+          { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+          { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+          { get: () => config.accent_color || defaultConfig.accent_color, set: v => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+          { get: () => config.accent2_color || defaultConfig.accent2_color, set: v => { config.accent2_color = v; window.elementSdk.setConfig({ accent2_color: v }); } },
+        ],
+        borderables: [],
+        fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+        fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } },
+      }),
+      mapToEditPanelValues: (config) => new Map([
+        ['about_text', config.about_text || defaultConfig.about_text],
+      ])
+    });
+  </script>
+</body>
+
+</html>
