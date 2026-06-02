@@ -677,6 +677,44 @@
         opacity: 0;
       }
     }
+
+    /* === FORM CUSTOM AESTHETICS === */
+    .form-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(139, 92, 246, 0.15);
+      border-radius: 12px;
+      padding: 14px 16px;
+      color: var(--text);
+      font-size: 14px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      outline: none;
+    }
+
+    .form-input:focus {
+      border-color: #a78bfa;
+      background: rgba(139, 92, 246, 0.04);
+      box-shadow: 0 0 15px rgba(139, 92, 246, 0.12);
+    }
+
+    .form-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #a78bfa;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .form-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23a78bfa'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      background-size: 14px;
+      padding-right: 40px;
+    }
   </style>
   <script>
     tailwind.config = {
@@ -1157,40 +1195,78 @@
     </section>
 
     <section id="contact" class="w-full max-w-5xl mx-auto px-6 py-24">
-      <div
-        class="gateway-container flex flex-col justify-center items-center min-h-[450px] text-center relative py-16 animate-fade-up">
+      <div class="gateway-container relative p-8 sm:p-12 md:p-16">
         <div class="gateway-glow"></div>
-        <div class="relative z-10 px-6 max-w-2xl">
-          <span class="text-xs font-bold tracking-widest uppercase text-purple-400 mb-6 block">— Ready to Start</span>
-          <h2 class="font-heading font-bold text-3xl sm:text-5xl leading-snug tracking-normal">
-            Make Your Brand <br /><span class="gradient-text">Unforgettable.</span>
-          </h2>
-          <p class="text-gray-400 mt-6 text-base max-w-lg mx-auto">
-            Your product deserves to be understood in seconds. Let's talk
-            about what motion can do for your brand.
-          </p>
-        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+          <!-- Left Info Column -->
+          <div class="lg:col-span-5 text-left">
+            <span class="text-xs font-bold tracking-widest uppercase text-purple-400 mb-6 block">— Let's Connect</span>
+            <h2 class="font-heading font-bold text-3xl sm:text-4xl leading-snug tracking-normal text-white">
+              Make Your Brand <br /><span class="gradient-text">Unforgettable.</span>
+            </h2>
+            <p class="text-gray-400 mt-6 text-sm leading-relaxed max-w-sm">
+              Your product deserves to be understood in seconds. Let's build a custom motion graphic or cinematic video edit that sells for you.
+            </p>
+            
+            <div class="mt-8 space-y-4">
+              <a href="https://cal.com/olaitan-emmanuel/30min" target="_blank" 
+                 class="btn-primary inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-white font-semibold text-xs uppercase tracking-wider shadow-lg hover:scale-105 transition-all">
+                📅 Book a Discovery Call
+              </a>
+              <div class="pt-2">
+                <a href="mailto:olaitanemmanuel21@gmail.com" class="text-xs text-purple-300 hover:text-white transition flex items-center gap-2">
+                  ✉️ Or Email Me: <strong class="text-white">olaitanemmanuel21@gmail.com</strong>
+                </a>
+              </div>
+            </div>
 
-        <div class="relative z-10 mt-10">
-          <div class="responsive-orb-wrap" id="ctaOrbContainer" tabindex="0">
-            <a href="https://cal.com/olaitan-emmanuel/30min" target="_blank" id="primaryCallLink"
-              class="orb-primary-btn block" onclick="handleMobileCTATap(event)">Book a Discovery Call ✦</a>
-            <div class="orb-secondary-label">
-              <a href="mailto:olaitanemmanuel21@gmail.com" class="orb-secondary-link block">Or Email Me Directly</a>
+            <!-- Social Links -->
+            <div class="flex gap-3 mt-10">
+              <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
+                style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="instagram"
+                  style="width:16px;height:16px;color:var(--accent);"></i></a>
+              <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
+                style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="linkedin"
+                  style="width:16px;height:16px;color:var(--accent);"></i></a>
+              <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
+                style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="youtube"
+                  style="width:16px;height:16px;color:var(--accent);"></i></a>
             </div>
           </div>
-        </div>
 
-        <div class="flex justify-center gap-4 mt-16 relative z-10">
-          <a href="#" class="w-11 h-11 rounded-full flex items-center justify-center transition hover:scale-110"
-            style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="instagram"
-              style="width:18px;height:18px;color:var(--accent);"></i></a>
-          <a href="#" class="w-11 h-11 rounded-full flex items-center justify-center transition hover:scale-110"
-            style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="linkedin"
-              style="width:18px;height:18px;color:var(--accent);"></i></a>
-          <a href="#" class="w-11 h-11 rounded-full flex items-center justify-center transition hover:scale-110"
-            style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="youtube"
-              style="width:18px;height:18px;color:var(--accent);"></i></a>
+          <!-- Right Form Column -->
+          <div class="lg:col-span-7 bg-white/[0.02] border border-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8">
+            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-4">Send a Message</span>
+            <form class="space-y-4" onsubmit="event.preventDefault(); alert('Message sent! In production, this form will submit to your email.');">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="form-label">Name</label>
+                  <input type="text" placeholder="Your Name" class="form-input" required />
+                </div>
+                <div>
+                  <label class="form-label">Email</label>
+                  <input type="email" placeholder="Your Email" class="form-input" required />
+                </div>
+              </div>
+              <div>
+                <label class="form-label">Project Type</label>
+                <select class="form-input form-select" required>
+                  <option value="" disabled selected>Select a service...</option>
+                  <option value="motion">🎬 Motion Design / Animation</option>
+                  <option value="video">🎥 Video Editing</option>
+                  <option value="graphics">🎨 Graphic Design</option>
+                  <option value="other">💼 Other Creative Inquiry</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">Message</label>
+                <textarea rows="4" placeholder="Tell me about your project, goals, and timeline..." class="form-input resize-none" required></textarea>
+              </div>
+              <button type="submit" class="btn-primary w-full py-3.5 rounded-xl text-white font-bold text-xs uppercase tracking-wider shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all">
+                Send Message ✦
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </section>
