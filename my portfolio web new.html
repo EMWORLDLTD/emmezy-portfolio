@@ -510,7 +510,7 @@
     }
 
     /* === MERGED DESIGN SYSTEM (Option 2 + Option 3) === */
-
+    
     /* 1. Film Grain Overlay */
     .film-grain {
       position: fixed;
@@ -525,31 +525,12 @@
     }
 
     @keyframes grainJitter {
-
-      0%,
-      100% {
-        transform: translate(0, 0);
-      }
-
-      10% {
-        transform: translate(-1%, -1%);
-      }
-
-      30% {
-        transform: translate(1%, -2%);
-      }
-
-      50% {
-        transform: translate(-2%, 1%);
-      }
-
-      70% {
-        transform: translate(2%, 2%);
-      }
-
-      90% {
-        transform: translate(-1%, 2%);
-      }
+      0%, 100% { transform: translate(0, 0); }
+      10% { transform: translate(-1%, -1%); }
+      30% { transform: translate(1%, -2%); }
+      50% { transform: translate(-2%, 1%); }
+      70% { transform: translate(2%, 2%); }
+      90% { transform: translate(-1%, 2%); }
     }
 
     /* 2. Timeline Ping-Pong Playhead Line */
@@ -587,22 +568,18 @@
         left: -180px;
         transform: scaleX(1);
       }
-
       48% {
         left: 100%;
         transform: scaleX(1);
       }
-
       50% {
         left: 100%;
-        transform: scaleX(-1);
+        transform: scaleX(-1); /* Reverse direction of gradient colors on back-trip */
       }
-
       98% {
         left: -180px;
         transform: scaleX(-1);
       }
-
       100% {
         left: -180px;
         transform: scaleX(1);
@@ -610,42 +587,95 @@
     }
 
     /* 3. Magnetic Mouse Spotlight card glow (service cores & case studies) */
-    .case-card,
-    .service-core {
+    .case-card, .service-core {
       position: relative;
       overflow: hidden;
     }
 
-    .case-card::before,
-    .service-core::before {
+    .case-card::before, .service-core::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(300px circle at var(--mouse-x, 0) var(--mouse-y, 0),
-          rgba(167, 139, 250, 0.12),
-          transparent 80%);
+      background: radial-gradient(
+        300px circle at var(--mouse-x, 0) var(--mouse-y, 0),
+        rgba(167, 139, 250, 0.12),
+        transparent 80%
+      );
       z-index: 1;
       pointer-events: none;
       opacity: 0;
       transition: opacity 0.4s ease;
     }
 
-    .case-card:hover::before,
-    .service-core:hover::before {
+    .case-card:hover::before, .service-core:hover::before {
       opacity: 1;
     }
 
     /* 4. Cohesive interactive hover/click colors for buttons using Option 2 gradient */
-    .btn-primary:hover,
-    .orb-primary-btn:hover {
+    .btn-primary:hover, .orb-primary-btn:hover {
       background: linear-gradient(135deg, #a78bfa, #fbbf24) !important;
       box-shadow: 0 8px 25px rgba(251, 191, 36, 0.35) !important;
     }
 
-    .btn-primary:active,
-    .orb-primary-btn:active {
+    .btn-primary:active, .orb-primary-btn:active {
       background: linear-gradient(135deg, #fbbf24, #a78bfa) !important;
       transform: scale(0.95) !important;
+    }
+
+    /* 5. Glowing border outline tracing around profiles with fade-out */
+    .profile-glow-border {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 20;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    
+    .profile-glow-border rect {
+      filter: drop-shadow(0 0 5px rgba(167, 139, 250, 0.7));
+    }
+
+    /* Active State Triggered by Scroll/Hover */
+    .profile-glow-border.is-active {
+      opacity: 1;
+      animation: borderFadeOut 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    .profile-glow-border.is-active path {
+      animation: borderTrace 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    @keyframes borderTrace {
+      0% {
+        stroke-dashoffset: var(--dash-total, 500);
+      }
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    .case-flash-rect {
+      opacity: 0;
+    }
+    @keyframes caseFlash {
+      0%, 100% { opacity: 0; }
+      25%, 75% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .case-glow-border.is-flashing .case-flash-rect {
+      animation: caseFlash 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes borderFadeOut {
+      0%, 72% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
     }
   </style>
   <script>
@@ -656,6 +686,7 @@
 </head>
 
 <body class="h-full">
+
   <!-- Merged Design: Film Grain Overlay Element -->
   <div class="film-grain"></div>
 
@@ -746,8 +777,18 @@
         <div class="flex-1 relative w-full max-w-md mx-auto mt-12 lg:mt-0">
           <div class="relative w-[80%] mx-auto">
 
-            <div class="rounded-3xl overflow-hidden relative z-10 w-full border"
-              style="aspect-ratio:3/4; border-color:rgba(139,92,246,0.2);">
+            <div class="rounded-3xl overflow-hidden relative z-10 w-full border border-white/10"
+              style="aspect-ratio:3/4;">
+              <!-- Glowing SVG Trace Border -->
+              <svg class="profile-glow-border absolute inset-0 w-full h-full pointer-events-none z-20" viewBox="0 0 100 133.3" preserveAspectRatio="none">
+                <path d="M 0.5 124.8 L 0.5 8.5 A 8 8 0 0 1 8.5 0.5 L 91.5 0.5 A 8 8 0 0 1 99.5 8.5 L 99.5 124.8 A 8 8 0 0 1 91.5 132.8 L 8.5 132.8 A 8 8 0 0 1 0.5 124.8 Z" fill="none" stroke="url(#glowGradHero)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-dasharray="450" stroke-dashoffset="450" style="--dash-total: 450;" />
+                <defs>
+                  <linearGradient id="glowGradHero" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#a78bfa" />
+                    <stop offset="100%" stop-color="#fbbf24" />
+                  </linearGradient>
+                </defs>
+              </svg>
               <img src="https://i.ibb.co/ZsrFknN/My-DP.webp?v=hero" alt="Olaitan Emmanuel"
                 class="w-full h-full object-cover block" loading="eager" decoding="sync" oncontextmenu="return false"
                 draggable="false" style="user-select: none; -webkit-user-drag: none;">
@@ -975,13 +1016,23 @@
     <section id="about" class="w-full py-24">
       <div class="max-w-5xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-16">
         <div class="flex-shrink-0 relative">
-          <div class="w-64 h-72 rounded-3xl overflow-hidden flex items-center justify-center"
-            style="background:linear-gradient(135deg,#1a1a2e,#16162a);border:1px solid rgba(139,92,246,0.15);">
+          <div class="w-64 h-72 rounded-3xl overflow-hidden flex items-center justify-center relative border border-white/10"
+            style="background:linear-gradient(135deg,#1a1a2e,#16162a);">
+            <!-- Glowing SVG Trace Border -->
+            <svg class="profile-glow-border absolute inset-0 w-full h-full pointer-events-none z-20" viewBox="0 0 100 112.5" preserveAspectRatio="none">
+              <path d="M 0.5 102.0 L 0.5 10.5 A 10 10 0 0 1 10.5 0.5 L 89.5 0.5 A 10 10 0 0 1 99.5 10.5 L 99.5 102.0 A 10 10 0 0 1 89.5 112.0 L 10.5 112.0 A 10 10 0 0 1 0.5 102.0 Z" fill="none" stroke="url(#glowGradAbout)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-dasharray="405" stroke-dashoffset="405" style="--dash-total: 405;" />
+              <defs>
+                <linearGradient id="glowGradAbout" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#a78bfa" />
+                  <stop offset="100%" stop-color="#fbbf24" />
+                </linearGradient>
+              </defs>
+            </svg>
             <img src="https://i.ibb.co/ZsrFknN/My-DP.webp" alt="Emmezy Creative Director"
               class="w-full h-full object-cover" loading="lazy" oncontextmenu="return false" draggable="false"
               style="user-select: none; -webkit-user-drag: none;" />
           </div>
-          <div class="absolute -bottom-4 -right-4 w-24 h-24 rounded-2xl flex items-center justify-center"
+          <div class="absolute -bottom-4 -right-4 w-24 h-24 rounded-2xl flex items-center justify-center z-30"
             style="background:linear-gradient(135deg,var(--accent),var(--accent2));">
             <span class="font-heading font-extrabold text-white text-lg">5+<br /><span
                 class="text-[10px] font-normal">YRS</span></span>
@@ -1391,7 +1442,16 @@
       if (currentSecondary !== 'all') { items = items.filter(p => p.sub === currentSecondary); }
 
       grid.innerHTML = items.map((p, i) => `
-          <div class="case-card">
+          <div class="case-card relative">
+            <svg class="case-glow-border absolute inset-0 w-full h-full pointer-events-none z-20" preserveAspectRatio="none" style="border-radius:16px;">
+              <rect x="0" y="0" width="100%" height="100%" rx="16" fill="none" stroke="url(#glowGradCase-\${i})" stroke-width="1.5" class="case-flash-rect" />
+              <defs>
+                <linearGradient id="glowGradCase-\${i}" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#a78bfa" />
+                  <stop offset="100%" stop-color="#fbbf24" />
+                </linearGradient>
+              </defs>
+            </svg>
             <div class="relative w-full overflow-hidden group" style="aspect-ratio:16/9;">
               <div class="absolute inset-0 bg-cover bg-center transition-all duration-500 group-hover:scale-105" style="background-image:url('${p.thumb}');"></div>
               <div class="absolute top-4 left-4 z-10 px-3 py-1 bg-black/70 backdrop-blur-md rounded-full text-[9px] font-bold text-purple-400 border border-purple-500/20 uppercase tracking-wider">${p.sub}</div>
@@ -1415,6 +1475,10 @@
             </div>
           </div>
         `).join('');
+        
+      if (typeof sharedObserver !== 'undefined' && sharedObserver) {
+        document.querySelectorAll('.case-card').forEach(card => sharedObserver.observe(card));
+      }
     }
 
     function openCaseModal(projectId) {
@@ -1557,6 +1621,7 @@
     document.getElementById('mobile-toggle').addEventListener('click', () => { document.getElementById('mobile-menu').classList.toggle('hidden'); });
     document.querySelectorAll('#mobile-menu a').forEach(a => a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden')));
 
+
     // Event Delegation: Spotlight effect for Specialties AND Dynamic Case Studies
     document.addEventListener('mousemove', e => {
       const card = e.target.closest('.case-card, .service-core');
@@ -1566,6 +1631,64 @@
         const y = e.clientY - rect.top;
         card.style.setProperty('--mouse-x', `${x}px`);
         card.style.setProperty('--mouse-y', `${y}px`);
+      }
+    });
+
+    // Intersection Observer for Profile Picture Border Glow Trace & Case Card Flashing
+    let sharedObserver = null;
+    if ('IntersectionObserver' in window) {
+      sharedObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const glowSvg = entry.target.querySelector('.profile-glow-border');
+          if (glowSvg) {
+            if (entry.isIntersecting) {
+              glowSvg.classList.remove('is-active');
+              void glowSvg.offsetWidth; // Force layout recalculation
+              glowSvg.classList.add('is-active');
+            } else {
+              glowSvg.classList.remove('is-active');
+            }
+          }
+          
+          if (entry.target.classList.contains('case-card')) {
+            const caseGlow = entry.target.querySelector('.case-glow-border');
+            if (caseGlow) {
+               if (entry.isIntersecting) {
+                 caseGlow.classList.remove('is-flashing');
+                 void caseGlow.offsetWidth;
+                 caseGlow.classList.add('is-flashing');
+               } else {
+                 caseGlow.classList.remove('is-flashing');
+               }
+            }
+          }
+        });
+      }, { threshold: 0.15 });
+
+      document.querySelectorAll('.rounded-3xl.overflow-hidden').forEach(container => {
+        if (container.querySelector('.profile-glow-border')) {
+          sharedObserver.observe(container);
+        }
+      });
+    } else {
+      document.querySelectorAll('.profile-glow-border').forEach(svg => svg.classList.add('is-active'));
+    }
+
+    // Desktop Hover Triggers for Profile Picture Glow
+    const isMobileDeviceCheck = () => {
+      return window.matchMedia("(max-width: 1023px)").matches || ('ontouchstart' in window);
+    };
+
+    document.querySelectorAll('.rounded-3xl.overflow-hidden').forEach(container => {
+      const glowSvg = container.querySelector('.profile-glow-border');
+      if (glowSvg) {
+        container.addEventListener('mouseenter', () => {
+          if (!isMobileDeviceCheck()) {
+            glowSvg.classList.remove('is-active');
+            void glowSvg.offsetWidth; // Force layout recalculation
+            glowSvg.classList.add('is-active');
+          }
+        });
       }
     });
 
