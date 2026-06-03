@@ -20,10 +20,10 @@ window.portfolioCategories = {
 
 window.portfolioConfig = {
   "layoutOrder": [
+    "showreel",
     "hero",
     "intro-quote",
     "services",
-    "showreel",
     "portfolio",
     "process",
     "about",
