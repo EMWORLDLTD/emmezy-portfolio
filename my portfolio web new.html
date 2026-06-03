@@ -728,6 +728,7 @@
   </script>
   <!-- Umami Analytics -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="43df9c83-2978-4f4c-96f6-5eea5201854e"></script>
+  <script src="data/portfolioData.js"></script>
 </head>
 
 <body class="h-full">
@@ -781,7 +782,7 @@
       </div>
     </nav>
 
-    <section class="relative w-full overflow-hidden flex items-center" style="min-height:100vh;">
+    <section id="hero" class="relative w-full overflow-hidden flex items-center" style="min-height:100vh;">
       <div class="floating-shape"
         style="width:500px;height:500px;background:rgba(139,92,246,0.15);top:-100px;right:-100px;animation:float1 12s ease-in-out infinite;">
       </div>
@@ -795,7 +796,7 @@
       <div
         class="max-w-7xl mx-auto px-6 pt-32 pb-20 relative z-10 flex flex-col lg:flex-row items-center gap-12 lg:gap-16 animate-fade-up w-full">
         <div class="flex-1 w-full lg:max-w-2xl">
-          <span
+          <span id="hero-tag"
             class="inline-block px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold tracking-wider mb-6 border uppercase"
             style="border-color:rgba(139,92,246,0.3);background:rgba(139,92,246,0.08);color:#a78bfa; white-space: nowrap;">
             ✦ Elevating Brand Quality &amp; Conversion
@@ -805,7 +806,7 @@
             Motion Graphics &amp; Video Content That
             <span class="gradient-text">Drive Action.</span>
           </h1>
-          <p class="mt-6 text-gray-400 text-lg leading-relaxed max-w-xl">
+          <p id="hero-description" class="mt-6 text-gray-400 text-lg leading-relaxed max-w-xl">
             I
             <strong class="text-white font-semibold">partner with SaaS, Fintech, and creative agencies
               globally</strong>
@@ -813,7 +814,7 @@
             <strong class="text-white font-semibold">high-impact motion graphics and cinematic video edits</strong>
             that drive real action.
           </p>
-          <div class="mt-8 flex flex-wrap gap-4">
+          <div id="hero-ctas" class="mt-8 flex flex-wrap gap-4">
             <a href="#portfolio" class="btn-primary px-8 py-3.5 rounded-full text-white font-semibold text-sm">View
               Projects →</a>
           </div>
@@ -823,7 +824,7 @@
           <div class="relative w-[80%] mx-auto">
 
             <div class="rounded-3xl overflow-hidden relative z-10 w-full border border-white/10"
-              style="aspect-ratio:3/4;">
+               style="aspect-ratio:3/4;">
               <!-- Glowing SVG Trace Border -->
               <svg class="profile-glow-border absolute inset-0 w-full h-full pointer-events-none z-20" viewBox="0 0 100 133.3" preserveAspectRatio="none">
                 <path d="M 0.5 124.8 L 0.5 8.5 A 8 8 0 0 1 8.5 0.5 L 91.5 0.5 A 8 8 0 0 1 99.5 8.5 L 99.5 124.8 A 8 8 0 0 1 91.5 132.8 L 8.5 132.8 A 8 8 0 0 1 0.5 124.8 Z" fill="none" stroke="url(#glowGradHero)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-dasharray="450" stroke-dashoffset="450" style="--dash-total: 450;" />
@@ -834,22 +835,22 @@
                   </linearGradient>
                 </defs>
               </svg>
-              <img src="https://i.ibb.co/ZsrFknN/My-DP.webp?v=hero" alt="Olaitan Emmanuel"
+              <img id="hero-image" src="https://i.ibb.co/ZsrFknN/My-DP.webp?v=hero" alt="Olaitan Emmanuel"
                 class="w-full h-full object-cover block" loading="eager" decoding="sync" oncontextmenu="return false"
                 draggable="false" style="user-select: none; -webkit-user-drag: none;">
             </div>
 
-            <div class="stat-badge" style="top:15%; left:-20%; animation: floatVertical 4s ease-in-out infinite 0.3s;">
+            <div id="hero-stat1" class="stat-badge" style="top:15%; left:-20%; animation: floatVertical 4s ease-in-out infinite 0.3s;">
               <div class="text-white text-xl font-bold">60<span class="symbol-gradient">+</span></div>
               <div class="text-xs text-gray-400">Projects Globally</div>
             </div>
-            <div class="stat-badge text-right"
+            <div id="hero-stat2" class="stat-badge text-right"
               style="top:45%; right:-25%; animation: floatVertical 4s ease-in-out infinite 0.5s;">
               <div class="text-white text-xl font-bold">100<span class="symbol-gradient">%</span></div>
               <div class="text-xs text-gray-400">Satisfaction</div>
             </div>
 
-            <div class="absolute -bottom-8 left-0 right-0 mx-auto w-[110%] rounded-2xl p-5 text-center z-30"
+            <div id="hero-name-card" class="absolute -bottom-8 left-0 right-0 mx-auto w-[110%] rounded-2xl p-5 text-center z-30"
               style="margin-left:-5%; animation: floatTilt 4s ease-in-out infinite; background:rgba(20,20,30,0.85); border:1px solid rgba(139,92,246,0.2); backdrop-filter:blur(20px);">
               <div class="font-heading font-bold text-lg text-white">Olaitan Emmanuel</div>
               <div class="text-sm text-gray-400 mt-1">Motion Designer &amp; Video Editor</div>
@@ -866,16 +867,23 @@
       </div>
     </div>
 
-    <section class="max-w-6xl mx-auto px-6 py-12 relative z-10">
+    <!-- Dynamic Showreel Video Player Section -->
+    <section id="showreel" class="max-w-5xl mx-auto px-6 py-12 relative z-10 hidden">
+      <div class="relative w-full overflow-hidden rounded-3xl border border-white/10" style="padding-top: 56.25%;">
+        <iframe id="showreel-iframe" class="absolute top-0 left-0 w-full h-full" src="" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <section id="intro-quote" class="max-w-6xl mx-auto px-6 py-12 relative z-10">
       <div class="glass-surface rounded-3xl p-10 text-center relative overflow-hidden">
         <div
           class="absolute inset-0 bg-gradient-to-r from-transparent via-purple-900/10 to-transparent pointer-events-none">
         </div>
-        <h2 class="font-heading font-bold text-2xl sm:text-3xl text-white mb-6 tracking-normal">
+        <h2 id="intro-quote-heading" class="font-heading font-bold text-2xl sm:text-3xl text-white mb-6 tracking-normal">
           Great design catches the eye.
           <span class="text-purple-400">Motion holds the attention.</span>
         </h2>
-        <p class="text-gray-400 max-w-3xl mx-auto leading-relaxed text-base">
+        <p id="intro-quote-text" class="text-gray-400 max-w-3xl mx-auto leading-relaxed text-base">
           You handle the vision and the footage;
           <strong class="text-white font-semibold">I handle the post-production.</strong>
           Beautiful graphic design is the foundation, but whether you need to
@@ -1073,11 +1081,11 @@
                 </linearGradient>
               </defs>
             </svg>
-            <img src="https://i.ibb.co/ZsrFknN/My-DP.webp" alt="Emmezy Creative Director"
+            <img id="about-image" src="https://i.ibb.co/ZsrFknN/My-DP.webp" alt="Emmezy Creative Director"
               class="w-full h-full object-cover" loading="lazy" oncontextmenu="return false" draggable="false"
               style="user-select: none; -webkit-user-drag: none;" />
           </div>
-          <div class="absolute -bottom-4 -right-4 w-24 h-24 rounded-2xl flex items-center justify-center z-30"
+          <div id="about-experience" class="absolute -bottom-4 -right-4 w-24 h-24 rounded-2xl flex items-center justify-center z-30"
             style="background:linear-gradient(135deg,var(--accent),var(--accent2));">
             <span class="font-heading font-extrabold text-white text-lg">5+<br /><span
                 class="text-[10px] font-normal">YRS</span></span>
@@ -1087,7 +1095,7 @@
           <span class="text-xs font-medium px-4 py-1.5 rounded-full"
             style="background:rgba(139,92,246,0.08);color:var(--accent);border:1px solid rgba(139,92,246,0.2);">About
             Me</span>
-          <h2 class="font-heading font-bold text-2xl sm:text-3xl mt-6 tracking-normal">
+          <h2 id="about-title" class="font-heading font-bold text-2xl sm:text-3xl mt-6 tracking-normal">
             Crafting Visual <span class="gradient-text">Stories</span>
           </h2>
           <p id="about-text" class="text-gray-400 mt-6 leading-relaxed">
@@ -1101,7 +1109,7 @@
             build credibility, increase engagement, and achieve meaningful
             results.
           </p>
-          <div class="mt-8 flex flex-wrap gap-3">
+          <div id="about-tags" class="mt-8 flex flex-wrap gap-3">
             <span class="px-4 py-2 rounded-full text-xs"
               style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.15);color:var(--accent);">Adobe
               Creative Suite</span>
@@ -1208,20 +1216,20 @@
           <!-- Left Info Column -->
           <div class="lg:col-span-5 text-left">
             <span class="text-xs font-bold tracking-widest uppercase text-purple-400 mb-6 block">— Let's Connect</span>
-            <h2 class="font-heading font-bold text-3xl sm:text-4xl leading-snug tracking-normal text-white">
+            <h2 id="contact-heading" class="font-heading font-bold text-3xl sm:text-4xl leading-snug tracking-normal text-white">
               Make Your Brand <br /><span class="gradient-text">Unforgettable.</span>
             </h2>
-            <p class="text-gray-400 mt-6 text-sm leading-relaxed max-w-sm">
+            <p id="contact-description" class="text-gray-400 mt-6 text-sm leading-relaxed max-w-sm">
               Your product deserves to be understood in seconds. Let's build a custom motion graphic or cinematic video edit that sells for you.
             </p>
             
             <div class="mt-8 space-y-4">
-              <a href="https://cal.com/olaitan-emmanuel/30min" target="_blank" 
+              <a id="contact-booking-btn" href="https://cal.com/olaitan-emmanuel/30min" target="_blank" 
                  class="btn-primary inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-white font-semibold text-xs uppercase tracking-wider shadow-lg hover:scale-105 transition-all">
                 📅 Book a Discovery Call
               </a>
               <div class="pt-2">
-                <a href="mailto:olaitanemmanuel21@gmail.com" class="text-xs text-purple-300 hover:text-white transition flex items-center gap-2">
+                <a id="contact-email-link" href="mailto:olaitanemmanuel21@gmail.com" class="text-xs text-purple-300 hover:text-white transition flex items-center gap-2">
                   ✉️ Or Email Me: <strong class="text-white">olaitanemmanuel21@gmail.com</strong>
                 </a>
               </div>
@@ -1229,13 +1237,13 @@
 
             <!-- Social Links -->
             <div class="flex gap-3 mt-10">
-              <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
+              <a id="contact-instagram" href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
                 style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="instagram"
                   style="width:16px;height:16px;color:var(--accent);"></i></a>
-              <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
+              <a id="contact-linkedin" href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
                 style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="linkedin"
                   style="width:16px;height:16px;color:var(--accent);"></i></a>
-              <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
+              <a id="contact-youtube" href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
                 style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="youtube"
                   style="width:16px;height:16px;color:var(--accent);"></i></a>
             </div>
@@ -1245,7 +1253,7 @@
             <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-4">Send a Message</span>
             <div id="form-container">
               <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" class="space-y-4" onsubmit="handleFormSubmit(event)">
-                <input type="hidden" name="access_key" value="c1a747ea-7db2-4483-abc9-739a57ef6e0c">
+                <input id="contact-web3forms-key" type="hidden" name="access_key" value="c1a747ea-7db2-4483-abc9-739a57ef6e0c">
                 <input type="hidden" name="subject" value="New Portfolio Contact Form Submission">
                 <input type="hidden" name="from_name" value="Portfolio Website Notification">
                 
@@ -1406,109 +1414,162 @@
   </div>
 
   <script>
-    // Sub-Categories Indexing Catalog
-    const portfolioCategories = {
-      motion: ['Explainer Videos', 'Logo Animation', 'UI Motion', '3D Animation'],
-      video: ['Promotional', 'Commercial', 'YouTube Editing'],
-      graphics: ['Brand Identity', 'Flyers & Posters', 'Product Design']
-    };
+    const portfolioCategories = window.portfolioCategories;
+    const portfolioData = window.portfolioData;
 
     let currentPrimary = 'all';
     let currentSecondary = 'all';
 
-    // Master Consolidated Projects Objects Databank
-    const portfolioData = [
-      {
-        id: 'beff-battery', dept: 'motion', sub: 'Explainer Videos',
-        thumb: 'https://i.ibb.co/30B3b30/placeholder-1.jpg',
-        badge: '⚡ Energy Tech • Motion Campaign',
-        title: 'Beff Battery Expert Center',
-        shortDesc: 'Translating complex energy tech metrics into a dynamic, user-centric 2D educational story.',
-        metric: '<strong>40% Support spikes reduced</strong> systematically',
-        tags: ['2D Animation', 'After Effects', 'Explainer'],
-        brief: 'Explain complex battery chemistry and solar storage logistics systematically to residential homeowners.',
-        approach: 'Deployed a high-end, narrative-driven 2D animation strategy to translate dry technical jargon into dynamic visuals.',
-        outcome: 'Delivered an interactive, intuitive campaign asset that reduced high manual inquiry spikes cleanly by 40%.',
-        before: '65% platform bounce rate, severe user confusion over features, and support lines overwhelmed with basic tech inquiries.',
-        after: '85% video retention achieved, smooth automated pre-education, and structured sales funnels clear of manual support blockages.',
-        stats: [{ val: '40%', lbl: 'Support Cut' }, { val: '85%', lbl: 'Retention' }, { val: '2.5x', lbl: 'Quote Requests' }],
-        tools: 'After Effects • Premiere Pro • Audition',
-        mediaType: 'video',
-        embedUrl: 'https://player.vimeo.com/video/347119375', // Professional motion graphic showcase
-        gallery: [
-          { url: 'https://i.ibb.co/30B3b30/placeholder-1.jpg', caption: 'Vector Concept Art' },
-          { url: 'https://i.ibb.co/yQn7wzY/placeholder-2.jpg', caption: 'Keyframe Style Frame' },
-          { url: 'https://i.ibb.co/L51L1Dq/placeholder-3.jpg', caption: 'Aniamted GIF Loop' }
-        ]
-      },
-      {
-        id: 'shelf21', dept: 'motion', sub: 'UI Motion',
-        thumb: 'https://i.ibb.co/yQn7wzY/placeholder-2.jpg',
-        badge: '🏫 EdTech • UI Motion Strategy',
-        title: 'Shelf21 Reward Experience',
-        shortDesc: 'Animating an integrated product ecosystem workflow to maximize continuous daily user tasks.',
-        metric: '<strong>+42% Engagement parameters</strong> recorded',
-        tags: ['UI Animation', 'Figma', 'EdTech'],
-        brief: 'Simplify and gamify the administrative visual user flow for an intuitive ongoing Teacher Reward Point System.',
-        approach: 'Designed structured micro-interactions and vector UI motion components to visually validate execution milestones.',
-        outcome: 'Increased daily engagement parameters with a clear, automated feedback engine loop.',
-        before: 'Inconsistent system task entries, abstract user interface clarity, and erratic user motivation trends.',
-        after: 'Systemized task execution cycle tracking and complete alignment with a balanced digital system economy.',
-        stats: [{ val: '+42%', lbl: 'Daily Tasks' }, { val: '60 PT', lbl: 'Daily Max' }, { val: '100%', lbl: 'User Clarity' }],
-        tools: 'Figma • After Effects • Illustrator',
-        mediaType: 'video',
-        embedUrl: 'https://player.vimeo.com/video/824804225', // High quality UI animation
-        gallery: [
-          { url: 'https://i.ibb.co/yQn7wzY/placeholder-2.jpg', caption: 'Dashboard UI Concept' },
-          { url: 'https://i.ibb.co/30B3b30/placeholder-1.jpg', caption: 'Micro-interaction Prototype' }
-        ]
-      },
-      {
-        id: 'kajota-video', dept: 'video', sub: 'Promotional',
-        thumb: 'https://i.ibb.co/L51L1Dq/placeholder-3.jpg',
-        badge: '📱 Social Media • Ad Campaign',
-        title: 'Kajota Commercial Showcase',
-        shortDesc: 'A high-converting promotional campaign built to drive client interactions via social channels.',
-        metric: '<strong>3x Content conversion metrics</strong> scaling up',
-        tags: ['VFX Editing', 'Color Grading', 'Premiere Pro'],
-        brief: 'Produce a visual campaign narrative capable of converting cold traffic on cross-platform digital spaces.',
-        approach: 'Implemented dynamic multi-layered transition layouts, custom pacing mechanics, and premium background SFX engineering.',
-        outcome: 'Generated record-high target interactions and user click-through benchmarks within weeks.',
-        before: 'Low asset view retention, high viewer scroll-past patterns, and weak audience retention logs.',
-        after: 'Immediate hooks driving sustained visibility timelines and direct client message click-through paths.',
-        stats: [{ val: '3.1x', lbl: 'CTR Increase' }, { val: '72%', lbl: 'Watch Time' }, { val: '+50%', lbl: 'Ad Conversions' }],
-        tools: 'Premiere Pro • DaVinci Resolve • After Effects',
-        mediaType: 'video',
-        embedUrl: 'https://player.vimeo.com/video/503463870', // Video editing showreel sample
-        gallery: [
-          { url: 'https://i.ibb.co/L51L1Dq/placeholder-3.jpg', caption: 'RAW Flat Color Profile' },
-          { url: 'https://i.ibb.co/ZsrFknN/My-DP.webp', caption: 'Final Color-Graded Frame' }
-        ]
-      },
-      {
-        id: 'queen-branding', dept: 'graphics', sub: 'Brand Identity',
-        thumb: 'https://i.ibb.co/ZsrFknN/My-DP.webp',
-        badge: '👑 Luxury • Identity Blueprint',
-        title: 'Queen EyinjuMi Empire Identity',
-        shortDesc: 'Premium corporate visual development bridging high-end catering and luxury fabric store branches.',
-        metric: '<strong>+65% Demographics recognition</strong> shift',
-        tags: ['Branding', 'Typography', 'Logo Design'],
-        brief: 'Unify two distinct high-end service categories—premium culinary arts and heritage textile retail—under one parent emblem.',
-        approach: 'Drafted tailored, symmetrical typography architectures paired with sharp vector brand guidelines to communicate premium status.',
-        outcome: 'Successfully reframed public perception to naturally attract premium, high-ticket clients.',
-        before: 'Fragmented presentation structures and disjointed client engagement models across branches.',
-        after: 'Unified authority status and clear high-end positioning matching premium pricing mechanics.',
-        stats: [{ val: '+65%', lbl: 'Recognition' }, { val: '100%', lbl: 'Consistency' }, { val: 'Premium', lbl: 'Tier Class' }],
-        tools: 'Illustrator • Photoshop • InDesign',
-        mediaType: 'graphics',
-        gallery: [
-          { url: 'https://i.ibb.co/ZsrFknN/My-DP.webp', caption: 'Empire Logo Badge' },
-          { url: 'https://i.ibb.co/30B3b30/placeholder-1.jpg', caption: 'Branding Banner Poster' },
-          { url: 'https://i.ibb.co/yQn7wzY/placeholder-2.jpg', caption: 'Corporate Color Guidelines' },
-          { url: 'https://i.ibb.co/L51L1Dq/placeholder-3.jpg', caption: 'Luxury Fabric Mockup' }
-        ]
+    function initPortfolioConfig() {
+      if (!window.portfolioConfig) return;
+      const config = window.portfolioConfig;
+
+      // 1. Reorder Landing Page Layout Sections
+      if (config.layoutOrder) {
+        const app = document.getElementById('app');
+        const footer = app.querySelector('footer');
+        config.layoutOrder.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) app.appendChild(el);
+        });
+        if (footer) app.appendChild(footer);
       }
-    ];
+
+      // 2. Render Hero content
+      if (config.hero) {
+        const h = config.hero;
+        const tag = document.getElementById('hero-tag');
+        if (tag) tag.textContent = h.tag;
+        
+        const headline = document.getElementById('hero-headline');
+        if (headline) headline.innerHTML = h.title;
+        
+        const desc = document.getElementById('hero-description');
+        if (desc) desc.innerHTML = h.description;
+        
+        const img = document.getElementById('hero-image');
+        if (img) img.src = h.image;
+
+        // Render Hero buttons
+        const ctaContainer = document.getElementById('hero-ctas');
+        if (ctaContainer) {
+          let buttonsHtml = `<a href="${h.primaryCtaLink || '#portfolio'}" class="btn-primary px-8 py-3.5 rounded-full text-white font-semibold text-sm">${h.primaryCtaText || 'View Projects →'}</a>`;
+          if (h.showSecondCta && h.secondCtaText) {
+            buttonsHtml += `<a href="${h.secondCtaLink || '#showreel'}" class="border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 px-8 py-3.5 rounded-full text-white font-semibold text-sm transition-all">${h.secondCtaText}</a>`;
+          }
+          ctaContainer.innerHTML = buttonsHtml;
+        }
+
+        // Render Hero stats badges
+        const stat1 = document.getElementById('hero-stat1');
+        if (stat1) {
+          stat1.innerHTML = `
+            <div class="text-white text-xl font-bold">${h.stat1Val}</div>
+            <div class="text-xs text-gray-400">${h.stat1Lbl}</div>
+          `;
+        }
+        const stat2 = document.getElementById('hero-stat2');
+        if (stat2) {
+          stat2.innerHTML = `
+            <div class="text-white text-xl font-bold">${h.stat2Val}</div>
+            <div class="text-xs text-gray-400">${h.stat2Lbl}</div>
+          `;
+        }
+
+        // Render Profile Name Card
+        const nameCard = document.getElementById('hero-name-card');
+        if (nameCard) {
+          nameCard.innerHTML = `
+            <div class="font-heading font-bold text-lg text-white">${h.name}</div>
+            <div class="text-sm text-gray-400 mt-1">${h.role}</div>
+          `;
+        }
+      }
+
+      // 3. Render Showreel Iframe (if URL and showreel section is present)
+      if (config.hero && config.hero.showreelUrl) {
+        const showreelSection = document.getElementById('showreel');
+        const showreelIframe = document.getElementById('showreel-iframe');
+        if (showreelSection && showreelIframe) {
+          showreelIframe.src = config.hero.showreelUrl;
+          showreelSection.classList.remove('hidden');
+        }
+      } else {
+        const showreelSection = document.getElementById('showreel');
+        if (showreelSection) showreelSection.classList.add('hidden');
+      }
+
+      // 4. Render Intro Quote content
+      if (config.introQuote) {
+        const q = config.introQuote;
+        const heading = document.getElementById('intro-quote-heading');
+        if (heading) heading.innerHTML = q.heading;
+        const text = document.getElementById('intro-quote-text');
+        if (text) text.innerHTML = q.paragraph;
+      }
+
+      // 5. Render About Me content
+      if (config.about) {
+        const a = config.about;
+        const img = document.getElementById('about-image');
+        if (img) img.src = a.image;
+        
+        const exp = document.getElementById('about-experience');
+        if (exp) {
+          exp.innerHTML = `<span class="font-heading font-extrabold text-white text-lg">${a.experience}</span>`;
+        }
+        
+        const title = document.getElementById('about-title');
+        if (title) title.innerHTML = a.title;
+        
+        const desc = document.getElementById('about-text');
+        if (desc) desc.innerHTML = a.text;
+        
+        const tagsContainer = document.getElementById('about-tags');
+        if (tagsContainer && a.tags) {
+          tagsContainer.innerHTML = a.tags.map((t, idx) => {
+            const isAltColor = idx % 2 === 1;
+            return isAltColor
+              ? `<span class="px-4 py-2 rounded-full text-xs" style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.15);color:var(--accent2);">${t}</span>`
+              : `<span class="px-4 py-2 rounded-full text-xs" style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.15);color:var(--accent);">${t}</span>`;
+          }).join('');
+        }
+      }
+
+      // 6. Render Contact details
+      if (config.contact) {
+        const c = config.contact;
+        const heading = document.getElementById('contact-heading');
+        if (heading) heading.innerHTML = c.heading;
+        
+        const desc = document.getElementById('contact-description');
+        if (desc) desc.textContent = c.description;
+        
+        const bookingBtn = document.getElementById('contact-booking-btn');
+        if (bookingBtn) {
+          bookingBtn.href = c.bookingLink;
+        }
+        
+        const emailLink = document.getElementById('contact-email-link');
+        if (emailLink) {
+          emailLink.href = `mailto:${c.email}`;
+          emailLink.innerHTML = `✉️ Or Email Me: <strong class="text-white">${c.email}</strong>`;
+        }
+
+        const instagram = document.getElementById('contact-instagram');
+        if (instagram) instagram.href = c.instagram;
+
+        const linkedin = document.getElementById('contact-linkedin');
+        if (linkedin) linkedin.href = c.linkedin;
+
+        const youtube = document.getElementById('contact-youtube');
+        if (youtube) youtube.href = c.youtube;
+
+        const web3formsKey = document.getElementById('contact-web3forms-key');
+        if (web3formsKey) web3formsKey.value = c.web3FormsKey;
+      }
+    }
+
 
     function filterPrimary(dept) {
       currentPrimary = dept;
@@ -1917,7 +1978,7 @@
                 <i data-lucide="check-circle" class="w-8 h-8 text-emerald-400" style="stroke-width: 2px;"></i>
               </div>
               <h3 class="font-heading font-bold text-xl text-white mb-2">Message Sent!</h3>
-              <p class="text-xs text-gray-400 max-w-xs leading-relaxed">Thank you for reaching out. Olaitan Emmanuel will get back to you within 24 hours.</p>
+              <p class="text-xs text-gray-400 max-w-xs leading-relaxed">${(window.portfolioConfig && window.portfolioConfig.contact && window.portfolioConfig.contact.successMessage) || "Thank you for reaching out. Olaitan Emmanuel will get back to you within 24 hours."}</p>
             </div>
           `;
           lucide.createIcons();
@@ -1934,6 +1995,7 @@
     }
 
     // Initialization Context Renders
+    initPortfolioConfig();
     filterPrimary('all');
     startTestimonialTimer();
     lucide.createIcons();

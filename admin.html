@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emmezy Studio • Portfolio CMS Console</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <!-- Lucide Icons -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: rgba(20, 20, 31, 0.6);
+      --border: rgba(139, 92, 246, 0.2);
+      --accent: #8b5cf6;
+      --accent-hover: #7c3aed;
+      --accent2: #f59e0b;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg);
+      color: #f5f5f7;
+    }
+
+    .font-heading {
+      font-family: 'Syne', sans-serif;
+    }
+
+    /* Custom Glassmorphism */
+    .glass-surface {
+      background: var(--surface);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+    }
+
+    .glass-input {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.3s ease;
+    }
+
+    .glass-input:focus {
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);
+      outline: none;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(139, 92, 246, 0.3);
+      border-radius: 10px;
+    }
+
+    /* Floating preview screen wrapper */
+    .preview-phone-frame {
+      aspect-ratio: 9/19;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+      border: 10px solid #1a1a24;
+      border-radius: 36px;
+      background: #0a0a0f;
+    }
+  </style>
+  
+  <!-- Load Local Data for offline fallbacks -->
+  <script src="data/portfolioData.js"></script>
+</head>
+
+<body class="h-full flex flex-col">
+  <!-- Top Navigation Header -->
+  <header class="w-full glass-surface border-b border-white/5 py-4 px-6 flex items-center justify-between z-40">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
+        <i data-lucide="sliders" class="w-4 h-4 text-purple-400"></i>
+      </div>
+      <div>
+        <h1 class="font-heading font-bold text-base sm:text-lg tracking-tight">EMMEZY STUDIO</h1>
+        <p class="text-[10px] text-gray-500 uppercase tracking-widest font-semibold">Portfolio Content Manager</p>
+      </div>
+    </div>
+    <div class="flex gap-2">
+      <button onclick="downloadConfigJS()" class="px-3.5 py-1.5 rounded-xl border border-white/10 hover:border-white/20 bg-white/5 text-xs font-semibold flex items-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all">
+        <i data-lucide="download" class="w-3.5 h-3.5"></i> Local Download
+      </button>
+      <button id="publish-btn" onclick="publishLive()" class="px-4 py-1.5 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-xs font-bold flex items-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-purple-500/20">
+        <i data-lucide="cloud-lightning" class="w-3.5 h-3.5 text-yellow-300 animate-pulse"></i> Publish Live
+      </button>
+    </div>
+  </header>
+
+  <div class="flex-grow flex overflow-hidden">
+    <!-- Left Sidebar for Navigation Tabs -->
+    <aside class="w-16 md:w-56 glass-surface border-r border-white/5 flex flex-col justify-between p-3 md:p-4 z-30">
+      <nav class="space-y-1.5">
+        <button onclick="switchTab('content')" data-tab="content" class="nav-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-xs font-semibold bg-purple-500/10 text-purple-300 border border-purple-500/15">
+          <i data-lucide="edit-3" class="w-4 h-4 flex-shrink-0"></i>
+          <span class="hidden md:inline">Landing Content</span>
+        </button>
+        <button onclick="switchTab('sections')" data-tab="sections" class="nav-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-xs font-semibold text-gray-400 hover:bg-white/5 hover:text-white border border-transparent">
+          <i data-lucide="grid" class="w-4 h-4 flex-shrink-0"></i>
+          <span class="hidden md:inline">Section Ordering</span>
+        </button>
+        <button onclick="switchTab('projects')" data-tab="projects" class="nav-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-xs font-semibold text-gray-400 hover:bg-white/5 hover:text-white border border-transparent">
+          <i data-lucide="folder-kanban" class="w-4 h-4 flex-shrink-0"></i>
+          <span class="hidden md:inline">Case Studies</span>
+        </button>
+        <button onclick="switchTab('github')" data-tab="github" class="nav-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-xs font-semibold text-gray-400 hover:bg-white/5 hover:text-white border border-transparent">
+          <i data-lucide="git-branch" class="w-4 h-4 flex-shrink-0"></i>
+          <span class="hidden md:inline">GitHub Sync</span>
+        </button>
+      </nav>
+
+      <div class="glass-surface rounded-xl p-2.5 md:p-3 text-[10px] text-gray-500 flex items-center gap-2 md:gap-3 border-white/5">
+        <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></div>
+        <span class="hidden md:inline font-medium">Ready Offline</span>
+      </div>
+    </aside>
+
+    <!-- Center Scrollable Work Area -->
+    <main class="flex-grow overflow-y-auto p-4 md:p-8">
+      <!-- 1. LANDING CONTENT TAB -->
+      <section id="tab-content" class="tab-panel space-y-6">
+        <div>
+          <h2 class="font-heading font-bold text-xl md:text-2xl text-white">Landing Page CMS</h2>
+          <p class="text-xs text-gray-400 mt-1">Configure texts, buttons, images, and links across your sections.</p>
+        </div>
+
+        <!-- Forms Panels -->
+        <div class="grid grid-cols-1 gap-6">
+          <!-- Hero Settings -->
+          <div class="glass-surface rounded-2xl p-6 border-white/5 space-y-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-purple-400 flex items-center gap-2">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Hero Page Header
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Hero Pill Label</label>
+                <input id="hero-tag-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Profile Picture URL</label>
+                <input id="hero-image-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Main Headline Title (HTML Allowed)</label>
+              <textarea id="hero-title-input" rows="2" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()"></textarea>
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Hero Description Block (HTML Allowed)</label>
+              <textarea id="hero-desc-input" rows="3" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()"></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Primary Button Text</label>
+                <input id="hero-cta-text-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Primary Button Link</label>
+                <input id="hero-cta-link-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+              </div>
+            </div>
+
+            <!-- Second Button / Showreel Embed Toggle -->
+            <div class="border-t border-white/5 pt-4 space-y-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="text-xs font-bold text-white">Secondary Button &amp; Showreel</h4>
+                  <p class="text-[10px] text-gray-400 mt-0.5">Toggle a second CTA button (e.g. watch showreel video).</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input id="hero-second-cta-toggle" type="checkbox" class="sr-only peer" onchange="toggleSecondCtaForm(this.checked); updateLivePreview();" />
+                  <div class="w-11 h-6 bg-white/10 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
+                </label>
+              </div>
+
+              <div id="second-cta-form" class="grid grid-cols-1 sm:grid-cols-3 gap-4 hidden">
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Button Text</label>
+                  <input id="hero-second-text-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Button Link Target</label>
+                  <input id="hero-second-link-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">YouTube/Vimeo Embed URL</label>
+                  <input id="hero-showreel-url-input" type="text" placeholder="https://www.youtube.com/embed/..." class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Stats badges and Profile overlay details -->
+            <div class="border-t border-white/5 pt-4 space-y-4">
+              <h4 class="text-xs font-bold text-white">Hero Badges &amp; Profile Details</h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Stat 1 Value</label>
+                    <input id="hero-stat1-val-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+                  </div>
+                  <div>
+                    <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Stat 1 Label</label>
+                    <input id="hero-stat1-lbl-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Stat 2 Value</label>
+                    <input id="hero-stat2-val-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+                  </div>
+                  <div>
+                    <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Stat 2 Label</label>
+                    <input id="hero-stat2-lbl-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Profile Display Name</label>
+                  <input id="hero-name-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Profile Role / Subtitle</label>
+                  <input id="hero-role-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Intro Quote Settings -->
+          <div class="glass-surface rounded-2xl p-6 border-white/5 space-y-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
+              <i data-lucide="quote" class="w-3.5 h-3.5"></i> Intro Quote Section
+            </h3>
+            <div>
+              <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Quote Heading (HTML Allowed)</label>
+              <textarea id="quote-heading-input" rows="2" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()"></textarea>
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Quote Main Description (HTML Allowed)</label>
+              <textarea id="quote-desc-input" rows="4" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()"></textarea>
+            </div>
+          </div>
+
+          <!-- About Me Settings -->
+          <div class="glass-surface rounded-2xl p-6 border-white/5 space-y-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-purple-400 flex items-center gap-2">
+              <i data-lucide="user" class="w-3.5 h-3.5"></i> About Me Section
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div class="sm:col-span-2">
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">About Photo URL</label>
+                <input id="about-image-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Experience Badge Label (HTML)</label>
+                <input id="about-exp-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Section Title (HTML Allowed)</label>
+              <input id="about-title-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">About Paragraph Text</label>
+              <textarea id="about-text-input" rows="4" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()"></textarea>
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Skills / Tags (Comma Separated)</label>
+              <input id="about-tags-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+            </div>
+          </div>
+
+          <!-- Contact Settings -->
+          <div class="glass-surface rounded-2xl p-6 border-white/5 space-y-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+              <i data-lucide="mail" class="w-3.5 h-3.5"></i> Contact Section &amp; Forms
+            </h3>
+            <div>
+              <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Contact Heading (HTML Allowed)</label>
+              <input id="contact-heading-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Contact Subtitle Paragraph</label>
+              <textarea id="contact-desc-input" rows="2" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()"></textarea>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Discovery Booking Link</label>
+                <input id="contact-booking-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Email Address</label>
+                <input id="contact-email-input" type="email" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Web3Forms Access Key</label>
+                <input id="contact-web3forms-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Custom Form Success message</label>
+              <input id="contact-success-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+            </div>
+
+            <!-- Social Media Handles Links -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-white/5 pt-4">
+              <div>
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Instagram Link</label>
+                <input id="contact-instagram-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">LinkedIn Link</label>
+                <input id="contact-linkedin-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">YouTube Link</label>
+                <input id="contact-youtube-input" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" oninput="updateLivePreview()" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. SECTION ORDERING TAB -->
+      <section id="tab-sections" class="tab-panel hidden space-y-6">
+        <div>
+          <h2 class="font-heading font-bold text-xl md:text-2xl text-white">Landing Page Section Ordering</h2>
+          <p class="text-xs text-gray-400 mt-1">Drag or use arrow buttons to reorder how the page content flows dynamically.</p>
+        </div>
+
+        <div class="max-w-md glass-surface rounded-2xl p-6 border-white/5">
+          <ul id="section-order-list" class="space-y-2">
+            <!-- Dynamically populated sections list -->
+          </ul>
+        </div>
+      </section>
+
+      <!-- 3. CASE STUDIES TAB -->
+      <section id="tab-projects" class="tab-panel hidden space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="font-heading font-bold text-xl md:text-2xl text-white">Portfolio Case Studies</h2>
+            <p class="text-xs text-gray-400 mt-1">Create, edit, or delete the dynamic multimedia showcases.</p>
+          </div>
+          <button onclick="openProjectEditorForm(null)" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-xs font-bold flex items-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i> Add New Case Study
+          </button>
+        </div>
+
+        <!-- Projects List Grid -->
+        <div id="projects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- Edit Project Modal overlay -->
+        <div id="project-editor-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4">
+          <div class="glass-surface w-full max-w-3xl rounded-3xl p-6 md:p-8 max-h-[90vh] overflow-y-auto border-white/10 space-y-6">
+            <div class="flex items-center justify-between border-b border-white/5 pb-4">
+              <h3 id="project-editor-title" class="font-heading font-bold text-lg text-white">Edit Case Study</h3>
+              <button onclick="closeProjectEditorForm()" class="text-gray-400 hover:text-white text-xl">&times;</button>
+            </div>
+
+            <!-- Form -->
+            <form id="project-form" class="space-y-4" onsubmit="saveProjectDataForm(event)">
+              <input type="hidden" id="proj-index" />
+              <input type="hidden" id="proj-id" />
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Department Category</label>
+                  <select id="proj-dept" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" onchange="populateSubcategoriesDropdown(this.value)">
+                    <option value="motion">Motion Design (video)</option>
+                    <option value="video">Video Editing (video)</option>
+                    <option value="graphics">Graphic Design (graphics)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Sub-Category</label>
+                  <div class="flex gap-1.5">
+                    <select id="proj-sub" class="glass-input flex-grow px-3 py-2.5 rounded-xl text-xs text-white"></select>
+                    <button type="button" onclick="addNewSubcategoryPrompt()" class="px-3 rounded-xl border border-white/10 bg-white/5 text-xs text-gray-300 hover:text-white">+</button>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Media Component Type</label>
+                  <select id="proj-mediatype" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" onchange="toggleProjectEmbedInput(this.value)">
+                    <option value="video">Video Embed Player (YouTube/Vimeo)</option>
+                    <option value="graphics">Graphics Image Gallery (Masonry Layout)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- General Meta -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Project Title</label>
+                  <input id="proj-title" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" required />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Homepage Pill Badge (e.g. ⚡ Energy Tech)</label>
+                  <input id="proj-badge" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Homepage Grid Metric Highlight</label>
+                  <input id="proj-metric" type="text" placeholder="📈 40% Support spikes reduced" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Homepage Skill Tags (Comma Separated)</label>
+                  <input id="proj-tags" type="text" placeholder="2D Animation, After Effects" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Homepage Thumbnail URL</label>
+                  <input id="proj-thumb" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" required />
+                </div>
+                <div id="proj-embed-container">
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Video Player Embed URL (Iframe Source)</label>
+                  <input id="proj-embed" type="text" placeholder="https://player.vimeo.com/video/..." class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Homepage Card Short Summary</label>
+                <input id="proj-shortdesc" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" required />
+              </div>
+
+              <!-- Brief / Approach / Outcome Details -->
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-white/5 pt-4">
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">01 / Project Brief</label>
+                  <textarea id="proj-brief" rows="3" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" required></textarea>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">02 / Creative Approach</label>
+                  <textarea id="proj-approach" rows="3" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" required></textarea>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">03 / Campaign Outcome</label>
+                  <textarea id="proj-outcome" rows="3" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" required></textarea>
+                </div>
+              </div>
+
+              <!-- Before / After Grid text -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-white/5 pt-4">
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">✕ Before Status Description</label>
+                  <textarea id="proj-before" rows="2" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" required></textarea>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">✓ After Status Results</label>
+                  <textarea id="proj-after" rows="2" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" required></textarea>
+                </div>
+              </div>
+
+              <!-- Three Stats Items -->
+              <div class="border-t border-white/5 pt-4 space-y-3">
+                <h4 class="text-[10px] font-bold text-white uppercase tracking-wider">Metrics Statistics (Three Cards)</h4>
+                <div class="grid grid-cols-3 gap-3">
+                  <div class="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-2">
+                    <input id="proj-stat1-val" type="text" placeholder="Value (e.g. 40%)" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs text-white" required />
+                    <input id="proj-stat1-lbl" type="text" placeholder="Label (e.g. Support Cut)" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs text-white" required />
+                  </div>
+                  <div class="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-2">
+                    <input id="proj-stat2-val" type="text" placeholder="Value" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs text-white" required />
+                    <input id="proj-stat2-lbl" type="text" placeholder="Label" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs text-white" required />
+                  </div>
+                  <div class="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-2">
+                    <input id="proj-stat3-val" type="text" placeholder="Value" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs text-white" required />
+                    <input id="proj-stat3-lbl" type="text" placeholder="Label" class="glass-input w-full px-3 py-1.5 rounded-lg text-xs text-white" required />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tools and Gallery Images list -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-white/5 pt-4">
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Software Stack (Bullet separated)</label>
+                  <input id="proj-tools" type="text" placeholder="After Effects • Premiere Pro" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" required />
+                </div>
+                <div>
+                  <div class="flex items-center justify-between mb-1.5">
+                    <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Gallery Assets / Style Frames</label>
+                    <button type="button" onclick="addProjectGalleryItemInput()" class="text-[10px] text-purple-400 hover:text-white font-bold">+ Add Asset</button>
+                  </div>
+                  <div id="proj-gallery-list" class="space-y-2 max-h-40 overflow-y-auto pr-1">
+                    <!-- Dynamic URL Inputs -->
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex justify-end gap-3 border-t border-white/5 pt-4">
+                <button type="button" onclick="closeProjectEditorForm()" class="px-4 py-2 rounded-xl border border-white/10 hover:bg-white/5 text-xs text-gray-300 font-semibold">Cancel</button>
+                <button type="button" onclick="triggerSandboxModalPreview()" class="px-4 py-2 rounded-xl border border-purple-500/20 bg-purple-500/10 hover:bg-purple-500/20 text-xs text-purple-300 font-semibold">Preview Design</button>
+                <button type="submit" class="px-5 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-xs text-white font-bold">Save Changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. GITHUB SYNC TAB -->
+      <section id="tab-github" class="tab-panel hidden space-y-6">
+        <div>
+          <h2 class="font-heading font-bold text-xl md:text-2xl text-white">GitHub API Authentication</h2>
+          <p class="text-xs text-gray-400 mt-1">Authorize your workspace to securely commit updates directly to your live website repository.</p>
+        </div>
+
+        <div class="max-w-xl glass-surface rounded-2xl p-6 border-white/5 space-y-4">
+          <div class="p-4 bg-purple-950/20 border border-purple-500/15 rounded-xl text-xs text-purple-300 leading-relaxed">
+            <strong class="font-bold flex items-center gap-1.5 text-purple-200 mb-1"><i data-lucide="shield-check" class="w-4 h-4"></i> Security Commitment:</strong>
+            Your token is stored locally on this device in your browser's private database. It is never sent to external servers or tracking databases. It is used exclusively to make direct HTTPS commits to GitHub.
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">GitHub Username / Organization</label>
+              <input id="git-user" type="text" placeholder="e.g. EWORLDLTD" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" />
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">GitHub Repository Name</label>
+              <input id="git-repo" type="text" placeholder="e.g. emmezy-portfolio" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" />
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">GitHub Personal Access Token (PAT)</label>
+              <input id="git-token" type="password" placeholder="ghp_..." class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" />
+            </div>
+
+            <div class="pt-2 flex justify-between items-center">
+              <span id="git-status-text" class="text-xs text-gray-500 font-medium">Checking connection...</span>
+              <button onclick="saveGitHubAuthDetails()" class="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-xs font-bold text-white flex items-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                <i data-lucide="save" class="w-4 h-4"></i> Save Setup Config
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Right Sidebar Floating Live Sandbox Preview Panel -->
+    <aside class="hidden lg:flex w-80 glass-surface border-l border-white/5 flex-col p-6 overflow-y-auto z-20">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h3 class="font-heading font-bold text-sm text-white">Live Sandbox Preview</h3>
+          <p class="text-[9px] text-gray-500 uppercase tracking-widest font-semibold mt-0.5">Visual Mobile Layout</p>
+        </div>
+        <i data-lucide="smartphone" class="w-4 h-4 text-purple-400"></i>
+      </div>
+
+      <!-- Phone Frame Viewport -->
+      <div class="preview-phone-frame w-full relative flex-grow overflow-hidden flex flex-col">
+        <!-- Status Bar -->
+        <div class="h-6 w-full bg-black flex justify-between items-center px-4 text-[9px] text-gray-500 select-none">
+          <span>9:41</span>
+          <div class="flex gap-1.5 items-center">
+            <i data-lucide="wifi" class="w-2.5 h-2.5"></i>
+            <i data-lucide="battery" class="w-3.5 h-3.5"></i>
+          </div>
+        </div>
+
+        <!-- Scrollable content -->
+        <div id="phone-viewport" class="flex-grow overflow-y-auto px-4 py-6 space-y-6 text-[11px] leading-relaxed text-gray-300">
+          <!-- Hero Rendering Mock -->
+          <div class="space-y-4 border-b border-white/10 pb-6">
+            <span id="preview-hero-tag" class="inline-block px-2.5 py-0.5 rounded-full text-[8px] border border-purple-500/20 bg-purple-500/5 text-purple-300 uppercase tracking-wide">Pill Tag</span>
+            <h1 id="preview-hero-title" class="font-heading font-bold text-base leading-tight text-white">Hero Title</h1>
+            <p id="preview-hero-desc" class="text-[10px] text-gray-400">Description</p>
+            <div id="preview-hero-buttons" class="flex flex-col gap-2">
+              <div class="w-full bg-purple-600 rounded-lg py-2 text-center text-white text-[9px] font-bold">View Projects</div>
+            </div>
+            <!-- Showcase image -->
+            <div class="w-24 h-24 rounded-full overflow-hidden mx-auto border border-white/10 bg-neutral-900 mt-2">
+              <img id="preview-hero-img" class="w-full h-full object-cover" src="" alt="Hero preview" />
+            </div>
+          </div>
+
+          <!-- Quote Rendering Mock -->
+          <div class="p-4 bg-white/5 border border-white/10 rounded-xl text-center space-y-2">
+            <h4 id="preview-quote-title" class="font-heading font-bold text-xs text-white">Quote Header</h4>
+            <p id="preview-quote-desc" class="text-[9px] text-gray-400">Quote paragraph content</p>
+          </div>
+
+          <!-- About Rendering Mock -->
+          <div class="space-y-3 border-t border-b border-white/10 py-6">
+            <span class="inline-block px-2.5 py-0.5 rounded-full text-[8px] border border-white/10 text-gray-400 uppercase">About Me</span>
+            <div class="flex gap-3 items-center">
+              <div class="w-12 h-14 bg-neutral-900 rounded-lg overflow-hidden flex-shrink-0 border border-white/10">
+                <img id="preview-about-img" class="w-full h-full object-cover" src="" alt="About preview" />
+              </div>
+              <h3 id="preview-about-title" class="font-heading font-bold text-xs text-white leading-tight">About Title</h3>
+            </div>
+            <p id="preview-about-text" class="text-[9px] text-gray-400">About Me description paragraph</p>
+            <div id="preview-about-tags" class="flex flex-wrap gap-1.5">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Contact Mock -->
+          <div class="p-4 bg-purple-950/10 border border-purple-500/10 rounded-xl space-y-3 text-center">
+            <h3 id="preview-contact-title" class="font-heading font-bold text-xs text-white">Contact Title</h3>
+            <p id="preview-contact-desc" class="text-[9px] text-gray-400">Subtitle text details</p>
+            <div class="bg-purple-600 rounded-lg py-2 text-white text-[9px] font-bold">📅 Discovery Call</div>
+            <div id="preview-contact-email" class="text-[9px] text-purple-300">Email Me</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Real Interactive Case Study Details Modal Simulator (Renders overlay sandbox dynamically) -->
+  <div id="preview-modal-sandbox" class="fixed inset-0 bg-black/90 z-[999] hidden flex items-center justify-center p-4">
+    <div class="glass-surface w-full max-w-xl rounded-3xl p-6 max-h-[85vh] overflow-y-auto border-white/10 relative space-y-6">
+      <button onclick="closeSandboxModalPreview()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">&times;</button>
+      <div class="text-[9px] text-center font-bold text-purple-400 tracking-wider uppercase">— Sandbox Layout preview —</div>
+      
+      <!-- Video player simulation -->
+      <div id="prev-modal-media-stage" class="w-full"></div>
+      
+      <h3 id="prev-modal-title" class="font-heading font-bold text-base text-white">Project Title</h3>
+      
+      <!-- Descriptions Grid -->
+      <div class="grid grid-cols-3 gap-2 text-[9px] leading-relaxed text-gray-400">
+        <div class="p-2 bg-white/5 border border-white/5 rounded-lg">
+          <strong class="text-purple-400 uppercase text-[7px] block mb-1">01 / Brief</strong>
+          <p id="prev-modal-brief"></p>
+        </div>
+        <div class="p-2 bg-white/5 border border-white/5 rounded-lg">
+          <strong class="text-purple-400 uppercase text-[7px] block mb-1">02 / Approach</strong>
+          <p id="prev-modal-approach"></p>
+        </div>
+        <div class="p-2 bg-white/5 border border-white/5 rounded-lg">
+          <strong class="text-purple-400 uppercase text-[7px] block mb-1">03 / Outcome</strong>
+          <p id="prev-modal-outcome"></p>
+        </div>
+      </div>
+
+      <!-- Before/After -->
+      <div class="grid grid-cols-2 gap-2 text-[9px] leading-relaxed">
+        <div class="p-2.5 border border-red-500/10 rounded-lg bg-red-950/5">
+          <strong class="text-red-400 block mb-1">✕ Before</strong>
+          <p id="prev-modal-before" class="text-gray-300"></p>
+        </div>
+        <div class="p-2.5 border border-emerald-500/10 rounded-lg bg-emerald-950/5">
+          <strong class="text-emerald-block text-emerald-400 block mb-1">✓ After</strong>
+          <p id="prev-modal-after" class="text-gray-300"></p>
+        </div>
+      </div>
+
+      <!-- Style frames gallery stage simulator -->
+      <div id="prev-modal-gallery-stage" class="space-y-2 hidden">
+        <strong class="text-[7px] text-gray-500 uppercase tracking-widest block">Style Frames &amp; Concepts</strong>
+        <div id="prev-modal-gallery-grid" class="grid grid-cols-3 gap-2">
+          <!-- Rendered Thumbnails -->
+        </div>
+      </div>
+
+      <!-- Metrics stats -->
+      <div class="grid grid-cols-3 gap-2 text-center">
+        <div class="p-2 bg-purple-950/10 border border-purple-500/10 rounded-lg">
+          <div id="prev-modal-stat1-val" class="font-heading font-bold text-sm text-white">0%</div>
+          <div id="prev-modal-stat1-lbl" class="text-[7px] text-gray-500 uppercase">Metric</div>
+        </div>
+        <div class="p-2 bg-purple-950/10 border border-purple-500/10 rounded-lg">
+          <div id="prev-modal-stat2-val" class="font-heading font-bold text-sm text-white">0%</div>
+          <div id="prev-modal-stat2-lbl" class="text-[7px] text-gray-500 uppercase">Metric</div>
+        </div>
+        <div class="p-2 bg-purple-950/10 border border-purple-500/10 rounded-lg">
+          <div id="prev-modal-stat3-val" class="font-heading font-bold text-sm text-white">0%</div>
+          <div id="prev-modal-stat3-lbl" class="text-[7px] text-gray-500 uppercase">Metric</div>
+        </div>
+      </div>
+
+      <!-- Footer action simulator -->
+      <div class="flex justify-between items-center pt-4 border-t border-white/10 text-[8px]">
+        <div id="prev-modal-tools" class="px-2 py-1 rounded bg-purple-500/5 border border-purple-500/10 text-purple-400 font-bold uppercase tracking-wider">Stack</div>
+        <div class="px-4 py-2 rounded bg-purple-600 text-white font-bold">Book Call Now</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Config state
+    let activeTab = 'content';
+    let currentCategories = window.portfolioCategories || {};
+    let currentConfig = window.portfolioConfig || {};
+    let currentData = window.portfolioData || [];
+
+    // On Document Load
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Initial configuration fetch from local memory or defaults
+      loadSavedConfig();
+      // 2. Render forms
+      populateConfigForms();
+      populateSectionOrderList();
+      renderProjectsListGrid();
+      // 3. Update preview sidebar
+      updateLivePreview();
+      // 4. Test connection if settings exist
+      checkGitHubTokenStatusSilently();
+      // 5. Initialize icons
+      lucide.createIcons();
+    });
+
+    function loadSavedConfig() {
+      const gitUser = localStorage.getItem('emmezy_git_user');
+      const gitRepo = localStorage.getItem('emmezy_git_repo');
+      const gitToken = localStorage.getItem('emmezy_git_token');
+
+      if (gitUser) document.getElementById('git-user').value = gitUser;
+      if (gitRepo) document.getElementById('git-repo').value = gitRepo;
+      if (gitToken) document.getElementById('git-token').value = gitToken;
+      
+      const localDataString = localStorage.getItem('emmezy_draft_database');
+      if (localDataString) {
+        try {
+          const parsed = JSON.parse(localDataString);
+          currentConfig = parsed.config;
+          currentData = parsed.data;
+          currentCategories = parsed.categories;
+        } catch (e) {
+          console.warn("Failed to load drafts: ", e);
+        }
+      }
+    }
+
+    function switchTab(tabId) {
+      activeTab = tabId;
+      document.querySelectorAll('.nav-tab').forEach(b => {
+        const isTarget = b.getAttribute('data-tab') === tabId;
+        b.className = isTarget
+          ? 'nav-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-xs font-semibold bg-purple-500/10 text-purple-300 border border-purple-500/15'
+          : 'nav-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-xs font-semibold text-gray-400 hover:bg-white/5 hover:text-white border border-transparent';
+      });
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.classList.toggle('hidden', panel.id !== `tab-${tabId}`);
+      });
+    }
+
+    // Dynamic Form Populating
+    function populateConfigForms() {
+      const h = currentConfig.hero || {};
+      document.getElementById('hero-tag-input').value = h.tag || '';
+      document.getElementById('hero-title-input').value = h.title || '';
+      document.getElementById('hero-desc-input').value = h.description || '';
+      document.getElementById('hero-cta-text-input').value = h.primaryCtaText || '';
+      document.getElementById('hero-cta-link-input').value = h.primaryCtaLink || '';
+      document.getElementById('hero-image-input').value = h.image || '';
+      document.getElementById('hero-stat1-val-input').value = h.stat1Val || '';
+      document.getElementById('hero-stat1-lbl-input').value = h.stat1Lbl || '';
+      document.getElementById('hero-stat2-val-input').value = h.stat2Val || '';
+      document.getElementById('hero-stat2-lbl-input').value = h.stat2Lbl || '';
+      document.getElementById('hero-name-input').value = h.name || '';
+      document.getElementById('hero-role-input').value = h.role || '';
+
+      const secondToggle = document.getElementById('hero-second-cta-toggle');
+      secondToggle.checked = h.showSecondCta || false;
+      toggleSecondCtaForm(h.showSecondCta || false);
+      document.getElementById('hero-second-text-input').value = h.secondCtaText || '';
+      document.getElementById('hero-second-link-input').value = h.secondCtaLink || '';
+      document.getElementById('hero-showreel-url-input').value = h.showreelUrl || '';
+
+      const q = currentConfig.introQuote || {};
+      document.getElementById('quote-heading-input').value = q.heading || '';
+      document.getElementById('quote-desc-input').value = q.paragraph || '';
+
+      const a = currentConfig.about || {};
+      document.getElementById('about-image-input').value = a.image || '';
+      document.getElementById('about-exp-input').value = a.experience || '';
+      document.getElementById('about-title-input').value = a.title || '';
+      document.getElementById('about-text-input').value = a.text || '';
+      document.getElementById('about-tags-input').value = (a.tags || []).join(', ');
+
+      const c = currentConfig.contact || {};
+      document.getElementById('contact-heading-input').value = c.heading || '';
+      document.getElementById('contact-desc-input').value = c.description || '';
+      document.getElementById('contact-booking-input').value = c.bookingLink || '';
+      document.getElementById('contact-email-input').value = c.email || '';
+      document.getElementById('contact-web3forms-input').value = c.web3FormsKey || '';
+      document.getElementById('contact-success-input').value = c.successMessage || '';
+      document.getElementById('contact-instagram-input').value = c.instagram || '';
+      document.getElementById('contact-linkedin-input').value = c.linkedin || '';
+      document.getElementById('contact-youtube-input').value = c.youtube || '';
+    }
+
+    function toggleSecondCtaForm(show) {
+      document.getElementById('second-cta-form').classList.toggle('hidden', !show);
+    }
+
+    // Build the data compile object
+    function getFormDataAsConfig() {
+      return {
+        layoutOrder: currentConfig.layoutOrder || ['hero', 'showreel', 'intro-quote', 'services', 'portfolio', 'process', 'about', 'testimonials', 'contact'],
+        hero: {
+          tag: document.getElementById('hero-tag-input').value,
+          title: document.getElementById('hero-title-input').value,
+          description: document.getElementById('hero-desc-input').value,
+          primaryCtaText: document.getElementById('hero-cta-text-input').value,
+          primaryCtaLink: document.getElementById('hero-cta-link-input').value,
+          showSecondCta: document.getElementById('hero-second-cta-toggle').checked,
+          secondCtaText: document.getElementById('hero-second-text-input').value,
+          secondCtaLink: document.getElementById('hero-second-link-input').value,
+          showreelUrl: document.getElementById('hero-showreel-url-input').value,
+          image: document.getElementById('hero-image-input').value,
+          stat1Val: document.getElementById('hero-stat1-val-input').value,
+          stat1Lbl: document.getElementById('hero-stat1-lbl-input').value,
+          stat2Val: document.getElementById('hero-stat2-val-input').value,
+          stat2Lbl: document.getElementById('hero-stat2-lbl-input').value,
+          name: document.getElementById('hero-name-input').value,
+          role: document.getElementById('hero-role-input').value
+        },
+        introQuote: {
+          heading: document.getElementById('quote-heading-input').value,
+          paragraph: document.getElementById('quote-desc-input').value
+        },
+        about: {
+          image: document.getElementById('about-image-input').value,
+          experience: document.getElementById('about-exp-input').value,
+          title: document.getElementById('about-title-input').value,
+          text: document.getElementById('about-text-input').value,
+          tags: document.getElementById('about-tags-input').value.split(',').map(s => s.trim()).filter(Boolean)
+        },
+        contact: {
+          heading: document.getElementById('contact-heading-input').value,
+          description: document.getElementById('contact-desc-input').value,
+          bookingLink: document.getElementById('contact-booking-input').value,
+          email: document.getElementById('contact-email-input').value,
+          web3FormsKey: document.getElementById('contact-web3forms-input').value,
+          successMessage: document.getElementById('contact-success-input').value,
+          instagram: document.getElementById('contact-instagram-input').value,
+          linkedin: document.getElementById('contact-linkedin-input').value,
+          youtube: document.getElementById('contact-youtube-input').value
+        }
+      };
+    }
+
+    function saveDraftToLocalStorage() {
+      currentConfig = getFormDataAsConfig();
+      localStorage.setItem('emmezy_draft_database', JSON.stringify({
+        categories: currentCategories,
+        config: currentConfig,
+        data: currentData
+      }));
+    }
+
+    // Real-time Sidebar Preview update
+    function updateLivePreview() {
+      saveDraftToLocalStorage();
+      const h = currentConfig.hero || {};
+      const q = currentConfig.introQuote || {};
+      const a = currentConfig.about || {};
+      const c = currentConfig.contact || {};
+
+      document.getElementById('preview-hero-tag').textContent = h.tag || 'Tag Pill';
+      document.getElementById('preview-hero-title').innerHTML = h.title || 'Headline Text';
+      document.getElementById('preview-hero-desc').innerHTML = h.description || 'Description Text';
+      document.getElementById('preview-hero-img').src = h.image || '';
+
+      const ctas = document.getElementById('preview-hero-buttons');
+      let buttonsMarkup = `<div class="w-full bg-purple-600 rounded-lg py-2 text-center text-white text-[9px] font-bold">${h.primaryCtaText || 'View Projects'}</div>`;
+      if (h.showSecondCta && h.secondCtaText) {
+        buttonsMarkup += `<div class="w-full bg-white/5 border border-white/10 rounded-lg py-2 text-center text-white text-[9px] font-bold">${h.secondCtaText}</div>`;
+      }
+      ctas.innerHTML = buttonsMarkup;
+
+      document.getElementById('preview-quote-title').innerHTML = q.heading || 'Quote heading';
+      document.getElementById('preview-quote-desc').innerHTML = q.paragraph || 'Quote paragraph';
+
+      document.getElementById('preview-about-img').src = a.image || '';
+      document.getElementById('preview-about-title').innerHTML = a.title || 'About Title';
+      document.getElementById('preview-about-text').innerHTML = a.text || 'About description paragraph';
+      
+      const tagsBox = document.getElementById('preview-about-tags');
+      if (a.tags) {
+        tagsBox.innerHTML = a.tags.map(t => `<span class="px-2 py-0.5 rounded-full text-[7px] bg-purple-500/10 border border-purple-500/20 text-purple-300">${t}</span>`).join('');
+      } else {
+        tagsBox.innerHTML = '';
+      }
+
+      document.getElementById('preview-contact-title').innerHTML = c.heading || 'Contact Heading';
+      document.getElementById('preview-contact-desc').textContent = c.description || 'Sub-details';
+      document.getElementById('preview-contact-email').textContent = `✉️ ${c.email || 'email@example.com'}`;
+    }
+
+    // 2. SECTION ORDERING LOGIC
+    function populateSectionOrderList() {
+      const order = currentConfig.layoutOrder || ['hero', 'showreel', 'intro-quote', 'services', 'portfolio', 'process', 'about', 'testimonials', 'contact'];
+      const list = document.getElementById('section-order-list');
+      
+      const friendlyNames = {
+        hero: 'Hero Section (Top)',
+        showreel: 'Showreel Video Player',
+        'intro-quote': 'Intro Quote banner',
+        services: 'Core Specialties / Services',
+        portfolio: 'Featured Portfolio Grids',
+        process: 'Workflow & Process',
+        about: 'About Me Bio',
+        testimonials: 'Client Testimonials',
+        contact: 'Contact Form & Booking'
+      };
+
+      list.innerHTML = order.map((id, index) => `
+        <li class="flex items-center justify-between p-3 bg-white/5 border border-white/5 rounded-xl text-xs font-semibold text-white">
+          <span class="flex items-center gap-2">
+            <span class="w-5 h-5 rounded-md bg-white/5 flex items-center justify-center text-[10px] text-gray-400">${index + 1}</span>
+            ${friendlyNames[id] || id}
+          </span>
+          <div class="flex gap-1">
+            <button onclick="moveSectionOrder(${index}, -1)" class="w-6 h-6 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-300 disabled:opacity-30" ${index === 0 ? 'disabled' : ''}>▲</button>
+            <button onclick="moveSectionOrder(${index}, 1)" class="w-6 h-6 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-300 disabled:opacity-30" ${index === order.length - 1 ? 'disabled' : ''}>▼</button>
+          </div>
+        </li>
+      `).join('');
+    }
+
+    function moveSectionOrder(index, direction) {
+      const order = currentConfig.layoutOrder || ['hero', 'showreel', 'intro-quote', 'services', 'portfolio', 'process', 'about', 'testimonials', 'contact'];
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= order.length) return;
+
+      const temp = order[index];
+      order[index] = order[targetIndex];
+      order[targetIndex] = temp;
+
+      currentConfig.layoutOrder = order;
+      saveDraftToLocalStorage();
+      populateSectionOrderList();
+      updateLivePreview();
+    }
+
+    // 3. CASE STUDIES LOGIC
+    function renderProjectsListGrid() {
+      const grid = document.getElementById('projects-grid');
+      grid.innerHTML = currentData.map((p, index) => `
+        <div class="glass-surface rounded-2xl p-4 border-white/5 flex flex-col justify-between space-y-4">
+          <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-neutral-900 border border-white/10">
+            <img src="${p.thumb}" alt="${p.title}" class="w-full h-full object-cover" />
+            <span class="absolute top-2 left-2 px-2.5 py-0.5 bg-black/60 rounded-full text-[9px] font-bold text-purple-400 uppercase tracking-wide border border-purple-500/20">${p.sub}</span>
+          </div>
+          <div>
+            <h4 class="font-heading font-bold text-sm text-white">${p.title}</h4>
+            <p class="text-[10px] text-gray-400 mt-1 line-clamp-2">${p.shortDesc}</p>
+          </div>
+          <div class="flex gap-2 justify-end pt-2 border-t border-white/5">
+            <button onclick="deleteProject(${index})" class="px-3 py-1.5 rounded-lg border border-red-500/10 hover:bg-red-500/10 text-[10px] text-red-400 font-semibold">Delete</button>
+            <button onclick="openProjectEditorForm(${index})" class="px-3.5 py-1.5 rounded-lg bg-purple-600/20 hover:bg-purple-600/30 text-[10px] text-purple-300 font-semibold">Edit Details</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function populateSubcategoriesDropdown(dept, selectedVal = null) {
+      const select = document.getElementById('proj-sub');
+      const subs = currentCategories[dept] || [];
+      select.innerHTML = subs.map(s => `<option value="${s}">${s}</option>`).join('');
+      if (selectedVal) select.value = selectedVal;
+    }
+
+    function addNewSubcategoryPrompt() {
+      const dept = document.getElementById('proj-dept').value;
+      const sub = prompt("Enter the name of your new custom sub-category:");
+      if (!sub || !sub.trim()) return;
+
+      const trimmed = sub.trim();
+      if (!currentCategories[dept]) currentCategories[dept] = [];
+      
+      if (!currentCategories[dept].includes(trimmed)) {
+        currentCategories[dept].push(trimmed);
+        saveDraftToLocalStorage();
+        populateSubcategoriesDropdown(dept, trimmed);
+      }
+    }
+
+    function toggleProjectEmbedInput(mediaType) {
+      document.getElementById('proj-embed-container').classList.toggle('hidden', mediaType !== 'video');
+    }
+
+    // Gallery editor items helper
+    let galleryItemUrls = [];
+
+    function addProjectGalleryItemInput(url = '', caption = '') {
+      const list = document.getElementById('proj-gallery-list');
+      const div = document.createElement('div');
+      div.className = 'flex gap-2 items-center';
+      div.innerHTML = `
+        <input type="text" placeholder="Image/GIF URL" value="${url}" class="gallery-url glass-input flex-grow px-3 py-1.5 rounded-lg text-[10px] text-white" required />
+        <input type="text" placeholder="Caption label" value="${caption}" class="gallery-cap glass-input w-28 px-3 py-1.5 rounded-lg text-[10px] text-white" required />
+        <button type="button" onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-600 font-semibold text-xs px-1">&times;</button>
+      `;
+      list.appendChild(div);
+    }
+
+    function openProjectEditorForm(index = null) {
+      const modal = document.getElementById('project-editor-modal');
+      const title = document.getElementById('project-editor-title');
+      const list = document.getElementById('proj-gallery-list');
+      list.innerHTML = ''; // reset
+
+      if (index === null) {
+        // Create new project
+        title.textContent = "Add New Case Study";
+        document.getElementById('proj-index').value = 'new';
+        document.getElementById('proj-id').value = 'project-' + Date.now();
+        document.getElementById('proj-dept').value = 'motion';
+        populateSubcategoriesDropdown('motion');
+        document.getElementById('proj-mediatype').value = 'video';
+        toggleProjectEmbedInput('video');
+        document.getElementById('proj-title').value = '';
+        document.getElementById('proj-badge').value = '';
+        document.getElementById('proj-metric').value = '';
+        document.getElementById('proj-tags').value = '';
+        document.getElementById('proj-thumb').value = '';
+        document.getElementById('proj-embed').value = '';
+        document.getElementById('proj-shortdesc').value = '';
+        document.getElementById('proj-brief').value = '';
+        document.getElementById('proj-approach').value = '';
+        document.getElementById('proj-outcome').value = '';
+        document.getElementById('proj-before').value = '';
+        document.getElementById('proj-after').value = '';
+
+        document.getElementById('proj-stat1-val').value = '';
+        document.getElementById('proj-stat1-lbl').value = '';
+        document.getElementById('proj-stat2-val').value = '';
+        document.getElementById('proj-stat2-lbl').value = '';
+        document.getElementById('proj-stat3-val').value = '';
+        document.getElementById('proj-stat3-lbl').value = '';
+
+        document.getElementById('proj-tools').value = '';
+        addProjectGalleryItemInput();
+      } else {
+        // Edit existing project
+        const p = currentData[index];
+        title.textContent = "Edit Case Study";
+        document.getElementById('proj-index').value = index;
+        document.getElementById('proj-id').value = p.id;
+        document.getElementById('proj-dept').value = p.dept;
+        populateSubcategoriesDropdown(p.dept, p.sub);
+        document.getElementById('proj-mediatype').value = p.mediaType || 'video';
+        toggleProjectEmbedInput(p.mediaType || 'video');
+        
+        document.getElementById('proj-title').value = p.title || '';
+        document.getElementById('proj-badge').value = p.badge || '';
+        document.getElementById('proj-metric').value = p.metric || '';
+        document.getElementById('proj-tags').value = (p.tags || []).join(', ');
+        document.getElementById('proj-thumb').value = p.thumb || '';
+        document.getElementById('proj-embed').value = p.embedUrl || '';
+        document.getElementById('proj-shortdesc').value = p.shortDesc || '';
+        document.getElementById('proj-brief').value = p.brief || '';
+        document.getElementById('proj-approach').value = p.approach || '';
+        document.getElementById('proj-outcome').value = p.outcome || '';
+        document.getElementById('proj-before').value = p.before || '';
+        document.getElementById('proj-after').value = p.after || '';
+
+        const s = p.stats || [{}, {}, {}];
+        document.getElementById('proj-stat1-val').value = s[0]?.val || '';
+        document.getElementById('proj-stat1-lbl').value = s[0]?.lbl || '';
+        document.getElementById('proj-stat2-val').value = s[1]?.val || '';
+        document.getElementById('proj-stat2-lbl').value = s[1]?.lbl || '';
+        document.getElementById('proj-stat3-val').value = s[2]?.val || '';
+        document.getElementById('proj-stat3-lbl').value = s[2]?.lbl || '';
+
+        document.getElementById('proj-tools').value = p.tools || '';
+
+        if (p.gallery && p.gallery.length > 0) {
+          p.gallery.forEach(img => addProjectGalleryItemInput(img.url, img.caption));
+        } else {
+          addProjectGalleryItemInput();
+        }
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeProjectEditorForm() {
+      document.getElementById('project-editor-modal').classList.add('hidden');
+    }
+
+    function deleteProject(index) {
+      if (!confirm("Are you sure you want to delete this case study? This cannot be undone.")) return;
+      currentData.splice(index, 1);
+      saveDraftToLocalStorage();
+      renderProjectsListGrid();
+      updateLivePreview();
+    }
+
+    function getProjectFormValues() {
+      const list = document.getElementById('proj-gallery-list');
+      const gallery = [];
+      list.querySelectorAll('div.flex').forEach(div => {
+        const url = div.querySelector('.gallery-url').value;
+        const caption = div.querySelector('.gallery-cap').value;
+        if (url && caption) {
+          gallery.push({ url, caption });
+        }
+      });
+
+      return {
+        id: document.getElementById('proj-id').value,
+        dept: document.getElementById('proj-dept').value,
+        sub: document.getElementById('proj-sub').value,
+        mediaType: document.getElementById('proj-mediatype').value,
+        title: document.getElementById('proj-title').value,
+        badge: document.getElementById('proj-badge').value,
+        metric: document.getElementById('proj-metric').value,
+        tags: document.getElementById('proj-tags').value.split(',').map(s => s.trim()).filter(Boolean),
+        thumb: document.getElementById('proj-thumb').value,
+        embedUrl: document.getElementById('proj-embed').value,
+        shortDesc: document.getElementById('proj-shortdesc').value,
+        brief: document.getElementById('proj-brief').value,
+        approach: document.getElementById('proj-approach').value,
+        outcome: document.getElementById('proj-outcome').value,
+        before: document.getElementById('proj-before').value,
+        after: document.getElementById('proj-after').value,
+        stats: [
+          { val: document.getElementById('proj-stat1-val').value, lbl: document.getElementById('proj-stat1-lbl').value },
+          { val: document.getElementById('proj-stat2-val').value, lbl: document.getElementById('proj-stat2-lbl').value },
+          { val: document.getElementById('proj-stat3-val').value, lbl: document.getElementById('proj-stat3-lbl').value }
+        ],
+        tools: document.getElementById('proj-tools').value,
+        gallery: gallery
+      };
+    }
+
+    function saveProjectDataForm(event) {
+      event.preventDefault();
+      const indexVal = document.getElementById('proj-index').value;
+      const project = getProjectFormValues();
+
+      if (indexVal === 'new') {
+        currentData.push(project);
+      } else {
+        currentData[parseInt(indexVal)] = project;
+      }
+
+      saveDraftToLocalStorage();
+      renderProjectsListGrid();
+      updateLivePreview();
+      closeProjectEditorForm();
+    }
+
+    // Modal Simulation rendering logic
+    function triggerSandboxModalPreview() {
+      const p = getProjectFormValues();
+      
+      document.getElementById('prev-modal-title').textContent = p.title;
+      document.getElementById('prev-modal-brief').textContent = p.brief;
+      document.getElementById('prev-modal-approach').textContent = p.approach;
+      document.getElementById('prev-modal-outcome').textContent = p.outcome;
+      document.getElementById('prev-modal-before').textContent = p.before;
+      document.getElementById('prev-modal-after').textContent = p.after;
+      
+      const media = document.getElementById('prev-modal-media-stage');
+      if (p.mediaType === 'video' && p.embedUrl) {
+        media.innerHTML = `
+          <div class="relative w-full overflow-hidden rounded-xl border border-white/10" style="padding-top: 56.25%;">
+            <iframe src="${p.embedUrl}" class="absolute top-0 left-0 w-full h-full" frameborder="0"></iframe>
+          </div>
+        `;
+      } else if (p.mediaType === 'graphics' && p.gallery) {
+        media.innerHTML = `
+          <div class="grid grid-cols-2 gap-2">
+            ${p.gallery.slice(0, 2).map(img => `
+              <div class="aspect-[4/3] rounded-lg overflow-hidden border border-white/10 bg-neutral-900">
+                <img src="${img.url}" class="w-full h-full object-cover" />
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else {
+        media.innerHTML = '';
+      }
+
+      const galStage = document.getElementById('prev-modal-gallery-stage');
+      const galGrid = document.getElementById('prev-modal-gallery-grid');
+      if (p.mediaType === 'video' && p.gallery && p.gallery.length > 0) {
+        galGrid.innerHTML = p.gallery.map(img => `
+          <div class="aspect-[4/3] rounded-lg overflow-hidden border border-white/5 bg-neutral-900">
+            <img src="${img.url}" class="w-full h-full object-cover" />
+          </div>
+        `).join('');
+        galStage.classList.remove('hidden');
+      } else {
+        galStage.classList.add('hidden');
+        galGrid.innerHTML = '';
+      }
+
+      document.getElementById('prev-modal-stat1-val').textContent = p.stats[0]?.val || '0%';
+      document.getElementById('prev-modal-stat1-lbl').textContent = p.stats[0]?.lbl || 'Metric';
+      document.getElementById('prev-modal-stat2-val').textContent = p.stats[1]?.val || '0%';
+      document.getElementById('prev-modal-stat2-lbl').textContent = p.stats[1]?.lbl || 'Metric';
+      document.getElementById('prev-modal-stat3-val').textContent = p.stats[2]?.val || '0%';
+      document.getElementById('prev-modal-stat3-lbl').textContent = p.stats[2]?.lbl || 'Metric';
+
+      document.getElementById('prev-modal-tools').textContent = p.tools || 'Stack';
+
+      document.getElementById('preview-modal-sandbox').classList.remove('hidden');
+    }
+
+    function closeSandboxModalPreview() {
+      document.getElementById('preview-modal-sandbox').classList.add('hidden');
+      document.getElementById('prev-modal-media-stage').innerHTML = '';
+    }
+
+    // 4. GITHUB SETUP LOGIC
+    function saveGitHubAuthDetails() {
+      const user = document.getElementById('git-user').value.trim();
+      const repo = document.getElementById('git-repo').value.trim();
+      const token = document.getElementById('git-token').value.trim();
+
+      if (!user || !repo || !token) {
+        alert("Please fill in all authorization details.");
+        return;
+      }
+
+      localStorage.setItem('emmezy_git_user', user);
+      localStorage.setItem('emmezy_git_repo', repo);
+      localStorage.setItem('emmezy_git_token', token);
+
+      checkGitHubTokenStatusSilently(true);
+    }
+
+    async function checkGitHubTokenStatusSilently(showSuccessAlert = false) {
+      const user = localStorage.getItem('emmezy_git_user');
+      const repo = localStorage.getItem('emmezy_git_repo');
+      const token = localStorage.getItem('emmezy_git_token');
+      const statusText = document.getElementById('git-status-text');
+
+      if (!user || !repo || !token) {
+        statusText.textContent = "❌ Auth setup incomplete";
+        statusText.className = "text-xs text-red-400 font-semibold";
+        return;
+      }
+
+      statusText.textContent = "⏳ Testing repository access...";
+      statusText.className = "text-xs text-amber-400 font-semibold";
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${user}/${repo}`, {
+          headers: { 'Authorization': `token ${token}` }
+        });
+        if (res.ok) {
+          statusText.textContent = "✅ Authenticated & Connected";
+          statusText.className = "text-xs text-emerald-400 font-semibold";
+          if (showSuccessAlert) alert("Successfully connected to GitHub repository!");
+        } else {
+          statusText.textContent = "❌ Access unauthorized/invalid repository";
+          statusText.className = "text-xs text-red-400 font-semibold";
+        }
+      } catch (e) {
+        statusText.textContent = "❌ Network connection error";
+        statusText.className = "text-xs text-red-400 font-semibold";
+      }
+    }
+
+    // Compiled Content Serializer
+    function compileConfigJavascript() {
+      const categoriesJson = JSON.stringify(currentCategories, null, 2);
+      const configJson = JSON.stringify(currentConfig, null, 2);
+      const dataJson = JSON.stringify(currentData, null, 2);
+
+      return `window.portfolioCategories = ${categoriesJson};
+
+window.portfolioConfig = ${configJson};
+
+window.portfolioData = ${dataJson};
+`;
+    }
+
+    function downloadConfigJS() {
+      saveDraftToLocalStorage();
+      const code = compileConfigJavascript();
+      const blob = new Blob([code], { type: 'text/javascript' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'portfolioData.js';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    async function publishLive() {
+      saveDraftToLocalStorage();
+      const user = localStorage.getItem('emmezy_git_user');
+      const repo = localStorage.getItem('emmezy_git_repo');
+      const token = localStorage.getItem('emmezy_git_token');
+      const publishBtn = document.getElementById('publish-btn');
+      const originalHtml = publishBtn.innerHTML;
+
+      if (!user || !repo || !token) {
+        alert("Please set up your GitHub Authentication settings in the GitHub Sync tab first.");
+        switchTab('github');
+        return;
+      }
+
+      if (!confirm("Are you sure you want to overwrite your data on GitHub? This will push all updates live immediately!")) return;
+
+      publishBtn.disabled = true;
+      publishBtn.innerHTML = '<i data-lucide="loader" class="w-3.5 h-3.5 animate-spin"></i> Publishing...';
+      lucide.createIcons();
+
+      const path = 'data/portfolioData.js';
+      const fileUrl = `https://api.github.com/repos/${user}/${repo}/contents/${path}`;
+      const codeContent = compileConfigJavascript();
+      
+      try {
+        // Step 1: Fetch File SHA first (necessary for GitHub overwrite updates)
+        let sha = null;
+        const getRes = await fetch(fileUrl, {
+          headers: { 'Authorization': `token ${token}` }
+        });
+        
+        if (getRes.ok) {
+          const fileData = await getRes.json();
+          sha = fileData.sha;
+        }
+
+        // Step 2: Push content via PUT
+        const bodyPayload = {
+          message: 'feat: update portfolio configs & case studies via admin dashboard CMS',
+          content: btoa(unescape(encodeURIComponent(codeContent))), // Safe base64 encoding
+        };
+        if (sha) bodyPayload.sha = sha;
+
+        const putRes = await fetch(fileUrl, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(bodyPayload)
+        });
+
+        if (putRes.ok) {
+          alert("Success! Your updates have been pushed to GitHub. The live website will rebuild and update within a minute!");
+        } else {
+          const err = await putRes.json();
+          alert(`Failed to save files on GitHub: ${err.message || 'Unknown server error'}`);
+        }
+      } catch (e) {
+        alert("Network error: Could not publish updates. Check your internet connection.");
+      } finally {
+        publishBtn.disabled = false;
+        publishBtn.innerHTML = originalHtml;
+        lucide.createIcons();
+      }
+    }
+  </script>
+</body>
+
+</html>
