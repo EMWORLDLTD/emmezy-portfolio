@@ -566,23 +566,12 @@
     @keyframes timelinePingPong {
       0% {
         left: -180px;
-        transform: scaleX(1);
-      }
-      48% {
-        left: 100%;
-        transform: scaleX(1);
       }
       50% {
         left: 100%;
-        transform: scaleX(-1); /* Reverse direction of gradient colors on back-trip */
-      }
-      98% {
-        left: -180px;
-        transform: scaleX(-1);
       }
       100% {
         left: -180px;
-        transform: scaleX(1);
       }
     }
 
@@ -1414,6 +1403,26 @@
   </div>
 
   <script>
+    // Load local draft data if running in a local environment or in preview mode (for editing preview)
+    let isDraftPreview = false;
+    const urlParams = new URLSearchParams(window.location.search);
+    const isPreviewParam = urlParams.get('preview') === 'true';
+    if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || isPreviewParam) {
+      try {
+        const draftString = localStorage.getItem('emmezy_draft_database');
+        if (draftString) {
+          const draft = JSON.parse(draftString);
+          if (draft.categories) window.portfolioCategories = draft.categories;
+          if (draft.data) window.portfolioData = draft.data;
+          if (draft.config) window.portfolioConfig = draft.config;
+          isDraftPreview = true;
+          console.log("EMMEZY STUDIO: Loaded draft workspace from localStorage.");
+        }
+      } catch (e) {
+        console.error("EMMEZY STUDIO: Local draft loader error:", e);
+      }
+    }
+
     const portfolioCategories = window.portfolioCategories;
     const portfolioData = window.portfolioData;
 
@@ -1428,11 +1437,23 @@
       if (config.layoutOrder) {
         const app = document.getElementById('app');
         const footer = app.querySelector('footer');
+        const divider = app.querySelector('.timeline-divider-container');
+        
+        const orderedElements = [];
         config.layoutOrder.forEach(id => {
           const el = document.getElementById(id);
-          if (el) app.appendChild(el);
+          if (el) {
+            app.appendChild(el);
+            orderedElements.push(el);
+          }
         });
         if (footer) app.appendChild(footer);
+        
+        // Always place the timeline divider line immediately below the first ordered section at the top of the page
+        if (divider && orderedElements.length > 0) {
+          const firstSection = orderedElements[0];
+          firstSection.parentNode.insertBefore(divider, firstSection.nextSibling);
+        }
       }
 
       // 2. Render Hero content
@@ -2016,6 +2037,14 @@
     filterPrimary('all');
     startTestimonialTimer();
     lucide.createIcons();
+
+    if (isDraftPreview) {
+      const banner = document.createElement('div');
+      banner.id = 'draft-banner';
+      banner.className = 'fixed bottom-4 right-4 z-[99999] bg-purple-950/80 border border-purple-500/20 backdrop-blur-md px-4 py-2 rounded-full text-[10px] text-purple-300 font-bold tracking-wider uppercase flex items-center gap-2 shadow-2xl pointer-events-none select-none';
+      banner.innerHTML = `<span class="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-ping"></span> ⚡ Draft Preview Mode`;
+      document.body.appendChild(banner);
+    }
 
     // Element SDK Configuration Defaults Mapping Loop
     const defaultConfig = {
