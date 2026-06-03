@@ -1178,9 +1178,15 @@
           </div>
         `;
       } else if (p.mediaType === 'graphics' && p.gallery) {
+        let gridCols = 'grid-cols-1 sm:grid-cols-2';
+        if (p.gallery.length === 1) {
+          gridCols = 'grid-cols-1 max-w-md mx-auto';
+        } else if (p.gallery.length === 3) {
+          gridCols = 'grid-cols-1 sm:grid-cols-3';
+        }
         media.innerHTML = `
-          <div class="grid grid-cols-2 gap-2">
-            ${p.gallery.slice(0, 2).map(img => `
+          <div class="grid gap-2 ${gridCols}">
+            ${p.gallery.map(img => `
               <div class="aspect-[4/3] rounded-lg overflow-hidden border border-white/10 bg-neutral-900">
                 <img src="${img.url}" class="w-full h-full object-cover" />
               </div>
@@ -1194,6 +1200,15 @@
       const galStage = document.getElementById('prev-modal-gallery-stage');
       const galGrid = document.getElementById('prev-modal-gallery-grid');
       if (p.mediaType === 'video' && p.gallery && p.gallery.length > 0) {
+        let gridCols = 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4';
+        if (p.gallery.length === 1) {
+          gridCols = 'grid-cols-1 max-w-md mx-auto';
+        } else if (p.gallery.length === 2) {
+          gridCols = 'grid-cols-2';
+        } else if (p.gallery.length === 3) {
+          gridCols = 'grid-cols-2 sm:grid-cols-3';
+        }
+        galGrid.className = `grid gap-2 ${gridCols}`;
         galGrid.innerHTML = p.gallery.map(img => `
           <div class="aspect-[4/3] rounded-lg overflow-hidden border border-white/5 bg-neutral-900">
             <img src="${img.url}" class="w-full h-full object-cover" />
