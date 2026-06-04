@@ -215,24 +215,22 @@
     /* Custom Cursor WITH FIXED STACK DEPTH OVER MODAL */
     .custom-cursor {
       position: fixed;
+      left: 0;
+      top: 0;
       width: 140px;
       height: 140px;
       pointer-events: none;
       z-index: 99999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transform: translate(-50%, -50%);
-      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+      transform: translate3d(-50%, -50%, 0);
+      transition: opacity 0.4s ease;
       opacity: 0;
-    }
-
-    .cursor-hover {
-      transform: translate(-50%, -50%) scale(0.6);
     }
 
     .cursor-inner {
       position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
       width: 64px;
       height: 64px;
       border-radius: 50%;
@@ -243,18 +241,36 @@
       justify-content: center;
       z-index: 10;
       backdrop-filter: blur(2px);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .cursor-text {
       position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
       width: 140px;
       height: 140px;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cursor-text-rotation {
+      width: 100%;
+      height: 100%;
       animation: rotateText 14s linear infinite;
     }
 
     .cursor-text svg {
       width: 100%;
       height: 100%;
+    }
+
+    .custom-cursor.cursor-hover .cursor-inner {
+      transform: translate(-50%, -50%) scale(0.6);
+    }
+
+    .custom-cursor.cursor-hover .cursor-text {
+      transform: translate(-50%, -50%) scale(0.6);
     }
 
     /* Stats Badges */
@@ -283,6 +299,8 @@
       transition: all 0.4s ease;
       display: flex;
       flex-direction: column;
+      -webkit-mask-image: -webkit-radial-gradient(white, black);
+      mask-image: -webkit-radial-gradient(white, black);
     }
 
     .case-card:hover {
@@ -709,6 +727,371 @@
       background-color: #14141f;
       color: #f5f5f7;
     }
+
+    /* === LIGHT MODE OVERRIDES === */
+    body.light {
+      --bg: #f8fafc;
+      --surface: rgba(0, 0, 0, 0.04);
+      --text: #0f172a;
+      --accent: #6d28d9;
+      --accent2: #d97706;
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+    }
+
+    /* Smooth Transitions */
+    body {
+      transition: background 0.4s ease, background-color 0.4s ease, color 0.4s ease;
+    }
+    .modal-card, .gateway-container, .form-input, .nav-link, .custom-cursor, select option {
+      transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    /* Light Mode Overrides for Tailwind Utility Classes */
+    body.light .text-white {
+      color: #0f172a !important;
+    }
+    body.light .text-gray-300,
+    body.light .text-gray-400,
+    body.light .text-neutral-400,
+    body.light .text-zinc-400,
+    body.light .text-gray-500 {
+      color: #475569 !important; /* Tailwind slate-600 */
+    }
+    body.light .text-neutral-300 {
+      color: #334155 !important; /* Tailwind slate-700 */
+    }
+    
+    /* Ensure white text inside buttons, badges, and playheads stays white */
+    body.light .btn-primary,
+    body.light .btn-primary *,
+    body.light .stat-badge,
+    body.light .stat-badge *,
+    body.light #hero-name-card,
+    body.light #hero-name-card *,
+    body.light #about-experience,
+    body.light #about-experience *,
+    body.light .timeline-playhead-glow,
+    body.light .timeline-playhead-glow *,
+    body.light .badge,
+    body.light .badge * {
+      color: #ffffff !important;
+    }
+    
+    /* Border overrides for light mode */
+    body.light .border-white\/10 {
+      border-color: rgba(15, 23, 42, 0.1) !important;
+    }
+    body.light .border-white\/5 {
+      border-color: rgba(15, 23, 42, 0.05) !important;
+    }
+    body.light .border-white\/20 {
+      border-color: rgba(15, 23, 42, 0.15) !important;
+    }
+    body.light .border-white\/40 {
+      border-color: rgba(15, 23, 42, 0.25) !important;
+    }
+    
+    /* Background overrides for light mode */
+    body.light .bg-white\/\[0\.02\] {
+      background-color: rgba(15, 23, 42, 0.02) !important;
+    }
+    body.light .bg-white\/\[0\.03\] {
+      background-color: rgba(15, 23, 42, 0.03) !important;
+    }
+    body.light .bg-white\/5 {
+      background-color: rgba(15, 23, 42, 0.04) !important;
+    }
+    body.light .bg-white\/10 {
+      background-color: rgba(15, 23, 42, 0.06) !important;
+    }
+    body.light .hover\:bg-white\/10:hover {
+      background-color: rgba(15, 23, 42, 0.08) !important;
+    }
+    body.light .hover\:bg-white\/25:hover {
+      background-color: rgba(15, 23, 42, 0.12) !important;
+    }
+    body.light .hover\:border-white\/40:hover {
+      border-color: rgba(15, 23, 42, 0.25) !important;
+    }
+    body.light .bg-neutral-900 {
+      background-color: #ffffff !important;
+    }
+    body.light .bg-black\/90 {
+      background-color: rgba(248, 250, 252, 0.95) !important;
+    }
+    
+    /* Glowing radial mesh background for light mode */
+    body.light::before {
+      background: radial-gradient(circle at 20% 50%, rgba(124, 58, 237, 0.04), transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(217, 119, 6, 0.04), transparent 50%);
+    }
+
+    /* Navbar link override */
+    body.light .nav-link {
+      color: #475569 !important;
+    }
+    body.light .nav-link:hover {
+      color: #0f172a !important;
+    }
+
+    /* Modal dialog card style updates for light mode */
+    body.light .modal-card {
+      background: rgba(255, 255, 255, 0.98) !important;
+      border: 1px solid rgba(139, 92, 246, 0.2) !important;
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15) !important;
+    }
+    body.light .modal-card::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.02) !important;
+    }
+
+    /* Contact form input styling */
+    body.light .form-input {
+      background: rgba(0, 0, 0, 0.01) !important;
+      border: 1px solid rgba(139, 92, 246, 0.2) !important;
+      color: #0f172a !important;
+    }
+    body.light .form-input:focus {
+      background: rgba(139, 92, 246, 0.02) !important;
+      border-color: #6d28d9 !important;
+    }
+    body.light select option {
+      background-color: #ffffff !important;
+      color: #0f172a !important;
+    }
+    
+    /* Timeline Divider background line path */
+    body.light .timeline-playhead-line {
+      background: linear-gradient(90deg, transparent 0%, rgba(15, 23, 42, 0.08) 20%, rgba(15, 23, 42, 0.08) 80%, transparent 100%) !important;
+    }
+
+    /* Additional overrides for Case Cards & Tag Pills */
+    body.light .case-card {
+      background: #ffffff !important;
+      border: 1px solid rgba(15, 23, 42, 0.08) !important;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.02) !important;
+    }
+    body.light .case-card:hover {
+      border-color: rgba(139, 92, 246, 0.25) !important;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08) !important;
+    }
+    body.light .metric-box {
+      background: rgba(139, 92, 246, 0.04) !important;
+      border: 1px solid rgba(139, 92, 246, 0.15) !important;
+    }
+    body.light .metric-box p {
+      color: #475569 !important;
+    }
+    body.light .tag-pill {
+      border: 1px solid rgba(15, 23, 42, 0.08) !important;
+      color: #475569 !important;
+      background: rgba(15, 23, 42, 0.02) !important;
+    }
+
+    /* Testimonials overrides */
+    body.light #testimonials {
+      background: rgba(15, 23, 42, 0.03) !important;
+    }
+    body.light .glass-surface {
+      background: rgba(255, 255, 255, 0.7) !important;
+      border: 1px solid rgba(139, 92, 246, 0.2) !important;
+      box-shadow: 0 8px 32px rgba(15, 23, 42, 0.05) !important;
+    }
+    body.light #testimonials p {
+      color: #334155 !important;
+    }
+    body.light #testimonials .testimonial-name {
+      color: #0f172a !important;
+    }
+    body.light #testimonials .testimonial-role {
+      color: #475569 !important;
+    }
+
+    /* Service Core & Service Support overrides */
+    body.light .service-core {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(139, 92, 246, 0.02)) !important;
+      border: 1px solid rgba(139, 92, 246, 0.2) !important;
+    }
+    body.light .service-support {
+      background: rgba(0, 0, 0, 0.02) !important;
+      border: 1px solid rgba(15, 23, 42, 0.08) !important;
+    }
+    body.light .service-support:hover {
+      background: rgba(0, 0, 0, 0.03) !important;
+    }
+    body.light .text-gray-200 {
+      color: #0f172a !important;
+    }
+
+    /* Contact Section overrides */
+    body.light .gateway-container {
+      background: #ffffff !important;
+      border: 1px solid rgba(139, 92, 246, 0.2) !important;
+      box-shadow: 0 20px 80px rgba(15, 23, 42, 0.05) !important;
+    }
+    body.light .gateway-container #contact-heading {
+      color: #0f172a !important;
+    }
+    body.light .gateway-container #contact-description {
+      color: #475569 !important;
+    }
+    body.light .gateway-container #contact-email-link {
+      color: #6d28d9 !important;
+    }
+    body.light .gateway-container #contact-email-link strong {
+      color: #0f172a !important;
+    }
+
+    /* Inactive and Active filter tabs overrides */
+    body.light .port-tab-primary[class*="bg-purple-500/10"],
+    body.light .port-tab-secondary[class*="bg-purple-500/10"] {
+      background-color: #6d28d9 !important;
+      border-color: #6d28d9 !important;
+      color: #ffffff !important;
+    }
+    body.light .port-tab-primary:not([class*="bg-purple-500/10"]),
+    body.light .port-tab-secondary:not([class*="bg-purple-500/10"]) {
+      color: #475569 !important;
+      border-color: rgba(15, 23, 42, 0.15) !important;
+      background-color: rgba(15, 23, 42, 0.02) !important;
+    }
+    body.light .port-tab-primary:not([class*="bg-purple-500/10"]):hover,
+    body.light .port-tab-secondary:not([class*="bg-purple-500/10"]):hover {
+      color: #0f172a !important;
+      background-color: rgba(15, 23, 42, 0.05) !important;
+      border-color: rgba(15, 23, 42, 0.25) !important;
+    }
+    body.light #mobile-menu {
+      background: rgba(248, 250, 252, 0.95) !important;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+    }
+
+    /* === SCROLL PROGRESS BAR === */
+    .scroll-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, #a78bfa, #fbbf24);
+      z-index: 100;
+      box-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+      transition: width 0.1s ease-out;
+    }
+
+    /* === PARALLAX BACKGROUND BLOCKS === */
+    .parallax-blob {
+      transform: translate3d(0, calc(var(--scroll-y, 0px) * var(--speed, 0.15)), 0);
+      will-change: transform;
+    }
+
+    /* === INTERSECTION OBSERVER REVEAL ANIMATIONS === */
+    .reveal {
+      opacity: 0 !important;
+      transform: translateY(30px) scale(0.98);
+      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity;
+    }
+    .reveal-left {
+      opacity: 0 !important;
+      transform: translateX(-40px);
+      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity;
+    }
+    .reveal-right {
+      opacity: 0 !important;
+      transform: translateX(40px);
+      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity;
+    }
+    .reveal-scale {
+      opacity: 0 !important;
+      transform: scale(0.93) translateY(20px);
+      transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity;
+    }
+    
+    .reveal-visible {
+      opacity: 1 !important;
+      transform: translateY(0) translateX(0) scale(1) !important;
+    }
+
+    /* Sequence delays */
+    .delay-100 { transition-delay: 100ms; }
+    .delay-200 { transition-delay: 200ms; }
+    .delay-300 { transition-delay: 300ms; }
+    .delay-400 { transition-delay: 400ms; }
+    .delay-500 { transition-delay: 500ms; }
+    .delay-600 { transition-delay: 600ms; }
+
+    /* Cohesive card 3D tilt transform transition smooth reset */
+    .case-card, .service-core {
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+    }
+
+    /* === CINEMATIC APERTURE REVEAL MASKING === */
+    #aperture-card {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: #0d0d18;
+      clip-path: inset(
+        calc(20% * (1 - var(--aperture-progress, 0))) 
+        calc(24% * (1 - var(--aperture-progress, 0))) 
+        calc(20% * (1 - var(--aperture-progress, 0))) 
+        calc(24% * (1 - var(--aperture-progress, 0))) 
+        round calc(32px * (1 - var(--aperture-progress, 0)))
+      );
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      will-change: clip-path;
+      z-index: 10;
+    }
+
+    #aperture-border {
+      position: absolute;
+      top: calc(20% * (1 - var(--aperture-progress, 0)));
+      bottom: calc(20% * (1 - var(--aperture-progress, 0)));
+      left: calc(24% * (1 - var(--aperture-progress, 0)));
+      right: calc(24% * (1 - var(--aperture-progress, 0)));
+      border: 1px solid rgba(167, 139, 250, calc(0.3 * (1 - var(--aperture-progress, 0))));
+      border-radius: calc(32px * (1 - var(--aperture-progress, 0)));
+      pointer-events: none;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, calc(0.6 * (1 - var(--aperture-progress, 0)))), 
+                  0 0 40px rgba(167, 139, 250, calc(0.15 * (1 - var(--aperture-progress, 0))));
+      z-index: 15;
+      will-change: top, bottom, left, right, border-radius, border-color, box-shadow;
+    }
+
+    .aperture-parallax {
+      transform: scale(calc(1.15 - (0.1 * var(--aperture-progress, 0)))) translate3d(0, 0, 0);
+      will-change: transform;
+    }
+
+    /* Ensure aperture card text remains light in light mode */
+    body.light #aperture-card *,
+    body.light #aperture-card .text-white,
+    body.light #aperture-card .gradient-text {
+      color: #ffffff !important;
+    }
+    body.light #aperture-card .gradient-text {
+      background: linear-gradient(135deg, #a78bfa, #fbbf24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    body.light #aperture-card .text-gray-400 {
+      color: #9ca3af !important;
+    }
+    body.light #aperture-card .text-purple-400\/40 {
+      color: rgba(167, 139, 250, 0.4) !important;
+    }
+    body.light #aperture-card .text-purple-400\/80 {
+      color: rgba(167, 139, 250, 0.8) !important;
+    }
   </style>
   <script>
     tailwind.config = {
@@ -721,6 +1104,15 @@
 </head>
 
 <body class="h-full">
+  <div class="scroll-progress-bar" id="scrollProgress"></div>
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
+      if (savedTheme === 'light') {
+        document.body.classList.add('light');
+      }
+    })();
+  </script>
 
   <!-- Merged Design: Film Grain Overlay Element -->
   <div class="film-grain"></div>
@@ -731,35 +1123,49 @@
         style="width: 28px; height: 28px; color: #a78bfa; fill: rgba(146, 108, 235, 0.2); stroke-width: 2px;"></i>
     </div>
     <div class="cursor-text">
-      <svg viewbox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <path id="circlePath" d="M 70, 70 m -52, 0 a 52,52 0 1,1 104,0 a 52,52 0 1,1 -104,0" fill="none" />
-        </defs>
-        <text font-family="Syne, sans-serif" font-size="13" font-weight="700" fill="#a78bfa">
-          <textpath href="#circlePath" startoffset="0%" textlength="315" lengthadjust="spacing">
-            • EMMEZY STUDIO • CREATIVE LAB
-          </textpath>
-        </text>
-      </svg>
+      <div class="cursor-text-rotation">
+        <svg viewbox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <path id="circlePath" d="M 70, 70 m -52, 0 a 52,52 0 1,1 104,0 a 52,52 0 1,1 -104,0" fill="none" />
+          </defs>
+          <text font-family="Syne, sans-serif" font-size="13" font-weight="700" fill="#a78bfa">
+            <textpath href="#circlePath" startoffset="0%" textlength="315" lengthadjust="spacing">
+              • EMMEZY STUDIO • CREATIVE LAB
+            </textpath>
+          </text>
+        </svg>
+      </div>
     </div>
   </div>
 
   <div id="app" class="w-full h-full overflow-auto" style="background:var(--bg);">
     <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background:transparent;">
-      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between backdrop-blur-md">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <a href="#"
           class="font-heading font-bold text-lg sm:text-xl md:text-2xl gradient-text relative z-10 whitespace-nowrap">Emmezy
           Studio</a>
-        <div class="hidden md:flex items-center gap-8">
-          <a href="#services" class="nav-link text-sm text-gray-300 hover:text-white transition">Services</a>
-          <a href="#portfolio" class="nav-link text-sm text-gray-300 hover:text-white transition">Portfolio</a>
-          <a href="#about" class="nav-link text-sm text-gray-300 hover:text-white transition">About</a>
-          <a href="#testimonials" class="nav-link text-sm text-gray-300 hover:text-white transition">Testimonials</a>
-          <a href="#contact" class="btn-primary text-sm px-5 py-2 rounded-full text-white font-medium">Get In Touch</a>
+        <div class="flex items-center gap-4 sm:gap-6">
+          <div class="hidden md:flex items-center gap-8">
+            <a href="#services" class="nav-link text-sm text-gray-300 hover:text-white transition">Services</a>
+            <a href="#portfolio" class="nav-link text-sm text-gray-300 hover:text-white transition">Portfolio</a>
+            <a href="#about" class="nav-link text-sm text-gray-300 hover:text-white transition">About</a>
+            <a href="#testimonials" class="nav-link text-sm text-gray-300 hover:text-white transition">Testimonials</a>
+          </div>
+
+          <!-- Glassmorphic Theme Toggle Button -->
+          <button id="theme-toggle" class="text-gray-300 hover:text-white transition p-2 rounded-full hover:bg-white/10 flex items-center justify-center border border-white/5 bg-white/[0.02]" aria-label="Toggle Theme">
+            <i data-lucide="sun" id="theme-icon-sun" class="w-5 h-5 block"></i>
+            <i data-lucide="moon" id="theme-icon-moon" class="w-5 h-5 hidden"></i>
+          </button>
+
+          <div class="hidden md:block">
+            <a href="#contact" class="btn-primary text-sm px-5 py-2 rounded-full text-white font-medium">Get In Touch</a>
+          </div>
+
+          <button id="mobile-toggle" class="md:hidden text-white">
+            <i data-lucide="menu" style="width:24px;height:24px;"></i>
+          </button>
         </div>
-        <button id="mobile-toggle" class="md:hidden text-white">
-          <i data-lucide="menu" style="width:24px;height:24px;"></i>
-        </button>
       </div>
       <div id="mobile-menu"
         class="hidden md:hidden px-6 pb-4 flex flex-col gap-3 bg-black/90 backdrop-blur-md absolute w-full left-0 top-16">
@@ -772,14 +1178,14 @@
     </nav>
 
     <section id="hero" class="relative w-full overflow-hidden flex items-center" style="min-height:100vh;">
-      <div class="floating-shape"
-        style="width:500px;height:500px;background:rgba(139,92,246,0.15);top:-100px;right:-100px;animation:float1 12s ease-in-out infinite;">
+      <div class="floating-shape parallax-blob"
+        style="width:500px;height:500px;background:rgba(139,92,246,0.15);top:-100px;right:-100px;animation:float1 12s ease-in-out infinite; --speed: 0.15;">
       </div>
-      <div class="floating-shape"
-        style="width:400px;height:400px;background:rgba(245,158,11,0.1);bottom:-50px;left:-100px;animation:float2 15s ease-in-out infinite;">
+      <div class="floating-shape parallax-blob"
+        style="width:400px;height:400px;background:rgba(245,158,11,0.1);bottom:-50px;left:-100px;animation:float2 15s ease-in-out infinite; --speed: -0.1;">
       </div>
-      <div class="floating-shape"
-        style="width:250px;height:250px;background:rgba(139,92,246,0.1);top:40%;left:50%;animation:float3 10s ease-in-out infinite;">
+      <div class="floating-shape parallax-blob"
+        style="width:250px;height:250px;background:rgba(139,92,246,0.1);top:40%;left:50%;animation:float3 10s ease-in-out infinite; --speed: 0.05;">
       </div>
 
       <div
@@ -787,7 +1193,7 @@
         <div class="flex-1 w-full lg:max-w-2xl">
           <span id="hero-tag"
             class="inline-block px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold tracking-wider mb-6 border uppercase"
-            style="border-color:rgba(139,92,246,0.3);background:rgba(139,92,246,0.08);color:#a78bfa; white-space: nowrap;">
+            style="border-color:rgba(139,92,246,0.3);background:rgba(139,92,246,0.08);color:var(--accent); white-space: nowrap;">
             ✦ Elevating Brand Quality &amp; Conversion
           </span>
           <h1 id="hero-headline"
@@ -930,12 +1336,68 @@
       </div>
     </section>
 
+    <!-- Cinematic Viewport Masking Transition -->
+    <section id="aperture-reveal" class="relative w-full overflow-visible" style="height: 160vh;">
+      <div class="aperture-sticky sticky top-0 left-0 w-full h-screen overflow-hidden flex items-center justify-center">
+        <!-- The Floating Window Border -->
+        <div id="aperture-border"></div>
+        
+        <!-- The Masked Window Card -->
+        <div id="aperture-card">
+          <!-- Rich Motion Teaser Background -->
+          <div class="absolute inset-0 z-0 bg-cover bg-center select-none pointer-events-none aperture-parallax" style="background: radial-gradient(circle at 30% 20%, rgba(139,92,246,0.2) 0%, transparent 60%), radial-gradient(circle at 70% 80%, rgba(245,158,11,0.15) 0%, transparent 60%), #0a0a14;">
+            <!-- Tech Grid / Focal Guidelines overlay -->
+            <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:32px_32px] opacity-60"></div>
+            
+            <!-- Focus corner brackets -->
+            <div class="absolute top-8 left-8 w-6 h-6 border-t-2 border-l-2 border-purple-500/30"></div>
+            <div class="absolute top-8 right-8 w-6 h-6 border-t-2 border-r-2 border-purple-500/30"></div>
+            <div class="absolute bottom-8 left-8 w-6 h-6 border-b-2 border-l-2 border-purple-500/30"></div>
+            <div class="absolute bottom-8 right-8 w-6 h-6 border-b-2 border-r-2 border-purple-500/30"></div>
+            
+            <!-- Animated glowing energy core -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-600/10 rounded-full blur-[100px] animate-pulse"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-amber-500/10 rounded-full blur-[80px] animate-pulse" style="animation-delay: 500ms;"></div>
+          </div>
+          
+          <!-- Viewport Info HUD overlay -->
+          <div class="absolute inset-x-0 top-8 px-8 flex justify-between items-center text-[10px] font-mono tracking-widest text-purple-400/40 z-10 pointer-events-none select-none">
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-purple-500 rounded-full animate-ping"></span>
+              <span>REC [RAW]</span>
+            </div>
+            <div>00:01:45:12</div>
+            <div>SHR_24FPS</div>
+          </div>
+          
+          <!-- Viewport Centered Text Content -->
+          <div class="relative z-10 text-center px-6 max-w-xl pointer-events-none select-none">
+            <span class="text-xs font-bold tracking-[0.2em] uppercase text-purple-400/80 mb-3 block">Next Experience</span>
+            <h2 class="font-heading font-extrabold text-4xl sm:text-5xl text-white tracking-tight mb-4 leading-none">
+              Entering the <br/><span class="gradient-text">Motion Space</span>
+            </h2>
+            <p class="text-gray-400 text-sm leading-relaxed max-w-sm mx-auto">
+              Peeking through the creative lens to reveal how motion shapes brand experiences.
+            </p>
+          </div>
+          
+          <!-- Bottom Metadata HUD -->
+          <div class="absolute inset-x-0 bottom-8 px-8 flex justify-center items-center text-[10px] font-mono tracking-widest text-purple-400/40 z-10 pointer-events-none select-none">
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-purple-500/60 rounded-full animate-ping"></span>
+              <span>SCROLL TO ENTER</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="portfolio" class="w-full py-24 relative"
       style="background:linear-gradient(180deg,transparent,rgba(139,92,246,0.03),transparent);">
       <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-12">
           <span class="text-xs font-medium px-4 py-1.5 rounded-full"
-            style="background:rgba(245,158,11,0.08);color:#fbbf24;border:1px solid rgba(245,158,11,0.2);">Portfolio</span>
+            style="background:rgba(245,158,11,0.08);color:var(--accent2);border:1px solid rgba(245,158,11,0.2);">Portfolio</span>
           <h2 class="font-heading font-bold text-2xl sm:text-3xl mt-6 tracking-normal">
             Featured <span class="gradient-text">Case Studies</span>
           </h2>
@@ -1118,7 +1580,7 @@
       </div>
     </section>
 
-    <section id="testimonials" class="w-full py-24" style="background:rgba(20,20,31,0.5);">
+    <section id="testimonials" class="w-full py-24">
       <div class="max-w-5xl mx-auto px-6">
         <div class="text-center mb-16">
           <span class="text-xs font-medium px-4 py-1.5 rounded-full"
@@ -1132,67 +1594,9 @@
             video content.
           </p>
         </div>
-        <div class="relative overflow-hidden">
-          <div id="testimonial-track"
-            class="testimonial-track flex transition-transform duration-500 ease-in-out w-full">
-            <div class="flex-shrink-0 w-full px-2">
-              <div class="rounded-2xl p-6 sm:p-8 text-center glass-surface">
-                <div class="text-5xl mb-4">👩&zwj;💼</div>
-                <p class="text-gray-200 text-sm leading-relaxed italic max-w-md mx-auto">
-                  "Emmezy transformed our brand identity completely. The
-                  attention to detail and creative vision exceeded all
-                  expectations. Truly world-class work!"
-                </p>
-                <div class="mt-6 font-heading font-bold text-sm">
-                  Sarah Mitchell
-                </div>
-                <div class="text-xs text-gray-400 mt-1">CEO, BrightBrand</div>
-              </div>
-            </div>
-            <div class="flex-shrink-0 w-full px-2">
-              <div class="rounded-2xl p-6 sm:p-8 text-center glass-surface">
-                <div class="text-5xl mb-4">👨&zwj;💻</div>
-                <p class="text-gray-200 text-sm leading-relaxed italic max-w-md mx-auto">
-                  "The motion design work was incredible. Our engagement rates
-                  tripled after launching the animated content Emmezy created
-                  for us."
-                </p>
-                <div class="mt-6 font-heading font-bold text-sm">
-                  Alex Rivera
-                </div>
-                <div class="text-xs text-gray-400 mt-1">
-                  Marketing Director
-                </div>
-              </div>
-            </div>
-            <div class="flex-shrink-0 w-full px-2">
-              <div class="rounded-2xl p-6 sm:p-8 text-center glass-surface">
-                <div class="text-5xl mb-4">👩&zwj;🎨</div>
-                <p class="text-gray-200 text-sm leading-relaxed italic max-w-md mx-auto">
-                  "Working with Emmezy was seamless. From concept to delivery,
-                  every video was polished, professional, and truly
-                  cinematic."
-                </p>
-                <div class="mt-6 font-heading font-bold text-sm">
-                  Jessica Park
-                </div>
-                <div class="text-xs text-gray-400 mt-1">
-                  Founder, Visionix
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="flex justify-center gap-3 mt-8 relative z-10">
-            <button onclick="prevTestimonial()"
-              class="w-10 h-10 rounded-full flex items-center justify-center transition hover:bg-purple-500/20"
-              style="border:1px solid rgba(139,92,246,0.3);">
-              <i data-lucide="chevron-left" style="width:18px;height:18px;color:var(--accent);"></i>
-            </button>
-            <button onclick="nextTestimonial()"
-              class="w-10 h-10 rounded-full flex items-center justify-center transition hover:bg-purple-500/20"
-              style="border:1px solid rgba(139,92,246,0.3);">
-              <i data-lucide="chevron-right" style="width:18px;height:18px;color:var(--accent);"></i>
-            </button>
+        <div class="relative z-10">
+          <div id="testimonial-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Dynamically populated -->
           </div>
         </div>
       </div>
@@ -1433,27 +1837,45 @@
       if (!window.portfolioConfig) return;
       const config = window.portfolioConfig;
 
-      // 1. Reorder Landing Page Layout Sections
-      if (config.layoutOrder) {
-        const app = document.getElementById('app');
-        const footer = app.querySelector('footer');
-        const divider = app.querySelector('.timeline-divider-container');
-        
-        const orderedElements = [];
-        config.layoutOrder.forEach(id => {
-          const el = document.getElementById(id);
-          if (el) {
+      // 1. Reorder & Toggle Landing Page Layout Sections
+      const layoutOrder = config.layoutOrder || ['intro-quote', 'hero', 'showreel', 'services', 'portfolio', 'process', 'about', 'testimonials', 'contact'];
+      const disabledSections = config.disabledSections || [];
+      const app = document.getElementById('app');
+      const footer = app.querySelector('footer');
+      const divider = app.querySelector('.timeline-divider-container');
+      
+      const orderedElements = [];
+      layoutOrder.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          const isDisabled = disabledSections.includes(id);
+          el.classList.toggle('hidden', isDisabled);
+          
+          // Hide/show navbar links matching this section
+          document.querySelectorAll(`a[href="#${id}"]`).forEach(link => {
+            link.classList.toggle('hidden', isDisabled);
+          });
+          
+          if (!isDisabled) {
+            // Append aperture-reveal right before portfolio if portfolio is active
+            if (id === 'portfolio') {
+              const aperture = document.getElementById('aperture-reveal');
+              if (aperture) {
+                aperture.classList.remove('hidden');
+                app.appendChild(aperture);
+              }
+            }
             app.appendChild(el);
             orderedElements.push(el);
           }
-        });
-        if (footer) app.appendChild(footer);
-        
-        // Always place the timeline divider line immediately below the first ordered section at the top of the page
-        if (divider && orderedElements.length > 0) {
-          const firstSection = orderedElements[0];
-          firstSection.parentNode.insertBefore(divider, firstSection.nextSibling);
         }
+      });
+      if (footer) app.appendChild(footer);
+      
+      // Always place the timeline divider line immediately below the first ordered section at the top of the page
+      if (divider && orderedElements.length > 0) {
+        const firstSection = orderedElements[0];
+        firstSection.parentNode.insertBefore(divider, firstSection.nextSibling);
       }
 
       // 2. Render Hero content
@@ -1507,8 +1929,9 @@
         }
       }
 
-      // 3. Render Showreel Iframe (if URL and showreel section is present)
-      if (config.hero && config.hero.showreelUrl) {
+      // 3. Render Showreel Iframe (if URL and showreel section is present and not disabled)
+      const isShowreelDisabled = disabledSections.includes('showreel');
+      if (config.hero && config.hero.showreelUrl && !isShowreelDisabled) {
         const showreelSection = document.getElementById('showreel');
         const showreelIframe = document.getElementById('showreel-iframe');
         if (showreelSection && showreelIframe) {
@@ -1589,6 +2012,101 @@
         const web3formsKey = document.getElementById('contact-web3forms-key');
         if (web3formsKey) web3formsKey.value = c.web3FormsKey;
       }
+
+      // 7. Render Testimonials
+      const testimonialsList = config.testimonials || (window.portfolioConfig && window.portfolioConfig.testimonials) || [
+        {
+          "id": "t-1",
+          "avatar": "👩‍💼",
+          "quote": "Emmezy transformed our brand identity completely. The attention to detail and creative vision exceeded all expectations. Truly world-class work!",
+          "name": "Sarah Mitchell",
+          "role": "CEO, BrightBrand",
+          "enabled": true
+        },
+        {
+          "id": "t-2",
+          "avatar": "👨‍💻",
+          "quote": "The motion design work was incredible. Our engagement rates tripled after launching the animated content Emmezy created for us.",
+          "name": "Alex Rivera",
+          "role": "Marketing Director",
+          "enabled": true
+        },
+        {
+          "id": "t-3",
+          "avatar": "👩‍🎨",
+          "quote": "Working with Emmezy was seamless. From concept to delivery, every video was polished, professional, and truly cinematic.",
+          "name": "Jessica Park",
+          "role": "Founder, Visionix",
+          "enabled": true
+        }
+      ];
+
+      const activeTestimonials = testimonialsList.filter(t => t.enabled !== false);
+      const grid = document.getElementById('testimonial-grid');
+      if (grid) {
+        if (activeTestimonials.length > 0) {
+          grid.innerHTML = activeTestimonials.map(t => `
+            <div class="rounded-2xl p-6 sm:p-8 text-center glass-surface flex flex-col justify-between h-full">
+              <div>
+                <div class="text-5xl mb-4">${t.avatar || '👤'}</div>
+                <p class="text-gray-200 text-sm leading-relaxed italic max-w-md mx-auto testimonial-quote">
+                  "${t.quote}"
+                </p>
+              </div>
+              <div>
+                <div class="mt-6 font-heading font-bold text-sm testimonial-name">
+                  ${t.name}
+                </div>
+                <div class="text-xs text-gray-400 mt-1 testimonial-role">${t.role}</div>
+              </div>
+            </div>
+          `).join('');
+        } else {
+          grid.innerHTML = `
+            <div class="col-span-full text-center py-12 glass-surface rounded-2xl p-6 sm:p-8 border border-white/5">
+              <div class="text-4xl mb-3">💬</div>
+              <p class="text-gray-300 text-sm font-medium italic">"Your review is our asset."</p>
+            </div>
+          `;
+        }
+      }
+
+      // 8. Render Primary Filters Dynamically
+      const primaryFilters = document.getElementById('primary-filters');
+      if (primaryFilters) {
+        const disabledCats = config.disabledCategories || [];
+        let html = `
+          <button onclick="filterPrimary('all')" data-dept="all"
+            class="port-tab-primary px-6 py-2.5 rounded-full text-xs font-medium border border-purple-500/30 bg-purple-500/10 text-white transition">
+            All Works
+          </button>
+        `;
+        if (!disabledCats.includes('motion')) {
+          html += `
+            <button onclick="filterPrimary('motion')" data-dept="motion"
+              class="port-tab-primary px-6 py-2.5 rounded-full text-xs font-medium border border-white/10 text-gray-400 hover:text-white transition">
+              Motion Design
+            </button>
+          `;
+        }
+        if (!disabledCats.includes('video')) {
+          html += `
+            <button onclick="filterPrimary('video')" data-dept="video"
+              class="port-tab-primary px-6 py-2.5 rounded-full text-xs font-medium border border-white/10 text-gray-400 hover:text-white transition">
+              Video Editing
+            </button>
+          `;
+        }
+        if (!disabledCats.includes('graphics')) {
+          html += `
+            <button onclick="filterPrimary('graphics')" data-dept="graphics"
+              class="port-tab-primary px-6 py-2.5 rounded-full text-xs font-medium border border-white/10 text-gray-400 hover:text-white transition">
+              Graphic Design
+            </button>
+          `;
+        }
+        primaryFilters.innerHTML = html;
+      }
     }
 
 
@@ -1610,7 +2128,8 @@
         secContainer.style.pointerEvents = 'none';
         setTimeout(() => secContainer.innerHTML = '', 300);
       } else {
-        const subs = portfolioCategories[dept] || [];
+        const disabledSubs = (window.portfolioConfig && window.portfolioConfig.disabledSubcategories) || [];
+        const subs = (portfolioCategories[dept] || []).filter(s => !disabledSubs.includes(s));
         secContainer.innerHTML = subs.map(s => `
             <button onclick="filterSecondary('${s}')" data-sub="${s}" class="port-tab-secondary px-4 py-1.5 rounded-full text-xs font-medium border border-white/10 text-gray-400 hover:text-white transition">
               ${s}
@@ -1643,7 +2162,11 @@
 
     function renderPortfolio() {
       const grid = document.getElementById('portfolio-grid');
-      let items = portfolioData;
+      const config = window.portfolioConfig || {};
+      const disabledCats = config.disabledCategories || [];
+      const disabledSubs = config.disabledSubcategories || [];
+      
+      let items = portfolioData.filter(p => p.enabled !== false && !disabledCats.includes(p.dept) && !disabledSubs.includes(p.sub));
 
       if (currentPrimary !== 'all') { items = items.filter(p => p.dept === currentPrimary); }
       if (currentSecondary !== 'all') { items = items.filter(p => p.sub === currentSecondary); }
@@ -1659,7 +2182,7 @@
                 </linearGradient>
               </defs>
             </svg>
-            <div class="relative w-full overflow-hidden group" style="aspect-ratio:16/9;">
+            <div class="relative w-full overflow-hidden group" style="aspect-ratio:16/9; border-top-left-radius: 15px; border-top-right-radius: 15px; -webkit-mask-image: -webkit-radial-gradient(white, black); mask-image: -webkit-radial-gradient(white, black);">
               <div class="absolute inset-0 bg-cover bg-center transition-all duration-500 group-hover:scale-105" style="background-image:url('${p.thumb}');"></div>
               <div class="absolute top-4 left-4 z-10 px-3 py-1 bg-black/70 backdrop-blur-md rounded-full text-[9px] font-bold text-purple-400 border border-purple-500/20 uppercase tracking-wider">${p.sub}</div>
               <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center z-20">
@@ -1819,25 +2342,7 @@
       }
     });
 
-    // Testimonial Engine
-    let currentTestimonial = 0;
-    let testimonialTimer;
-    function startTestimonialTimer() {
-      clearInterval(testimonialTimer);
-      testimonialTimer = setInterval(autoNextTestimonial, 5000);
-    }
-    function updateTestimonialPosition() {
-      document.getElementById('testimonial-track').style.transform = `translateX(-${currentTestimonial * 100}%)`;
-    }
-    function autoNextTestimonial() {
-      currentTestimonial = (currentTestimonial + 1) % 3; updateTestimonialPosition();
-    }
-    function nextTestimonial() {
-      currentTestimonial = (currentTestimonial + 1) % 3; updateTestimonialPosition(); startTestimonialTimer();
-    }
-    function prevTestimonial() {
-      currentTestimonial = (currentTestimonial - 1 + 3) % 3; updateTestimonialPosition(); startTestimonialTimer();
-    }
+
 
     // Cursor animations
     const cursor = document.getElementById('customCursor');
@@ -1906,9 +2411,50 @@
     const appEl = document.getElementById('app');
     appEl.addEventListener('scroll', () => {
       const nav = document.getElementById('navbar');
-      nav.style.background = appEl.scrollTop > 50 ? 'rgba(10,10,15,0.9)' : 'transparent';
+      const isLight = document.body.classList.contains('light');
+      if (appEl.scrollTop > 50) {
+        nav.style.background = isLight ? 'rgba(248, 250, 252, 0.4)' : 'rgba(10, 10, 15, 0.4)';
+        nav.style.borderBottom = isLight ? '1px solid rgba(15, 23, 42, 0.08)' : '1px solid rgba(255, 255, 255, 0.08)';
+      } else {
+        nav.style.background = 'transparent';
+        nav.style.borderBottom = 'none';
+      }
       nav.style.backdropFilter = appEl.scrollTop > 50 ? 'blur(20px)' : 'none';
+      nav.style.webkitBackdropFilter = appEl.scrollTop > 50 ? 'blur(20px)' : 'none';
     });
+
+    // Theme Switcher Sync & Event Handler
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const sunIcon = document.getElementById('theme-icon-sun');
+    const moonIcon = document.getElementById('theme-icon-moon');
+
+    // Sync icon state on load
+    if (document.body.classList.contains('light')) {
+      if (sunIcon) sunIcon.classList.add('hidden');
+      if (moonIcon) moonIcon.classList.remove('hidden');
+    }
+
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', () => {
+        const isLight = document.body.classList.toggle('light');
+        localStorage.setItem('portfolio-theme', isLight ? 'light' : 'dark');
+        
+        // Sync scroll background immediately if scrolled
+        if (appEl.scrollTop > 50) {
+          const nav = document.getElementById('navbar');
+          nav.style.background = isLight ? 'rgba(248, 250, 252, 0.4)' : 'rgba(10, 10, 15, 0.4)';
+          nav.style.borderBottom = isLight ? '1px solid rgba(15, 23, 42, 0.08)' : '1px solid rgba(255, 255, 255, 0.08)';
+        }
+
+        if (isLight) {
+          if (sunIcon) sunIcon.classList.add('hidden');
+          if (moonIcon) moonIcon.classList.remove('hidden');
+        } else {
+          if (sunIcon) sunIcon.classList.remove('hidden');
+          if (moonIcon) moonIcon.classList.add('hidden');
+        }
+      });
+    }
 
     // Mobile Dropdown Menu Toggle
     document.getElementById('mobile-toggle').addEventListener('click', () => { document.getElementById('mobile-menu').classList.toggle('hidden'); });
@@ -2032,11 +2578,220 @@
       }
     }
 
+    // Scroll progress bar and background parallax tracker
+    function setupScrollTracker() {
+      const progressBar = document.getElementById('scrollProgress');
+      const appEl = document.getElementById('app');
+      
+      if (!appEl) return;
+      
+      appEl.addEventListener('scroll', () => {
+        const scrollTop = appEl.scrollTop;
+        const scrollHeight = appEl.scrollHeight - appEl.clientHeight;
+        if (scrollHeight > 0) {
+          const progress = (scrollTop / scrollHeight) * 100;
+          if (progressBar) progressBar.style.width = `${progress}%`;
+        }
+        
+        // Parallax background blobs movement
+        const scrollY = scrollTop;
+        document.documentElement.style.setProperty('--scroll-y', `${scrollY}px`);
+
+        // Cinematic Aperture Reveal Progress Tracker
+        const aperture = document.getElementById('aperture-reveal');
+        if (aperture && !aperture.classList.contains('hidden')) {
+          const rect = aperture.getBoundingClientRect();
+          const viewHeight = window.innerHeight;
+          const totalScroll = rect.height - viewHeight;
+          const startScroll = -rect.top;
+          
+          let progress = 0;
+          if (totalScroll > 0) {
+            progress = startScroll / totalScroll;
+            progress = Math.max(0, Math.min(1, progress));
+          }
+          aperture.style.setProperty('--aperture-progress', progress);
+        }
+      });
+    }
+
+    // 3D Tilt Card Micro-interaction
+    function initTiltEffect() {
+      if (window.matchMedia("(max-width: 1023px)").matches || ('ontouchstart' in window)) return;
+      
+      const selectCards = () => {
+        document.querySelectorAll('.case-card, .service-core').forEach(card => {
+          if (card.dataset.tiltInitialized) return;
+          card.dataset.tiltInitialized = 'true';
+          
+          card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const xc = rect.width / 2;
+            const yc = rect.height / 2;
+            const dx = x - xc;
+            const dy = y - yc;
+            
+            const rx = -(dy / yc) * 6;
+            const ry = (dx / xc) * 6;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) scale3d(1.02, 1.02, 1.02)`;
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+          });
+          
+          card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            card.style.transition = 'transform 0.5s ease';
+          });
+          
+          card.addEventListener('mouseenter', () => {
+            card.style.transition = 'none';
+          });
+        });
+      };
+      
+      selectCards();
+      
+      // Re-run whenever grid content changes
+      const portfolioGrid = document.getElementById('portfolio-grid');
+      if (portfolioGrid) {
+        const tiltObserver = new MutationObserver(selectCards);
+        tiltObserver.observe(portfolioGrid, { childList: true });
+      }
+    }
+
+    // Intersection Observer Reveal Seeder & Observer
+    function setupScrollAnimations() {
+      // 1. Seed reveal classes on landing elements
+      
+      // Hero elements
+      const heroHeadline = document.getElementById('hero-headline');
+      if (heroHeadline) heroHeadline.classList.add('reveal');
+      
+      const heroDescription = document.getElementById('hero-description');
+      if (heroDescription) heroDescription.classList.add('reveal', 'delay-100');
+      
+      const heroCtas = document.getElementById('hero-ctas');
+      if (heroCtas) heroCtas.classList.add('reveal', 'delay-200');
+      
+      const heroImageContainer = document.querySelector('#hero img')?.parentElement;
+      if (heroImageContainer) heroImageContainer.classList.add('reveal-right', 'delay-100');
+      
+      // Intro quote
+      const introQuoteCard = document.querySelector('#intro-quote > div');
+      if (introQuoteCard) introQuoteCard.classList.add('reveal-scale');
+      
+      // Specialties
+      const servicesHeader = document.querySelector('#services > div.text-center');
+      if (servicesHeader) servicesHeader.classList.add('reveal');
+      
+      const serviceCores = document.querySelectorAll('.service-core');
+      if (serviceCores[0]) serviceCores[0].classList.add('reveal-left');
+      if (serviceCores[1]) serviceCores[1].classList.add('reveal-right');
+      
+      const serviceSupport = document.querySelector('.service-support');
+      if (serviceSupport) serviceSupport.classList.add('reveal-scale');
+      
+      // Portfolio
+      const portfolioHeader = document.querySelector('#portfolio .text-center');
+      if (portfolioHeader) portfolioHeader.classList.add('reveal');
+      
+      const portfolioFilters = document.getElementById('primary-filters');
+      if (portfolioFilters) portfolioFilters.classList.add('reveal', 'delay-100');
+      
+      // Process
+      const processHeader = document.querySelector('#process .text-center');
+      if (processHeader) processHeader.classList.add('reveal');
+      
+      const processStages = document.querySelectorAll('#process .grid > div');
+      processStages.forEach((stage, i) => {
+        stage.classList.add('reveal-scale', `delay-${i * 100}`);
+      });
+      
+      // About
+      const aboutPhoto = document.querySelector('#about img')?.parentElement;
+      if (aboutPhoto) aboutPhoto.classList.add('reveal-left');
+      
+      const aboutContent = document.querySelector('#about img')?.parentElement?.parentElement?.querySelector('div:not(.flex-shrink-0)');
+      if (aboutContent) {
+        aboutContent.classList.add('reveal-right');
+        const childNodes = aboutContent.children;
+        for (let i = 0; i < childNodes.length; i++) {
+          childNodes[i].classList.add('reveal', `delay-${i * 100}`);
+        }
+      }
+      
+      // Testimonials
+      const testimonialsHeader = document.querySelector('#testimonials .text-center');
+      if (testimonialsHeader) testimonialsHeader.classList.add('reveal');
+      
+      // Contact
+      const contactGateway = document.querySelector('.gateway-container');
+      if (contactGateway) contactGateway.classList.add('reveal-scale');
+
+      // 2. Setup Intersection Observer to trigger reveal classes
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('reveal-visible');
+          } else {
+            // Reset when element exits from the bottom of viewport (scrolled up past it)
+            const rect = entry.boundingClientRect;
+            const viewportHeight = window.innerHeight;
+            if (rect.top > viewportHeight - 50) {
+              entry.target.classList.remove('reveal-visible');
+            }
+          }
+        });
+      }, {
+        threshold: 0.05,
+        rootMargin: '0px 0px -20px 0px'
+      });
+
+      document.querySelectorAll('[class*="reveal"]').forEach(el => {
+        revealObserver.observe(el);
+      });
+      
+      // Also observe dynamic portfolio grid items when they render
+      const portfolioGrid = document.getElementById('portfolio-grid');
+      if (portfolioGrid) {
+        const gridObserver = new MutationObserver(() => {
+          portfolioGrid.querySelectorAll('.case-card').forEach((card, i) => {
+            if (!card.classList.contains('reveal-scale') && !card.classList.contains('reveal-visible')) {
+              card.classList.add('reveal-scale', `delay-${(i % 3) * 100}`);
+              revealObserver.observe(card);
+            }
+          });
+        });
+        gridObserver.observe(portfolioGrid, { childList: true });
+      }
+      
+      // Testimonials dynamic grid observer
+      const testimonialsGrid = document.getElementById('testimonial-grid');
+      if (testimonialsGrid) {
+        const testimonialGridObserver = new MutationObserver(() => {
+          testimonialsGrid.querySelectorAll('.glass-surface').forEach((card, i) => {
+            if (!card.classList.contains('reveal-scale') && !card.classList.contains('reveal-visible')) {
+              card.classList.add('reveal-scale', `delay-${(i % 3) * 100}`);
+              revealObserver.observe(card);
+            }
+          });
+        });
+        testimonialGridObserver.observe(testimonialsGrid, { childList: true });
+      }
+    }
+
     // Initialization Context Renders
     initPortfolioConfig();
     filterPrimary('all');
-    startTestimonialTimer();
     lucide.createIcons();
+    
+    // Setup Animations & Mouse Micro-interactions
+    setupScrollAnimations();
+    setupScrollTracker();
+    initTiltEffect();
 
     if (isDraftPreview) {
       const banner = document.createElement('div');
