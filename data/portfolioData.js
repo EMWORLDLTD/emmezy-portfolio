@@ -21,8 +21,8 @@ window.portfolioCategories = {
 window.portfolioConfig = {
   "layoutOrder": [
     "hero",
-    "intro-quote",
     "showreel",
+    "intro-quote",
     "services",
     "portfolio",
     "process",
@@ -30,13 +30,16 @@ window.portfolioConfig = {
     "testimonials",
     "contact"
   ],
+  "disabledSections": [],
+  "disabledCategories": [],
+  "disabledSubcategories": [],
   "hero": {
     "tag": "✦ Elevating Brand Quality & Conversion",
     "title": "Motion Graphics & Video Content That <span class=\"gradient-text\">Drive Action.</span>",
     "description": "I partner with SaaS, Fintech, and creative agencies globally to transform complex ideas and raw footage into <strong class=\"text-white font-semibold\">high-impact motion graphics and cinematic video edits</strong> that drive real action.",
     "primaryCtaText": "View Projects →",
     "primaryCtaLink": "#portfolio",
-    "showSecondCta": true,
+    "showSecondCta": false,
     "secondCtaText": "Watch Showreel 🎥",
     "secondCtaLink": "#showreel",
     "showreelUrl": "https://player.vimeo.com/video/347119375",
@@ -76,7 +79,30 @@ window.portfolioConfig = {
     "instagram": "#",
     "linkedin": "#",
     "youtube": "#"
-  }
+  },
+  "testimonials": [
+    {
+      "id": "t-1",
+      "avatar": "👩‍💼",
+      "quote": "Emmezy transformed our brand identity completely. The attention to detail and creative vision exceeded all expectations. Truly world-class work!",
+      "name": "Sarah Mitchell",
+      "role": "CEO, BrightBrand"
+    },
+    {
+      "id": "t-2",
+      "avatar": "👨‍💻",
+      "quote": "The motion design work was incredible. Our engagement rates tripled after launching the animated content Emmezy created for us.",
+      "name": "Alex Rivera",
+      "role": "Marketing Director"
+    },
+    {
+      "id": "t-3",
+      "avatar": "👩‍🎨",
+      "quote": "Working with Emmezy was seamless. From concept to delivery, every video was polished, professional, and truly cinematic.",
+      "name": "Jessica Park",
+      "role": "Founder, Visionix"
+    }
+  ]
 };
 
 window.portfolioData = [
@@ -129,7 +155,8 @@ window.portfolioData = [
         "url": "https://i.ibb.co/L51L1Dq/placeholder-3.jpg",
         "caption": "Aniamted GIF Loop"
       }
-    ]
+    ],
+    "enabled": true
   },
   {
     "id": "shelf21",
@@ -278,5 +305,39 @@ window.portfolioData = [
     ],
     "tools": "Illustrator • Photoshop • InDesign",
     "mediaType": "graphics"
+  },
+  {
+    "id": "project-1780487221079",
+    "dept": "motion",
+    "sub": "Explainer Videos",
+    "mediaType": "video",
+    "title": "gh",
+    "badge": "cvvv",
+    "metric": "",
+    "tags": [],
+    "thumb": "https://player.vimeo.com/video/347119375",
+    "embedUrl": "https://player.vimeo.com/video/347119375",
+    "shortDesc": "d",
+    "brief": "d",
+    "approach": "d",
+    "outcome": "d",
+    "before": "d",
+    "after": "d",
+    "stats": [
+      {
+        "val": "d",
+        "lbl": "d"
+      },
+      {
+        "val": "d",
+        "lbl": "d"
+      },
+      {
+        "val": "d",
+        "lbl": "d"
+      }
+    ],
+    "tools": "d",
+    "gallery": []
   }
 ];
