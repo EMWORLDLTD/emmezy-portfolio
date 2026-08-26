@@ -381,6 +381,22 @@
           </button>
         </div>
 
+        <!-- Case Study Style Selector (Cinematic Option 1 vs Classic Legacy) -->
+        <div class="glass-surface rounded-2xl p-5 border border-white/5 space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
+                <i data-lucide="layout-template" class="w-3.5 h-3.5"></i> Case Study Viewer Style
+              </h3>
+              <p class="text-[10px] text-gray-400 mt-0.5">Toggle between the new immersive full-screen cinematic studio and the classic popup modal.</p>
+            </div>
+            <select id="case-study-view-select" onchange="setCaseStudyView(this.value); updateLivePreview();" class="glass-input px-3.5 py-2 rounded-xl text-xs text-white border border-purple-500/30 bg-purple-950/20">
+              <option value="cinematic">Cinematic Studio (Option 1 - Full Screen)</option>
+              <option value="classic">Classic Pop-up (Legacy Modal)</option>
+            </select>
+          </div>
+        </div>
+
         <!-- Categories & Subcategories Filter Manager -->
         <div class="glass-surface rounded-2xl p-5 border border-white/5 space-y-4">
           <div class="flex items-center justify-between border-b border-white/5 pb-3">
@@ -1019,6 +1035,16 @@
       document.getElementById('contact-instagram-input').value = c.instagram || '';
       document.getElementById('contact-linkedin-input').value = c.linkedin || '';
       document.getElementById('contact-youtube-input').value = c.youtube || '';
+
+      const caseStyleSelect = document.getElementById('case-study-view-select');
+      if (caseStyleSelect) {
+        caseStyleSelect.value = currentConfig.caseStudyView || 'cinematic';
+      }
+    }
+
+    function setCaseStudyView(val) {
+      currentConfig.caseStudyView = val;
+      saveDraftToLocalStorage();
     }
 
     function toggleSecondCtaForm(show) {
@@ -1027,11 +1053,15 @@
 
     // Build the data compile object
     function getFormDataAsConfig() {
+      const caseStyleSelect = document.getElementById('case-study-view-select');
+      const selectedView = (caseStyleSelect && caseStyleSelect.value) || currentConfig.caseStudyView || 'cinematic';
+
       return {
         layoutOrder: currentConfig.layoutOrder || ['hero', 'showreel', 'intro-quote', 'services', 'portfolio', 'process', 'about', 'testimonials', 'contact'],
         disabledSections: currentConfig.disabledSections || [],
         disabledCategories: currentConfig.disabledCategories || [],
         disabledSubcategories: currentConfig.disabledSubcategories || [],
+        caseStudyView: selectedView,
         hero: {
           tag: document.getElementById('hero-tag-input').value,
           title: document.getElementById('hero-title-input').value,

@@ -333,7 +333,121 @@
       font-size: 11px;
     }
 
-    /* Modal Layer Box Window Frame */
+    /* ==========================================================================
+       CINEMATIC FULL-SCREEN CASE STUDY STUDIO (OPTION 1)
+       ========================================================================== */
+    #case-studio-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 50% 0%, #15102a 0%, #080811 45%, #040409 100%);
+      z-index: 99999;
+      overflow-y: auto;
+      animation: studioSlideUp 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes studioSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(28px) scale(0.99);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .studio-ambient-glow {
+      position: absolute;
+      top: 0;
+      left: 10%;
+      width: 80%;
+      height: 50%;
+      background: radial-gradient(ellipse at center, rgba(167, 139, 250, 0.12), rgba(251, 191, 36, 0.04) 50%, transparent 70%);
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .studio-tab-btn {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .studio-tab-btn.active {
+      background: rgba(167, 139, 250, 0.15);
+      border-color: rgba(167, 139, 250, 0.5);
+      color: #ffffff;
+      box-shadow: 0 0 20px rgba(167, 139, 250, 0.2);
+    }
+
+    /* Before / After Interactive Drag Slider */
+    .ba-slider-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      border-radius: 1.25rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      user-select: none;
+      touch-action: none;
+      background: #000;
+    }
+    .ba-slider-after {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .ba-slider-before-wrap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+      border-right: 2px solid #a78bfa;
+    }
+    .ba-slider-before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      max-width: none;
+      object-fit: cover;
+    }
+    .ba-slider-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #0f0f1e;
+      border: 2px solid #a78bfa;
+      color: #a78bfa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(167, 139, 250, 0.5);
+      cursor: ew-resize;
+      z-index: 20;
+    }
+
+    /* Lookbook Thumbnails */
+    .lookbook-thumb {
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .lookbook-thumb:hover {
+      transform: translateY(-2px);
+      border-color: rgba(167, 139, 250, 0.5);
+    }
+    .lookbook-thumb.active {
+      border-color: #a78bfa;
+      box-shadow: 0 0 15px rgba(167, 139, 250, 0.35);
+    }
+
+    /* Legacy Modal Layer Box Window Frame (Preserved) */
     #case-modal-overlay {
       display: none;
       position: fixed;
@@ -1852,7 +1966,225 @@
     </footer>
   </div>
 
-  <div id="case-modal-overlay" onclick="if(event.target === this) closeCaseModal()">
+  <!-- ==========================================================================
+       CINEMATIC FULL-SCREEN CASE STUDY STUDIO (OPTION 1)
+       ========================================================================== -->
+  <div id="case-studio-overlay" class="fixed inset-0 z-[99999] bg-[#07070f]/98 backdrop-blur-3xl overflow-y-auto hidden flex-col selection:bg-purple-500/30 selection:text-purple-200">
+    <!-- Ambient Lighting Glow Backdrop -->
+    <div class="studio-ambient-glow"></div>
+
+    <!-- Sticky Top Studio Control Bar -->
+    <header class="sticky top-0 left-0 w-full z-40 bg-[#07070f]/80 backdrop-blur-xl border-b border-white/[0.07] px-4 sm:px-8 py-3.5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span id="studio-dept-badge" class="px-3 py-1 bg-purple-500/10 text-purple-300 border border-purple-500/20 rounded-full text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5">
+          <i data-lucide="sparkles" class="w-3 h-3 text-purple-400"></i>
+          <span id="studio-dept-text">Motion Design</span>
+        </span>
+        <span id="studio-counter" class="text-[11px] font-semibold text-neutral-400 tracking-wider">
+          01 / 06
+        </span>
+      </div>
+
+      <!-- Center / Right Controls -->
+      <div class="flex items-center gap-2">
+        <button onclick="navigateStudioProject(-1)" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white border border-white/10 text-xs font-semibold flex items-center gap-1.5 transition active:scale-95" title="Previous Project (Left Arrow)">
+          <i data-lucide="chevron-left" class="w-4 h-4"></i>
+          <span class="hidden sm:inline text-[11px]">Prev</span>
+        </button>
+        <button onclick="navigateStudioProject(1)" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white border border-white/10 text-xs font-semibold flex items-center gap-1.5 transition active:scale-95" title="Next Project (Right Arrow)">
+          <span class="hidden sm:inline text-[11px]">Next</span>
+          <i data-lucide="chevron-right" class="w-4 h-4"></i>
+        </button>
+        <div class="h-4 w-px bg-white/10 mx-1"></div>
+        <button onclick="closeCaseStudio()" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/15 text-xs font-bold flex items-center gap-1.5 transition active:scale-95 shadow-lg" title="Close Studio (Escape)">
+          <i data-lucide="x" class="w-4 h-4"></i>
+          <span class="hidden sm:inline text-[11px]">Close</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Studio Content Area -->
+    <main class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10 flex-grow relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        
+        <!-- Left Column: Media Stage (7 cols) -->
+        <div class="lg:col-span-7 flex flex-col space-y-6">
+          
+          <!-- Media Mode Switcher Sub-Tabs -->
+          <div id="studio-media-tabs" class="flex items-center gap-2 p-1.5 bg-white/[0.03] border border-white/[0.08] rounded-2xl w-fit overflow-x-auto max-w-full">
+            <button id="tab-btn-showcase" onclick="switchStudioMediaTab('showcase')" class="studio-tab-btn active px-3.5 py-1.5 rounded-xl text-xs font-semibold text-neutral-400 hover:text-white border border-transparent flex items-center gap-1.5">
+              <i data-lucide="play" class="w-3.5 h-3.5 text-purple-400"></i>
+              <span id="tab-label-showcase">Showcase</span>
+            </button>
+            <button id="tab-btn-gallery" onclick="switchStudioMediaTab('gallery')" class="studio-tab-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-neutral-400 hover:text-white border border-transparent flex items-center gap-1.5">
+              <i data-lucide="grid" class="w-3.5 h-3.5 text-purple-400"></i>
+              <span id="tab-label-gallery">Style Frames &amp; Assets</span>
+            </button>
+            <button id="tab-btn-comparison" onclick="switchStudioMediaTab('comparison')" class="studio-tab-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-neutral-400 hover:text-white border border-transparent flex items-center gap-1.5">
+              <i data-lucide="split" class="w-3.5 h-3.5 text-purple-400"></i>
+              <span>Before &amp; After</span>
+            </button>
+          </div>
+
+          <!-- Media View 1: Main Showcase Stage -->
+          <div id="studio-view-showcase" class="space-y-4">
+            <!-- Video Container (Visible for video projects) -->
+            <div id="studio-video-player-wrap" class="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-black/80 shadow-2xl shadow-purple-950/30" style="padding-top: 56.25%;">
+              <iframe id="studio-video-iframe" src="" class="absolute top-0 left-0 w-full h-full" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <!-- Graphics Hero Lookbook Container (Visible for graphics projects) -->
+            <div id="studio-graphics-lookbook-wrap" class="space-y-3 hidden">
+              <div class="group relative aspect-[16/10] w-full rounded-2xl overflow-hidden border border-white/10 bg-neutral-900 shadow-2xl cursor-zoom-in" onclick="zoomCurrentHeroGraphic()">
+                <img id="studio-hero-img" src="" alt="Hero Artwork" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-102" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-4">
+                  <span id="studio-hero-img-caption" class="text-xs font-semibold text-white tracking-wide">Featured Artwork</span>
+                  <span class="px-2.5 py-1 rounded-lg bg-white/20 text-[10px] font-bold text-white backdrop-blur-md flex items-center gap-1">
+                    <i data-lucide="zoom-in" class="w-3 h-3"></i> Full Resolution
+                  </span>
+                </div>
+              </div>
+
+              <!-- Lookbook Thumbnails Strip -->
+              <div id="studio-lookbook-strip" class="flex gap-2.5 overflow-x-auto pb-2 pt-1">
+                <!-- Dynamically populated lookbook thumbnails -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Media View 2: Style Frames & Assets Grid -->
+          <div id="studio-view-gallery" class="space-y-4 hidden">
+            <div id="studio-gallery-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
+              <!-- Dynamically populated style frames / asset mockups -->
+            </div>
+          </div>
+
+          <!-- Media View 3: Interactive Before & After Slider -->
+          <div id="studio-view-comparison" class="space-y-4 hidden">
+            <div class="ba-slider-container" id="studio-ba-slider">
+              <img id="studio-ba-after-img" class="ba-slider-after" src="" alt="Final Polished Delivery" />
+              <div class="ba-slider-before-wrap" id="studio-ba-before-wrap">
+                <img id="studio-ba-before-img" class="ba-slider-before" src="" alt="Initial Draft / Raw State" />
+              </div>
+              <div class="ba-slider-handle" id="studio-ba-handle">
+                <i data-lucide="move-horizontal" class="w-4 h-4"></i>
+              </div>
+              <div class="absolute bottom-3 left-3 px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-md border border-white/10 text-[10px] font-bold text-white pointer-events-none uppercase tracking-wider">
+                Initial State
+              </div>
+              <div class="absolute bottom-3 right-3 px-2.5 py-1 rounded-md bg-purple-500/80 backdrop-blur-md border border-purple-400/20 text-[10px] font-bold text-white pointer-events-none uppercase tracking-wider">
+                Final Result
+              </div>
+            </div>
+            <p class="text-[11px] text-neutral-400 text-center flex items-center justify-center gap-1.5">
+              <i data-lucide="hand" class="w-3.5 h-3.5 text-purple-400"></i>
+              Drag slider left or right to compare transformation
+            </p>
+          </div>
+
+          <!-- Design Deliverables & Software Stack Card -->
+          <div class="p-4 sm:p-5 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-500 block mb-1.5">Tools &amp; Pipeline</span>
+              <div id="studio-tools-pills" class="flex flex-wrap gap-1.5">
+                <!-- Dynamically rendered tools pills -->
+              </div>
+            </div>
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-500 block mb-1.5">Deliverables</span>
+              <div id="studio-tags-pills" class="flex flex-wrap gap-1.5">
+                <!-- Dynamically rendered tags -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Strategic Narrative & Impact (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col space-y-6">
+          
+          <!-- Project Title & Subtitle Header -->
+          <div class="space-y-2.5">
+            <span id="studio-badge" class="text-[10px] font-bold uppercase tracking-widest text-purple-400 bg-purple-500/10 px-3 py-1 rounded-md border border-purple-500/20 inline-block">
+              Case Study Badge
+            </span>
+            <h1 id="studio-title" class="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight">
+              Project Title
+            </h1>
+            <p id="studio-short-desc" class="text-xs sm:text-sm text-neutral-300 leading-relaxed">
+              Short description summary here.
+            </p>
+          </div>
+
+          <!-- 3-Phase Strategic Breakdown -->
+          <div class="space-y-3">
+            <div class="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-purple-500/20 transition-all">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-purple-400 block mb-1">01 / Challenge &amp; Client Brief</span>
+              <p id="studio-brief" class="text-xs text-neutral-300 leading-relaxed"></p>
+            </div>
+            <div class="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-purple-500/20 transition-all">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-purple-400 block mb-1">02 / Creative &amp; Technical Approach</span>
+              <p id="studio-approach" class="text-xs text-neutral-300 leading-relaxed"></p>
+            </div>
+            <div class="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-purple-500/20 transition-all">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-purple-400 block mb-1">03 / Business Outcome &amp; Launch</span>
+              <p id="studio-outcome" class="text-xs text-neutral-300 leading-relaxed"></p>
+            </div>
+          </div>
+
+          <!-- Before vs After Transformation Comparison Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div class="p-4 rounded-2xl bg-red-950/15 border border-red-500/20 space-y-1">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-red-400 flex items-center gap-1">
+                <i data-lucide="x-circle" class="w-3.5 h-3.5"></i> Initial Bottleneck
+              </span>
+              <p id="studio-before" class="text-neutral-300 text-[11px] leading-relaxed"></p>
+            </div>
+            <div class="p-4 rounded-2xl bg-emerald-950/15 border border-emerald-500/20 space-y-1">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1">
+                <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Delivered Result
+              </span>
+              <p id="studio-after" class="text-neutral-300 text-[11px] leading-relaxed"></p>
+            </div>
+          </div>
+
+          <!-- Key Performance Results Grid -->
+          <div class="space-y-3">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-500 block">Performance Impact</span>
+            <div class="grid grid-cols-3 gap-2.5 sm:gap-3 text-center">
+              <div class="p-3 sm:p-4 rounded-2xl bg-purple-500/10 border border-purple-500/20 backdrop-blur-md flex flex-col justify-center">
+                <span id="studio-stat1-val" class="font-heading text-lg sm:text-2xl font-bold text-white truncate">0%</span>
+                <span id="studio-stat1-lbl" class="text-[8px] sm:text-[9px] text-neutral-400 uppercase tracking-wider mt-1">Metric</span>
+              </div>
+              <div class="p-3 sm:p-4 rounded-2xl bg-purple-500/10 border border-purple-500/20 backdrop-blur-md flex flex-col justify-center">
+                <span id="studio-stat2-val" class="font-heading text-lg sm:text-2xl font-bold text-white truncate">0%</span>
+                <span id="studio-stat2-lbl" class="text-[8px] sm:text-[9px] text-neutral-400 uppercase tracking-wider mt-1">Metric</span>
+              </div>
+              <div class="p-3 sm:p-4 rounded-2xl bg-purple-500/10 border border-purple-500/20 backdrop-blur-md flex flex-col justify-center">
+                <span id="studio-stat3-val" class="font-heading text-lg sm:text-2xl font-bold text-white truncate">0x</span>
+                <span id="studio-stat3-lbl" class="text-[8px] sm:text-[9px] text-neutral-400 uppercase tracking-wider mt-1">Metric</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Action Conversion Bar -->
+          <div class="pt-4 border-t border-white/[0.08] flex flex-col sm:flex-row gap-3 items-stretch">
+            <button id="studio-contact-cta" onclick="hireForCurrentProject()" class="btn-primary flex-grow px-6 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider text-white text-center flex items-center justify-center gap-2 shadow-lg shadow-purple-500/20">
+              <i data-lucide="message-square" class="w-4 h-4"></i>
+              <span>Hire for Similar Project</span>
+            </button>
+            <button onclick="navigateStudioProject(1)" class="px-4 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white border border-white/10 text-xs font-semibold flex items-center justify-center gap-1.5 transition">
+              <span>Next Case</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Preserved Legacy Modal Layer Box Window Frame -->
+  <div id="case-modal-overlay" onclick="if(event.target === this) closeCaseModalLegacy()">
     <div class="modal-card p-4 sm:p-6 md:p-8">
       <div class="sticky top-0 right-0 flex justify-end z-50 h-0 w-full pointer-events-none">
         <button onclick="closeCaseModal()"
@@ -2374,7 +2706,312 @@
       }
     }
 
+    // Active studio state tracking
+    let activeStudioProjectId = null;
+    let activeStudioTabIndex = 'showcase';
+    let currentHeroGraphicUrl = '';
+    let currentHeroGraphicCaption = '';
+
+    // Master router: checks user config to choose between Cinematic Studio vs Classic Pop-up
     function openCaseModal(projectId) {
+      const config = window.portfolioConfig || {};
+      if (config.caseStudyView === 'classic') {
+        openCaseModalLegacy(projectId);
+      } else {
+        openCaseStudio(projectId);
+      }
+    }
+
+    function closeCaseModal() {
+      const config = window.portfolioConfig || {};
+      if (config.caseStudyView === 'classic') {
+        closeCaseModalLegacy();
+      } else {
+        closeCaseStudio();
+      }
+    }
+
+    // =========================================================================
+    // CINEMATIC FULL-SCREEN CASE STUDY STUDIO (OPTION 1)
+    // =========================================================================
+    function openCaseStudio(projectId) {
+      const data = portfolioData.find(p => p.id === projectId);
+      if (!data) return;
+
+      activeStudioProjectId = projectId;
+      const config = window.portfolioConfig || {};
+      const disabledCats = config.disabledCategories || [];
+      const disabledSubs = config.disabledSubcategories || [];
+      const activeItems = portfolioData.filter(p => p.enabled !== false && !disabledCats.includes(p.dept) && !disabledSubs.includes(p.sub));
+      const currentIndex = activeItems.findIndex(p => p.id === projectId);
+      const totalCount = activeItems.length;
+
+      // Update Top Control Bar
+      const deptText = data.dept === 'motion' ? 'Motion Design' : (data.dept === 'video' ? 'Video Editing' : 'Graphic Design');
+      document.getElementById('studio-dept-text').textContent = `${deptText} • ${data.sub}`;
+      document.getElementById('studio-counter').textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(totalCount).padStart(2, '0')}`;
+
+      // Update Right Narrative Column
+      document.getElementById('studio-badge').textContent = data.badge;
+      document.getElementById('studio-title').textContent = data.title;
+      document.getElementById('studio-short-desc').textContent = data.shortDesc;
+      document.getElementById('studio-brief').textContent = data.brief;
+      document.getElementById('studio-approach').textContent = data.approach;
+      document.getElementById('studio-outcome').textContent = data.outcome;
+      document.getElementById('studio-before').textContent = data.before;
+      document.getElementById('studio-after').textContent = data.after;
+
+      // Update Stat Badges
+      if (data.stats && data.stats.length >= 3) {
+        document.getElementById('studio-stat1-val').textContent = data.stats[0].val;
+        document.getElementById('studio-stat1-lbl').textContent = data.stats[0].lbl;
+        document.getElementById('studio-stat2-val').textContent = data.stats[1].val;
+        document.getElementById('studio-stat2-lbl').textContent = data.stats[1].lbl;
+        document.getElementById('studio-stat3-val').textContent = data.stats[2].val;
+        document.getElementById('studio-stat3-lbl').textContent = data.stats[2].lbl;
+      }
+
+      // Update Tools & Tags
+      const toolsPills = document.getElementById('studio-tools-pills');
+      const toolList = data.tools ? data.tools.split('•').map(s => s.trim()) : (data.tags || []);
+      toolsPills.innerHTML = toolList.map(t => `<span class="px-2.5 py-1 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-300 text-[10px] font-semibold">${t}</span>`).join('');
+
+      const tagsPills = document.getElementById('studio-tags-pills');
+      tagsPills.innerHTML = (data.tags || []).map(t => `<span class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-neutral-300 text-[10px] font-medium">${t}</span>`).join('');
+
+      // Setup Media Views according to mediaType (Video vs Graphics)
+      const videoWrap = document.getElementById('studio-video-player-wrap');
+      const videoIframe = document.getElementById('studio-video-iframe');
+      const graphicsWrap = document.getElementById('studio-graphics-lookbook-wrap');
+      const galleryGrid = document.getElementById('studio-gallery-grid');
+      const tabShowcase = document.getElementById('tab-btn-showcase');
+      const tabGallery = document.getElementById('tab-btn-gallery');
+      const tabComparison = document.getElementById('tab-btn-comparison');
+
+      // Populate Gallery / Style Frames Grid
+      const galleryImages = (data.gallery && data.gallery.length > 0) ? data.gallery : [{ url: data.thumb, caption: data.title }];
+      galleryGrid.innerHTML = galleryImages.map(img => `
+        <div class="group relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 bg-neutral-900 cursor-zoom-in" onclick="openLightbox('${img.url}', '${img.caption}')">
+          <img src="${img.url}" alt="${img.caption}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-3.5">
+            <span class="text-[11px] font-medium text-white">${img.caption}</span>
+            <i data-lucide="maximize-2" class="w-3.5 h-3.5 text-white/80"></i>
+          </div>
+        </div>
+      `).join('');
+
+      // Populate Before & After Comparison Images
+      const beforeImg = document.getElementById('studio-ba-before-img');
+      const afterImg = document.getElementById('studio-ba-after-img');
+      if (galleryImages.length >= 2) {
+        beforeImg.src = galleryImages[0].url;
+        afterImg.src = galleryImages[1].url;
+      } else {
+        beforeImg.src = data.thumb;
+        afterImg.src = data.thumb;
+      }
+
+      if (data.mediaType === 'video') {
+        document.getElementById('tab-label-showcase').textContent = 'Video Film';
+        document.getElementById('tab-label-gallery').textContent = 'Style Frames';
+        videoWrap.classList.remove('hidden');
+        graphicsWrap.classList.add('hidden');
+        if (data.embedUrl) {
+          videoIframe.src = data.embedUrl;
+        } else {
+          videoIframe.src = '';
+        }
+      } else {
+        // Graphics Mode
+        document.getElementById('tab-label-showcase').textContent = 'Lookbook';
+        document.getElementById('tab-label-gallery').textContent = 'Asset Collection';
+        videoWrap.classList.add('hidden');
+        graphicsWrap.classList.remove('hidden');
+        videoIframe.src = '';
+
+        // Setup Hero Graphic and Lookbook strip
+        const lookbookStrip = document.getElementById('studio-lookbook-strip');
+        const initialImg = galleryImages[0];
+        setStudioHeroGraphic(initialImg.url, initialImg.caption);
+
+        lookbookStrip.innerHTML = galleryImages.map((img, idx) => `
+          <button onclick="setStudioHeroGraphic('${img.url}', '${img.caption}')" class="lookbook-thumb relative flex-shrink-0 w-24 sm:w-28 aspect-[4/3] rounded-xl overflow-hidden border ${idx === 0 ? 'active' : 'border-white/10 opacity-70'} bg-neutral-900 group">
+            <img src="${img.url}" alt="${img.caption}" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors"></div>
+          </button>
+        `).join('');
+      }
+
+      // Reset to showcase tab
+      switchStudioMediaTab('showcase');
+
+      // Initialize interactive Before/After drag slider
+      initBeforeAfterSlider();
+
+      // Show Studio Overlay
+      const overlay = document.getElementById('case-studio-overlay');
+      overlay.style.display = 'flex';
+      overlay.scrollTop = 0;
+      document.getElementById('app').style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+
+    function closeCaseStudio() {
+      const overlay = document.getElementById('case-studio-overlay');
+      overlay.style.display = 'none';
+      document.getElementById('app').style.overflow = 'auto';
+      // Stop video playback by clearing iframe src
+      const iframe = document.getElementById('studio-video-iframe');
+      if (iframe) iframe.src = '';
+      activeStudioProjectId = null;
+    }
+
+    function navigateStudioProject(direction) {
+      const config = window.portfolioConfig || {};
+      const disabledCats = config.disabledCategories || [];
+      const disabledSubs = config.disabledSubcategories || [];
+      const activeItems = portfolioData.filter(p => p.enabled !== false && !disabledCats.includes(p.dept) && !disabledSubs.includes(p.sub));
+      if (!activeItems.length) return;
+
+      let currentIndex = activeItems.findIndex(p => p.id === activeStudioProjectId);
+      if (currentIndex === -1) currentIndex = 0;
+
+      let nextIndex = currentIndex + direction;
+      if (nextIndex < 0) nextIndex = activeItems.length - 1;
+      if (nextIndex >= activeItems.length) nextIndex = 0;
+
+      openCaseStudio(activeItems[nextIndex].id);
+    }
+
+    function switchStudioMediaTab(tabKey) {
+      activeStudioTabIndex = tabKey;
+      const views = {
+        showcase: document.getElementById('studio-view-showcase'),
+        gallery: document.getElementById('studio-view-gallery'),
+        comparison: document.getElementById('studio-view-comparison')
+      };
+      const buttons = {
+        showcase: document.getElementById('tab-btn-showcase'),
+        gallery: document.getElementById('tab-btn-gallery'),
+        comparison: document.getElementById('tab-btn-comparison')
+      };
+
+      Object.keys(views).forEach(k => {
+        if (views[k]) {
+          if (k === tabKey) {
+            views[k].classList.remove('hidden');
+          } else {
+            views[k].classList.add('hidden');
+          }
+        }
+        if (buttons[k]) {
+          if (k === tabKey) {
+            buttons[k].classList.add('active');
+          } else {
+            buttons[k].classList.remove('active');
+          }
+        }
+      });
+      lucide.createIcons();
+    }
+
+    function setStudioHeroGraphic(url, caption) {
+      currentHeroGraphicUrl = url;
+      currentHeroGraphicCaption = caption;
+      const heroImg = document.getElementById('studio-hero-img');
+      const heroCap = document.getElementById('studio-hero-img-caption');
+      if (heroImg) heroImg.src = url;
+      if (heroCap) heroCap.textContent = caption || 'Featured Artwork';
+
+      // Highlight active thumbnail in strip
+      document.querySelectorAll('#studio-lookbook-strip .lookbook-thumb').forEach(btn => {
+        const img = btn.querySelector('img');
+        if (img && img.src === url) {
+          btn.classList.add('active');
+          btn.classList.remove('opacity-70', 'border-white/10');
+        } else {
+          btn.classList.remove('active');
+          btn.classList.add('opacity-70', 'border-white/10');
+        }
+      });
+    }
+
+    function zoomCurrentHeroGraphic() {
+      if (currentHeroGraphicUrl) {
+        openLightbox(currentHeroGraphicUrl, currentHeroGraphicCaption);
+      }
+    }
+
+    function hireForCurrentProject() {
+      const data = portfolioData.find(p => p.id === activeStudioProjectId);
+      closeCaseStudio();
+      const contactSection = document.getElementById('contact');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Interactive Drag Slider for Before / After
+    function initBeforeAfterSlider() {
+      const container = document.getElementById('studio-ba-slider');
+      const beforeWrap = document.getElementById('studio-ba-before-wrap');
+      const handle = document.getElementById('studio-ba-handle');
+      if (!container || !beforeWrap || !handle) return;
+
+      let isDragging = false;
+      const setPosition = (clientX) => {
+        const rect = container.getBoundingClientRect();
+        let x = clientX - rect.left;
+        if (x < 0) x = 0;
+        if (x > rect.width) x = rect.width;
+        const percent = (x / rect.width) * 100;
+        beforeWrap.style.width = percent + '%';
+        handle.style.left = percent + '%';
+      };
+
+      container.onpointerdown = (e) => {
+        isDragging = true;
+        container.setPointerCapture(e.pointerId);
+        setPosition(e.clientX);
+      };
+      container.onpointermove = (e) => {
+        if (!isDragging) return;
+        setPosition(e.clientX);
+      };
+      container.onpointerup = (e) => {
+        isDragging = false;
+      };
+      container.onpointercancel = (e) => {
+        isDragging = false;
+      };
+    }
+
+    // Keyboard navigation: Escape to close, Left/Right arrows to navigate
+    document.addEventListener('keydown', (e) => {
+      const studioOverlay = document.getElementById('case-studio-overlay');
+      const isStudioOpen = studioOverlay && studioOverlay.style.display === 'flex';
+      const isLightboxOpen = !document.getElementById('lightbox-overlay').classList.contains('hidden');
+
+      if (isLightboxOpen && e.key === 'Escape') {
+        closeLightbox();
+        return;
+      }
+
+      if (isStudioOpen) {
+        if (e.key === 'Escape') {
+          closeCaseStudio();
+        } else if (e.key === 'ArrowLeft') {
+          navigateStudioProject(-1);
+        } else if (e.key === 'ArrowRight') {
+          navigateStudioProject(1);
+        }
+      }
+    });
+
+    // =========================================================================
+    // PRESERVED LEGACY MODAL LOGIC (CLASSIC POP-UP)
+    // =========================================================================
+    function openCaseModalLegacy(projectId) {
       const data = portfolioData.find(p => p.id === projectId);
       if (!data) return;
 
@@ -2465,7 +3102,7 @@
       lucide.createIcons();
     }
 
-    function closeCaseModal() {
+    function closeCaseModalLegacy() {
       document.getElementById('case-modal-overlay').style.display = 'none';
       document.getElementById('app').style.overflow = 'auto';
       // Stop video playback by clearing media stage iframe

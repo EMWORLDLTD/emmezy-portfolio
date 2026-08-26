@@ -33,6 +33,7 @@ window.portfolioConfig = {
   "disabledSections": [],
   "disabledCategories": [],
   "disabledSubcategories": [],
+  "caseStudyView": "cinematic",
   "hero": {
     "tag": "✦ Elevating Brand Quality & Conversion",
     "title": "Motion Graphics & Video Content That <span class=\"gradient-text\">Drive Action.</span>",
