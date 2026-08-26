@@ -528,7 +528,7 @@
     }
 
     /* === MERGED DESIGN SYSTEM (Option 2 + Option 3) === */
-
+    
     /* 1. Film Grain Overlay */
     .film-grain {
       position: fixed;
@@ -543,31 +543,12 @@
     }
 
     @keyframes grainJitter {
-
-      0%,
-      100% {
-        transform: translate(0, 0);
-      }
-
-      10% {
-        transform: translate(-1%, -1%);
-      }
-
-      30% {
-        transform: translate(1%, -2%);
-      }
-
-      50% {
-        transform: translate(-2%, 1%);
-      }
-
-      70% {
-        transform: translate(2%, 2%);
-      }
-
-      90% {
-        transform: translate(-1%, 2%);
-      }
+      0%, 100% { transform: translate(0, 0); }
+      10% { transform: translate(-1%, -1%); }
+      30% { transform: translate(1%, -2%); }
+      50% { transform: translate(-2%, 1%); }
+      70% { transform: translate(2%, 2%); }
+      90% { transform: translate(-1%, 2%); }
     }
 
     /* 2. Timeline Ping-Pong Playhead Line */
@@ -604,51 +585,46 @@
       0% {
         left: -180px;
       }
-
       50% {
         left: 100%;
       }
-
       100% {
         left: -180px;
       }
     }
 
     /* 3. Magnetic Mouse Spotlight card glow (service cores & case studies) */
-    .case-card,
-    .service-core {
+    .case-card, .service-core {
       position: relative;
       overflow: hidden;
     }
 
-    .case-card::before,
-    .service-core::before {
+    .case-card::before, .service-core::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(300px circle at var(--mouse-x, 0) var(--mouse-y, 0),
-          rgba(167, 139, 250, 0.12),
-          transparent 80%);
+      background: radial-gradient(
+        300px circle at var(--mouse-x, 0) var(--mouse-y, 0),
+        rgba(167, 139, 250, 0.12),
+        transparent 80%
+      );
       z-index: 1;
       pointer-events: none;
       opacity: 0;
       transition: opacity 0.4s ease;
     }
 
-    .case-card:hover::before,
-    .service-core:hover::before {
+    .case-card:hover::before, .service-core:hover::before {
       opacity: 1;
     }
 
     /* 4. Cohesive interactive hover/click colors for buttons using Option 2 gradient */
-    .btn-primary:hover,
-    .orb-primary-btn:hover {
+    .btn-primary:hover, .orb-primary-btn:hover {
       background: linear-gradient(135deg, #a78bfa, #fbbf24) !important;
       box-shadow: 0 8px 25px rgba(251, 191, 36, 0.35) !important;
     }
 
-    .btn-primary:active,
-    .orb-primary-btn:active {
+    .btn-primary:active, .orb-primary-btn:active {
       background: linear-gradient(135deg, #fbbf24, #a78bfa) !important;
       transform: scale(0.95) !important;
     }
@@ -664,7 +640,7 @@
       opacity: 0;
       transition: opacity 0.4s ease;
     }
-
+    
     .profile-glow-border rect {
       filter: drop-shadow(0 0 5px rgba(167, 139, 250, 0.7));
     }
@@ -683,7 +659,6 @@
       0% {
         stroke-dashoffset: var(--dash-total, 500);
       }
-
       100% {
         stroke-dashoffset: 0;
       }
@@ -692,35 +667,19 @@
     .case-flash-rect {
       opacity: 0;
     }
-
     @keyframes caseFlash {
-
-      0%,
-      100% {
-        opacity: 0;
-      }
-
-      25%,
-      75% {
-        opacity: 1;
-      }
-
-      50% {
-        opacity: 0;
-      }
+      0%, 100% { opacity: 0; }
+      25%, 75% { opacity: 1; }
+      50% { opacity: 0; }
     }
-
     .case-glow-border.is-flashing .case-flash-rect {
       animation: caseFlash 1.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     @keyframes borderFadeOut {
-
-      0%,
-      72% {
+      0%, 72% {
         opacity: 1;
       }
-
       100% {
         opacity: 0;
       }
@@ -783,13 +742,7 @@
     body {
       transition: background 0.4s ease, background-color 0.4s ease, color 0.4s ease;
     }
-
-    .modal-card,
-    .gateway-container,
-    .form-input,
-    .nav-link,
-    .custom-cursor,
-    select option {
+    .modal-card, .gateway-container, .form-input, .nav-link, .custom-cursor, select option {
       transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
     }
 
@@ -797,21 +750,17 @@
     body.light .text-white {
       color: #0f172a !important;
     }
-
     body.light .text-gray-300,
     body.light .text-gray-400,
     body.light .text-neutral-400,
     body.light .text-zinc-400,
     body.light .text-gray-500 {
-      color: #475569 !important;
-      /* Tailwind slate-600 */
+      color: #475569 !important; /* Tailwind slate-600 */
     }
-
     body.light .text-neutral-300 {
-      color: #334155 !important;
-      /* Tailwind slate-700 */
+      color: #334155 !important; /* Tailwind slate-700 */
     }
-
+    
     /* Ensure white text inside buttons, badges, and playheads stays white */
     body.light .btn-primary,
     body.light .btn-primary *,
@@ -827,61 +776,50 @@
     body.light .badge * {
       color: #ffffff !important;
     }
-
+    
     /* Border overrides for light mode */
     body.light .border-white\/10 {
       border-color: rgba(15, 23, 42, 0.1) !important;
     }
-
     body.light .border-white\/5 {
       border-color: rgba(15, 23, 42, 0.05) !important;
     }
-
     body.light .border-white\/20 {
       border-color: rgba(15, 23, 42, 0.15) !important;
     }
-
     body.light .border-white\/40 {
       border-color: rgba(15, 23, 42, 0.25) !important;
     }
-
+    
     /* Background overrides for light mode */
     body.light .bg-white\/\[0\.02\] {
       background-color: rgba(15, 23, 42, 0.02) !important;
     }
-
     body.light .bg-white\/\[0\.03\] {
       background-color: rgba(15, 23, 42, 0.03) !important;
     }
-
     body.light .bg-white\/5 {
       background-color: rgba(15, 23, 42, 0.04) !important;
     }
-
     body.light .bg-white\/10 {
       background-color: rgba(15, 23, 42, 0.06) !important;
     }
-
     body.light .hover\:bg-white\/10:hover {
       background-color: rgba(15, 23, 42, 0.08) !important;
     }
-
     body.light .hover\:bg-white\/25:hover {
       background-color: rgba(15, 23, 42, 0.12) !important;
     }
-
     body.light .hover\:border-white\/40:hover {
       border-color: rgba(15, 23, 42, 0.25) !important;
     }
-
     body.light .bg-neutral-900 {
       background-color: #ffffff !important;
     }
-
     body.light .bg-black\/90 {
       background-color: rgba(248, 250, 252, 0.95) !important;
     }
-
+    
     /* Glowing radial mesh background for light mode */
     body.light::before {
       background: radial-gradient(circle at 20% 50%, rgba(124, 58, 237, 0.04), transparent 50%),
@@ -892,7 +830,6 @@
     body.light .nav-link {
       color: #475569 !important;
     }
-
     body.light .nav-link:hover {
       color: #0f172a !important;
     }
@@ -903,7 +840,6 @@
       border: 1px solid rgba(139, 92, 246, 0.2) !important;
       box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15) !important;
     }
-
     body.light .modal-card::-webkit-scrollbar-track {
       background: rgba(0, 0, 0, 0.02) !important;
     }
@@ -914,17 +850,15 @@
       border: 1px solid rgba(139, 92, 246, 0.2) !important;
       color: #0f172a !important;
     }
-
     body.light .form-input:focus {
       background: rgba(139, 92, 246, 0.02) !important;
       border-color: #6d28d9 !important;
     }
-
     body.light select option {
       background-color: #ffffff !important;
       color: #0f172a !important;
     }
-
+    
     /* Timeline Divider background line path */
     body.light .timeline-playhead-line {
       background: linear-gradient(90deg, transparent 0%, rgba(15, 23, 42, 0.08) 20%, rgba(15, 23, 42, 0.08) 80%, transparent 100%) !important;
@@ -936,21 +870,17 @@
       border: 1px solid rgba(15, 23, 42, 0.08) !important;
       box-shadow: 0 4px 20px rgba(15, 23, 42, 0.02) !important;
     }
-
     body.light .case-card:hover {
       border-color: rgba(139, 92, 246, 0.25) !important;
       box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08) !important;
     }
-
     body.light .metric-box {
       background: rgba(139, 92, 246, 0.04) !important;
       border: 1px solid rgba(139, 92, 246, 0.15) !important;
     }
-
     body.light .metric-box p {
       color: #475569 !important;
     }
-
     body.light .tag-pill {
       border: 1px solid rgba(15, 23, 42, 0.08) !important;
       color: #475569 !important;
@@ -961,21 +891,17 @@
     body.light #testimonials {
       background: rgba(15, 23, 42, 0.03) !important;
     }
-
     body.light .glass-surface {
       background: rgba(255, 255, 255, 0.7) !important;
       border: 1px solid rgba(139, 92, 246, 0.2) !important;
       box-shadow: 0 8px 32px rgba(15, 23, 42, 0.05) !important;
     }
-
     body.light #testimonials p {
       color: #334155 !important;
     }
-
     body.light #testimonials .testimonial-name {
       color: #0f172a !important;
     }
-
     body.light #testimonials .testimonial-role {
       color: #475569 !important;
     }
@@ -985,16 +911,13 @@
       background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(139, 92, 246, 0.02)) !important;
       border: 1px solid rgba(139, 92, 246, 0.2) !important;
     }
-
     body.light .service-support {
       background: rgba(0, 0, 0, 0.02) !important;
       border: 1px solid rgba(15, 23, 42, 0.08) !important;
     }
-
     body.light .service-support:hover {
       background: rgba(0, 0, 0, 0.03) !important;
     }
-
     body.light .text-gray-200 {
       color: #0f172a !important;
     }
@@ -1005,19 +928,15 @@
       border: 1px solid rgba(139, 92, 246, 0.2) !important;
       box-shadow: 0 20px 80px rgba(15, 23, 42, 0.05) !important;
     }
-
     body.light .gateway-container #contact-heading {
       color: #0f172a !important;
     }
-
     body.light .gateway-container #contact-description {
       color: #475569 !important;
     }
-
     body.light .gateway-container #contact-email-link {
       color: #6d28d9 !important;
     }
-
     body.light .gateway-container #contact-email-link strong {
       color: #0f172a !important;
     }
@@ -1029,21 +948,18 @@
       border-color: #6d28d9 !important;
       color: #ffffff !important;
     }
-
     body.light .port-tab-primary:not([class*="bg-purple-500/10"]),
     body.light .port-tab-secondary:not([class*="bg-purple-500/10"]) {
       color: #475569 !important;
       border-color: rgba(15, 23, 42, 0.15) !important;
       background-color: rgba(15, 23, 42, 0.02) !important;
     }
-
     body.light .port-tab-primary:not([class*="bg-purple-500/10"]):hover,
     body.light .port-tab-secondary:not([class*="bg-purple-500/10"]):hover {
       color: #0f172a !important;
       background-color: rgba(15, 23, 42, 0.05) !important;
       border-color: rgba(15, 23, 42, 0.25) !important;
     }
-
     body.light #mobile-menu {
       background: rgba(248, 250, 252, 0.95) !important;
       border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
@@ -1075,61 +991,40 @@
       transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: transform, opacity;
     }
-
     .reveal-left {
       opacity: 0 !important;
       transform: translateX(-40px);
       transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: transform, opacity;
     }
-
     .reveal-right {
       opacity: 0 !important;
       transform: translateX(40px);
       transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: transform, opacity;
     }
-
     .reveal-scale {
       opacity: 0 !important;
       transform: scale(0.93) translateY(20px);
       transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: transform, opacity;
     }
-
+    
     .reveal-visible {
       opacity: 1 !important;
       transform: translateY(0) translateX(0) scale(1) !important;
     }
 
     /* Sequence delays */
-    .delay-100 {
-      transition-delay: 100ms;
-    }
-
-    .delay-200 {
-      transition-delay: 200ms;
-    }
-
-    .delay-300 {
-      transition-delay: 300ms;
-    }
-
-    .delay-400 {
-      transition-delay: 400ms;
-    }
-
-    .delay-500 {
-      transition-delay: 500ms;
-    }
-
-    .delay-600 {
-      transition-delay: 600ms;
-    }
+    .delay-100 { transition-delay: 100ms; }
+    .delay-200 { transition-delay: 200ms; }
+    .delay-300 { transition-delay: 300ms; }
+    .delay-400 { transition-delay: 400ms; }
+    .delay-500 { transition-delay: 500ms; }
+    .delay-600 { transition-delay: 600ms; }
 
     /* Cohesive card 3D tilt transform transition smooth reset */
-    .case-card,
-    .service-core {
+    .case-card, .service-core {
       transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
     }
 
@@ -1140,7 +1035,13 @@
       width: 100%;
       height: 100%;
       background: #0d0d18;
-      clip-path: inset(calc(20% * (1 - var(--aperture-progress, 0))) calc(24% * (1 - var(--aperture-progress, 0))) calc(20% * (1 - var(--aperture-progress, 0))) calc(24% * (1 - var(--aperture-progress, 0))) round calc(32px * (1 - var(--aperture-progress, 0))));
+      clip-path: inset(
+        calc(20% * (1 - var(--aperture-progress, 0))) 
+        calc(24% * (1 - var(--aperture-progress, 0))) 
+        calc(20% * (1 - var(--aperture-progress, 0))) 
+        calc(24% * (1 - var(--aperture-progress, 0))) 
+        round calc(32px * (1 - var(--aperture-progress, 0)))
+      );
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1159,8 +1060,8 @@
       border: 1px solid rgba(167, 139, 250, calc(0.3 * (1 - var(--aperture-progress, 0))));
       border-radius: calc(32px * (1 - var(--aperture-progress, 0)));
       pointer-events: none;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, calc(0.6 * (1 - var(--aperture-progress, 0)))),
-        0 0 40px rgba(167, 139, 250, calc(0.15 * (1 - var(--aperture-progress, 0))));
+      box-shadow: 0 25px 60px rgba(0, 0, 0, calc(0.6 * (1 - var(--aperture-progress, 0)))), 
+                  0 0 40px rgba(167, 139, 250, calc(0.15 * (1 - var(--aperture-progress, 0))));
       z-index: 15;
       will-change: top, bottom, left, right, border-radius, border-color, box-shadow;
     }
@@ -1176,22 +1077,18 @@
     body.light #aperture-card .gradient-text {
       color: #ffffff !important;
     }
-
     body.light #aperture-card .gradient-text {
       background: linear-gradient(135deg, #a78bfa, #fbbf24);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-
     body.light #aperture-card .text-gray-400 {
       color: #9ca3af !important;
     }
-
     body.light #aperture-card .text-purple-400\/40 {
       color: rgba(167, 139, 250, 0.4) !important;
     }
-
     body.light #aperture-card .text-purple-400\/80 {
       color: rgba(167, 139, 250, 0.8) !important;
     }
@@ -1209,12 +1106,12 @@
 <body class="h-full">
   <div class="scroll-progress-bar" id="scrollProgress"></div>
   <script>
-      (function () {
-        const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
-        if (savedTheme === 'light') {
-          document.body.classList.add('light');
-        }
-      })();
+    (function() {
+      const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
+      if (savedTheme === 'light') {
+        document.body.classList.add('light');
+      }
+    })();
   </script>
 
   <!-- Merged Design: Film Grain Overlay Element -->
@@ -1256,16 +1153,13 @@
           </div>
 
           <!-- Glassmorphic Theme Toggle Button -->
-          <button id="theme-toggle"
-            class="text-gray-300 hover:text-white transition p-2 rounded-full hover:bg-white/10 flex items-center justify-center border border-white/5 bg-white/[0.02]"
-            aria-label="Toggle Theme">
+          <button id="theme-toggle" class="text-gray-300 hover:text-white transition p-2 rounded-full hover:bg-white/10 flex items-center justify-center border border-white/5 bg-white/[0.02]" aria-label="Toggle Theme">
             <i data-lucide="sun" id="theme-icon-sun" class="w-5 h-5 block"></i>
             <i data-lucide="moon" id="theme-icon-moon" class="w-5 h-5 hidden"></i>
           </button>
 
           <div class="hidden md:block">
-            <a href="#contact" class="btn-primary text-sm px-5 py-2 rounded-full text-white font-medium">Get In
-              Touch</a>
+            <a href="#contact" class="btn-primary text-sm px-5 py-2 rounded-full text-white font-medium">Get In Touch</a>
           </div>
 
           <button id="mobile-toggle" class="md:hidden text-white">
@@ -1325,14 +1219,10 @@
           <div class="relative w-[80%] mx-auto">
 
             <div class="rounded-3xl overflow-hidden relative z-10 w-full border border-white/10"
-              style="aspect-ratio:3/4;">
+               style="aspect-ratio:3/4;">
               <!-- Glowing SVG Trace Border -->
-              <svg class="profile-glow-border absolute inset-0 w-full h-full pointer-events-none z-20"
-                viewBox="0 0 100 133.3" preserveAspectRatio="none">
-                <path
-                  d="M 0.5 124.8 L 0.5 8.5 A 8 8 0 0 1 8.5 0.5 L 91.5 0.5 A 8 8 0 0 1 99.5 8.5 L 99.5 124.8 A 8 8 0 0 1 91.5 132.8 L 8.5 132.8 A 8 8 0 0 1 0.5 124.8 Z"
-                  fill="none" stroke="url(#glowGradHero)" stroke-width="1.5" vector-effect="non-scaling-stroke"
-                  stroke-dasharray="450" stroke-dashoffset="450" style="--dash-total: 450;" />
+              <svg class="profile-glow-border absolute inset-0 w-full h-full pointer-events-none z-20" viewBox="0 0 100 133.3" preserveAspectRatio="none">
+                <path d="M 0.5 124.8 L 0.5 8.5 A 8 8 0 0 1 8.5 0.5 L 91.5 0.5 A 8 8 0 0 1 99.5 8.5 L 99.5 124.8 A 8 8 0 0 1 91.5 132.8 L 8.5 132.8 A 8 8 0 0 1 0.5 124.8 Z" fill="none" stroke="url(#glowGradHero)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-dasharray="450" stroke-dashoffset="450" style="--dash-total: 450;" />
                 <defs>
                   <linearGradient id="glowGradHero" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="#a78bfa" />
@@ -1345,8 +1235,7 @@
                 draggable="false" style="user-select: none; -webkit-user-drag: none;">
             </div>
 
-            <div id="hero-stat1" class="stat-badge"
-              style="top:15%; left:-20%; animation: floatVertical 4s ease-in-out infinite 0.3s;">
+            <div id="hero-stat1" class="stat-badge" style="top:15%; left:-20%; animation: floatVertical 4s ease-in-out infinite 0.3s;">
               <div class="text-white text-xl font-bold">60<span class="symbol-gradient">+</span></div>
               <div class="text-xs text-gray-400">Projects Globally</div>
             </div>
@@ -1356,8 +1245,7 @@
               <div class="text-xs text-gray-400">Satisfaction</div>
             </div>
 
-            <div id="hero-name-card"
-              class="absolute -bottom-8 left-0 right-0 mx-auto w-[110%] rounded-2xl p-5 text-center z-30"
+            <div id="hero-name-card" class="absolute -bottom-8 left-0 right-0 mx-auto w-[110%] rounded-2xl p-5 text-center z-30"
               style="margin-left:-5%; animation: floatTilt 4s ease-in-out infinite; background:rgba(20,20,30,0.85); border:1px solid rgba(139,92,246,0.2); backdrop-filter:blur(20px);">
               <div class="font-heading font-bold text-lg text-white">Olaitan Emmanuel</div>
               <div class="text-sm text-gray-400 mt-1">Motion Designer &amp; Video Editor</div>
@@ -1377,8 +1265,7 @@
     <!-- Dynamic Showreel Video Player Section -->
     <section id="showreel" class="max-w-5xl mx-auto px-6 py-12 relative z-10 hidden">
       <div class="relative w-full overflow-hidden rounded-3xl border border-white/10" style="padding-top: 56.25%;">
-        <iframe id="showreel-iframe" class="absolute top-0 left-0 w-full h-full" src="" frameborder="0"
-          allow="autoplay; fullscreen" allowfullscreen></iframe>
+        <iframe id="showreel-iframe" class="absolute top-0 left-0 w-full h-full" src="" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
       </div>
     </section>
 
@@ -1387,8 +1274,7 @@
         <div
           class="absolute inset-0 bg-gradient-to-r from-transparent via-purple-900/10 to-transparent pointer-events-none">
         </div>
-        <h2 id="intro-quote-heading"
-          class="font-heading font-bold text-2xl sm:text-3xl text-white mb-6 tracking-normal">
+        <h2 id="intro-quote-heading" class="font-heading font-bold text-2xl sm:text-3xl text-white mb-6 tracking-normal">
           Great design catches the eye.
           <span class="text-purple-400">Motion holds the attention.</span>
         </h2>
@@ -1451,39 +1337,31 @@
     </section>
 
     <!-- Cinematic Viewport Masking Transition -->
-    <section id="aperture-reveal" class="relative -mt-40 -mb-16 w-full overflow-visible" style="height: 160vh;">
+    <section id="aperture-reveal" class="relative w-full overflow-visible" style="height: 160vh;">
       <div class="aperture-sticky sticky top-0 left-0 w-full h-screen overflow-hidden flex items-center justify-center">
         <!-- The Floating Window Border -->
         <div id="aperture-border"></div>
-
+        
         <!-- The Masked Window Card -->
         <div id="aperture-card">
           <!-- Rich Motion Teaser Background -->
-          <div class="absolute inset-0 z-0 bg-cover bg-center select-none pointer-events-none aperture-parallax"
-            style="background: radial-gradient(circle at 30% 20%, rgba(139,92,246,0.2) 0%, transparent 60%), radial-gradient(circle at 70% 80%, rgba(245,158,11,0.15) 0%, transparent 60%), #0a0a14;">
+          <div class="absolute inset-0 z-0 bg-cover bg-center select-none pointer-events-none aperture-parallax" style="background: radial-gradient(circle at 30% 20%, rgba(139,92,246,0.2) 0%, transparent 60%), radial-gradient(circle at 70% 80%, rgba(245,158,11,0.15) 0%, transparent 60%), #0a0a14;">
             <!-- Tech Grid / Focal Guidelines overlay -->
-            <div
-              class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:32px_32px] opacity-60">
-            </div>
-
+            <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:32px_32px] opacity-60"></div>
+            
             <!-- Focus corner brackets -->
             <div class="absolute top-8 left-8 w-6 h-6 border-t-2 border-l-2 border-purple-500/30"></div>
             <div class="absolute top-8 right-8 w-6 h-6 border-t-2 border-r-2 border-purple-500/30"></div>
             <div class="absolute bottom-8 left-8 w-6 h-6 border-b-2 border-l-2 border-purple-500/30"></div>
             <div class="absolute bottom-8 right-8 w-6 h-6 border-b-2 border-r-2 border-purple-500/30"></div>
-
+            
             <!-- Animated glowing energy core -->
-            <div
-              class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-600/10 rounded-full blur-[100px] animate-pulse">
-            </div>
-            <div
-              class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-amber-500/10 rounded-full blur-[80px] animate-pulse"
-              style="animation-delay: 500ms;"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-600/10 rounded-full blur-[100px] animate-pulse"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-amber-500/10 rounded-full blur-[80px] animate-pulse" style="animation-delay: 500ms;"></div>
           </div>
-
+          
           <!-- Viewport Info HUD overlay -->
-          <div
-            class="absolute inset-x-0 top-8 px-8 flex -mt-16 justify-between items-center text-[10px] font-mono tracking-widest text-purple-400/40 z-10 pointer-events-none select-none">
+          <div class="absolute inset-x-0 top-8 px-8 flex justify-between items-center text-[10px] font-mono tracking-widest text-purple-400/40 z-10 pointer-events-none select-none">
             <div class="flex items-center gap-2">
               <span class="w-1.5 h-1.5 bg-purple-500 rounded-full animate-ping"></span>
               <span>REC [RAW]</span>
@@ -1491,22 +1369,20 @@
             <div>00:01:45:12</div>
             <div>SHR_24FPS</div>
           </div>
-
+          
           <!-- Viewport Centered Text Content -->
-          <div class="relative z-10 text-center px-6 max-w-x  l pointer-events-none select-none">
-            <span class="text-xs font-bold tracking-[0.2em] uppercase text-purple-400/80 mb-3 block">Next
-              Experience</span>
+          <div class="relative z-10 text-center px-6 max-w-xl pointer-events-none select-none">
+            <span class="text-xs font-bold tracking-[0.2em] uppercase text-purple-400/80 mb-3 block">Next Experience</span>
             <h2 class="font-heading font-extrabold text-4xl sm:text-5xl text-white tracking-tight mb-4 leading-none">
-              Entering the <br /><span class="gradient-text">Motion Space</span>
+              Entering the <br/><span class="gradient-text">Motion Space</span>
             </h2>
             <p class="text-gray-400 text-sm leading-relaxed max-w-sm mx-auto">
               Peeking through the creative lens to reveal how motion shapes brand experiences.
             </p>
           </div>
-
+          
           <!-- Bottom Metadata HUD -->
-          <div
-            class="absolute inset-x-0 bottom-8 px-8 flex justify-center items-center text-[10px] font-mono tracking-widest text-purple-400/40 z-10 pointer-events-none select-none">
+          <div class="absolute inset-x-0 bottom-8 px-8 flex justify-center items-center text-[10px] font-mono tracking-widest text-purple-400/40 z-10 pointer-events-none select-none">
             <div class="flex items-center gap-2">
               <span class="w-1.5 h-1.5 bg-purple-500/60 rounded-full animate-ping"></span>
               <span>SCROLL TO ENTER</span>
@@ -1644,16 +1520,11 @@
     <section id="about" class="w-full py-24">
       <div class="max-w-5xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-16">
         <div class="flex-shrink-0 relative">
-          <div
-            class="w-64 h-72 rounded-3xl overflow-hidden flex items-center justify-center relative border border-white/10"
+          <div class="w-64 h-72 rounded-3xl overflow-hidden flex items-center justify-center relative border border-white/10"
             style="background:linear-gradient(135deg,#1a1a2e,#16162a);">
             <!-- Glowing SVG Trace Border -->
-            <svg class="profile-glow-border absolute inset-0 w-full h-full pointer-events-none z-20"
-              viewBox="0 0 100 112.5" preserveAspectRatio="none">
-              <path
-                d="M 0.5 102.0 L 0.5 10.5 A 10 10 0 0 1 10.5 0.5 L 89.5 0.5 A 10 10 0 0 1 99.5 10.5 L 99.5 102.0 A 10 10 0 0 1 89.5 112.0 L 10.5 112.0 A 10 10 0 0 1 0.5 102.0 Z"
-                fill="none" stroke="url(#glowGradAbout)" stroke-width="1.5" vector-effect="non-scaling-stroke"
-                stroke-dasharray="405" stroke-dashoffset="405" style="--dash-total: 405;" />
+            <svg class="profile-glow-border absolute inset-0 w-full h-full pointer-events-none z-20" viewBox="0 0 100 112.5" preserveAspectRatio="none">
+              <path d="M 0.5 102.0 L 0.5 10.5 A 10 10 0 0 1 10.5 0.5 L 89.5 0.5 A 10 10 0 0 1 99.5 10.5 L 99.5 102.0 A 10 10 0 0 1 89.5 112.0 L 10.5 112.0 A 10 10 0 0 1 0.5 102.0 Z" fill="none" stroke="url(#glowGradAbout)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-dasharray="405" stroke-dashoffset="405" style="--dash-total: 405;" />
               <defs>
                 <linearGradient id="glowGradAbout" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stop-color="#a78bfa" />
@@ -1665,8 +1536,7 @@
               class="w-full h-full object-cover" loading="lazy" oncontextmenu="return false" draggable="false"
               style="user-select: none; -webkit-user-drag: none;" />
           </div>
-          <div id="about-experience"
-            class="absolute -bottom-4 -right-4 w-24 h-24 rounded-2xl flex items-center justify-center z-30"
+          <div id="about-experience" class="absolute -bottom-4 -right-4 w-24 h-24 rounded-2xl flex items-center justify-center z-30"
             style="background:linear-gradient(135deg,var(--accent),var(--accent2));">
             <span class="font-heading font-extrabold text-white text-lg">5+<br /><span
                 class="text-[10px] font-normal">YRS</span></span>
@@ -1739,23 +1609,20 @@
           <!-- Left Info Column -->
           <div class="lg:col-span-5 text-left">
             <span class="text-xs font-bold tracking-widest uppercase text-purple-400 mb-6 block">— Let's Connect</span>
-            <h2 id="contact-heading"
-              class="font-heading font-bold text-3xl sm:text-4xl leading-snug tracking-normal text-white">
+            <h2 id="contact-heading" class="font-heading font-bold text-3xl sm:text-4xl leading-snug tracking-normal text-white">
               Make Your Brand <br /><span class="gradient-text">Unforgettable.</span>
             </h2>
             <p id="contact-description" class="text-gray-400 mt-6 text-sm leading-relaxed max-w-sm">
-              Your product deserves to be understood in seconds. Let's build a custom motion graphic or cinematic video
-              edit that sells for you.
+              Your product deserves to be understood in seconds. Let's build a custom motion graphic or cinematic video edit that sells for you.
             </p>
-
+            
             <div class="mt-8 space-y-4">
-              <a id="contact-booking-btn" href="https://cal.com/olaitan-emmanuel/30min" target="_blank"
-                class="btn-primary inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-white font-semibold text-xs uppercase tracking-wider shadow-lg hover:scale-105 transition-all">
+              <a id="contact-booking-btn" href="https://cal.com/olaitan-emmanuel/30min" target="_blank" 
+                 class="btn-primary inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-white font-semibold text-xs uppercase tracking-wider shadow-lg hover:scale-105 transition-all">
                 📅 Book a Discovery Call
               </a>
               <div class="pt-2">
-                <a id="contact-email-link" href="mailto:olaitanemmanuel21@gmail.com"
-                  class="text-xs text-purple-300 hover:text-white transition flex items-center gap-2">
+                <a id="contact-email-link" href="mailto:olaitanemmanuel21@gmail.com" class="text-xs text-purple-300 hover:text-white transition flex items-center gap-2">
                   ✉️ Or Email Me: <strong class="text-white">olaitanemmanuel21@gmail.com</strong>
                 </a>
               </div>
@@ -1763,16 +1630,13 @@
 
             <!-- Social Links -->
             <div class="flex gap-3 mt-10">
-              <a id="contact-instagram" href="#"
-                class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
-                style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i
-                  data-lucide="instagram" style="width:16px;height:16px;color:var(--accent);"></i></a>
-              <a id="contact-linkedin" href="#"
-                class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
-                style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i
-                  data-lucide="linkedin" style="width:16px;height:16px;color:var(--accent);"></i></a>
-              <a id="contact-youtube" href="#"
-                class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
+              <a id="contact-instagram" href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
+                style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="instagram"
+                  style="width:16px;height:16px;color:var(--accent);"></i></a>
+              <a id="contact-linkedin" href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
+                style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="linkedin"
+                  style="width:16px;height:16px;color:var(--accent);"></i></a>
+              <a id="contact-youtube" href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
                 style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="youtube"
                   style="width:16px;height:16px;color:var(--accent);"></i></a>
             </div>
@@ -1781,13 +1645,11 @@
           <div class="lg:col-span-7 bg-white/[0.02] border border-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8">
             <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-4">Send a Message</span>
             <div id="form-container">
-              <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" class="space-y-4"
-                onsubmit="handleFormSubmit(event)">
-                <input id="contact-web3forms-key" type="hidden" name="access_key"
-                  value="c1a747ea-7db2-4483-abc9-739a57ef6e0c">
+              <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" class="space-y-4" onsubmit="handleFormSubmit(event)">
+                <input id="contact-web3forms-key" type="hidden" name="access_key" value="c1a747ea-7db2-4483-abc9-739a57ef6e0c">
                 <input type="hidden" name="subject" value="New Portfolio Contact Form Submission">
                 <input type="hidden" name="from_name" value="Portfolio Website Notification">
-
+                
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label class="form-label">Name</label>
@@ -1810,11 +1672,9 @@
                 </div>
                 <div>
                   <label class="form-label">Message</label>
-                  <textarea name="message" rows="4" placeholder="Tell me about your project, goals, and timeline..."
-                    class="form-input resize-none" required></textarea>
+                  <textarea name="message" rows="4" placeholder="Tell me about your project, goals, and timeline..." class="form-input resize-none" required></textarea>
                 </div>
-                <button type="submit"
-                  class="btn-primary w-full py-3.5 rounded-xl text-white font-bold text-xs uppercase tracking-wider shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all">
+                <button type="submit" class="btn-primary w-full py-3.5 rounded-xl text-white font-bold text-xs uppercase tracking-wider shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all">
                   Send Message ✦
                 </button>
               </form>
@@ -1901,36 +1761,27 @@
           Key Performance Results
         </h3>
         <div class="grid grid-cols-3 gap-2 sm:gap-4 text-center">
-          <div
-            class="p-2 sm:p-4 bg-purple-900/10 rounded-xl border border-purple-500/10 backdrop-blur-sm flex flex-col justify-center min-h-[64px] sm:min-h-[90px]">
-            <div id="stat-1-val"
-              class="text-sm xs:text-base sm:text-2xl md:text-3xl font-heading font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
+          <div class="p-2 sm:p-4 bg-purple-900/10 rounded-xl border border-purple-500/10 backdrop-blur-sm flex flex-col justify-center min-h-[64px] sm:min-h-[90px]">
+            <div id="stat-1-val" class="text-sm xs:text-base sm:text-2xl md:text-3xl font-heading font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
               0%
             </div>
-            <div id="stat-1-lbl"
-              class="text-[8px] xs:text-[9px] text-neutral-400 uppercase tracking-wider mt-1 leading-normal">
+            <div id="stat-1-lbl" class="text-[8px] xs:text-[9px] text-neutral-400 uppercase tracking-wider mt-1 leading-normal">
               Metric
             </div>
           </div>
-          <div
-            class="p-2 sm:p-4 bg-purple-900/10 rounded-xl border border-purple-500/10 backdrop-blur-sm flex flex-col justify-center min-h-[64px] sm:min-h-[90px]">
-            <div id="stat-2-val"
-              class="text-sm xs:text-base sm:text-2xl md:text-3xl font-heading font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
+          <div class="p-2 sm:p-4 bg-purple-900/10 rounded-xl border border-purple-500/10 backdrop-blur-sm flex flex-col justify-center min-h-[64px] sm:min-h-[90px]">
+            <div id="stat-2-val" class="text-sm xs:text-base sm:text-2xl md:text-3xl font-heading font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
               0%
             </div>
-            <div id="stat-2-lbl"
-              class="text-[8px] xs:text-[9px] text-neutral-400 uppercase tracking-wider mt-1 leading-normal">
+            <div id="stat-2-lbl" class="text-[8px] xs:text-[9px] text-neutral-400 uppercase tracking-wider mt-1 leading-normal">
               Metric
             </div>
           </div>
-          <div
-            class="p-2 sm:p-4 bg-purple-900/10 rounded-xl border border-purple-500/10 backdrop-blur-sm flex flex-col justify-center min-h-[64px] sm:min-h-[90px]">
-            <div id="stat-3-val"
-              class="text-sm xs:text-base sm:text-2xl md:text-3xl font-heading font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
+          <div class="p-2 sm:p-4 bg-purple-900/10 rounded-xl border border-purple-500/10 backdrop-blur-sm flex flex-col justify-center min-h-[64px] sm:min-h-[90px]">
+            <div id="stat-3-val" class="text-sm xs:text-base sm:text-2xl md:text-3xl font-heading font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
               0x
             </div>
-            <div id="stat-3-lbl"
-              class="text-[8px] xs:text-[9px] text-neutral-400 uppercase tracking-wider mt-1 leading-normal">
+            <div id="stat-3-lbl" class="text-[8px] xs:text-[9px] text-neutral-400 uppercase tracking-wider mt-1 leading-normal">
               Metric
             </div>
           </div>
@@ -1943,21 +1794,15 @@
           Stack
         </div>
         <a href="#contact" onclick="closeCaseModal()"
-          class="btn-primary w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-center text-xs tracking-wider uppercase text-white whitespace-nowrap">Book
-          Call Now</a>
+          class="btn-primary w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-center text-xs tracking-wider uppercase text-white whitespace-nowrap">Book Call Now</a>
       </div>
     </div>
   </div>
 
   <!-- Fullscreen Lightbox Overlay -->
-  <div id="lightbox-overlay"
-    class="fixed inset-0 bg-black/95 z-[999999] hidden flex flex-col items-center justify-center p-4 cursor-zoom-out"
-    onclick="closeLightbox()">
-    <button
-      class="absolute top-6 right-6 text-white hover:text-purple-300 text-3xl font-light transition">&times;</button>
-    <img id="lightbox-img"
-      class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl transition-all duration-300" src=""
-      alt="Lightbox image" />
+  <div id="lightbox-overlay" class="fixed inset-0 bg-black/95 z-[999999] hidden flex flex-col items-center justify-center p-4 cursor-zoom-out" onclick="closeLightbox()">
+    <button class="absolute top-6 right-6 text-white hover:text-purple-300 text-3xl font-light transition">&times;</button>
+    <img id="lightbox-img" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl transition-all duration-300" src="" alt="Lightbox image" />
     <p id="lightbox-caption" class="text-xs text-gray-400 mt-4 text-center tracking-wide font-medium"></p>
   </div>
 
@@ -1998,19 +1843,19 @@
       const app = document.getElementById('app');
       const footer = app.querySelector('footer');
       const divider = app.querySelector('.timeline-divider-container');
-
+      
       const orderedElements = [];
       layoutOrder.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
           const isDisabled = disabledSections.includes(id);
           el.classList.toggle('hidden', isDisabled);
-
+          
           // Hide/show navbar links matching this section
           document.querySelectorAll(`a[href="#${id}"]`).forEach(link => {
             link.classList.toggle('hidden', isDisabled);
           });
-
+          
           if (!isDisabled) {
             // Append aperture-reveal right before portfolio if portfolio is active
             if (id === 'portfolio') {
@@ -2026,7 +1871,7 @@
         }
       });
       if (footer) app.appendChild(footer);
-
+      
       // Always place the timeline divider line immediately below the first ordered section at the top of the page
       if (divider && orderedElements.length > 0) {
         const firstSection = orderedElements[0];
@@ -2038,13 +1883,13 @@
         const h = config.hero;
         const tag = document.getElementById('hero-tag');
         if (tag) tag.textContent = h.tag;
-
+        
         const headline = document.getElementById('hero-headline');
         if (headline) headline.innerHTML = h.title;
-
+        
         const desc = document.getElementById('hero-description');
         if (desc) desc.innerHTML = h.description;
-
+        
         const img = document.getElementById('hero-image');
         if (img) img.src = h.image;
 
@@ -2112,18 +1957,18 @@
         const a = config.about;
         const img = document.getElementById('about-image');
         if (img) img.src = a.image;
-
+        
         const exp = document.getElementById('about-experience');
         if (exp) {
           exp.innerHTML = `<span class="font-heading font-extrabold text-white text-lg">${a.experience}</span>`;
         }
-
+        
         const title = document.getElementById('about-title');
         if (title) title.innerHTML = a.title;
-
+        
         const desc = document.getElementById('about-text');
         if (desc) desc.innerHTML = a.text;
-
+        
         const tagsContainer = document.getElementById('about-tags');
         if (tagsContainer && a.tags) {
           tagsContainer.innerHTML = a.tags.map((t, idx) => {
@@ -2140,15 +1985,15 @@
         const c = config.contact;
         const heading = document.getElementById('contact-heading');
         if (heading) heading.innerHTML = c.heading;
-
+        
         const desc = document.getElementById('contact-description');
         if (desc) desc.textContent = c.description;
-
+        
         const bookingBtn = document.getElementById('contact-booking-btn');
         if (bookingBtn) {
           bookingBtn.href = c.bookingLink;
         }
-
+        
         const emailLink = document.getElementById('contact-email-link');
         if (emailLink) {
           emailLink.href = `mailto:${c.email}`;
@@ -2320,7 +2165,7 @@
       const config = window.portfolioConfig || {};
       const disabledCats = config.disabledCategories || [];
       const disabledSubs = config.disabledSubcategories || [];
-
+      
       let items = portfolioData.filter(p => p.enabled !== false && !disabledCats.includes(p.dept) && !disabledSubs.includes(p.sub));
 
       if (currentPrimary !== 'all') { items = items.filter(p => p.dept === currentPrimary); }
@@ -2360,7 +2205,7 @@
             </div>
           </div>
         `).join('');
-
+        
       if (typeof sharedObserver !== 'undefined' && sharedObserver) {
         document.querySelectorAll('.case-card').forEach(card => sharedObserver.observe(card));
       }
@@ -2388,11 +2233,57 @@
       // Render Dynamic Media Stage (Top of modal)
       const mediaStage = document.getElementById('modal-media-stage');
       if (data.mediaType === 'video' && data.embedUrl) {
-        mediaStage.innerHTML = `
-          <div class="relative w-full overflow-hidden rounded-2xl border border-white/10" style="padding-top: 56.25%;">
-            <iframe src="${data.embedUrl}" class="absolute top-0 left-0 w-full h-full" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        `;
+        if (data.isSeries && data.seriesVideos && data.seriesVideos.length > 0) {
+          const firstVid = data.seriesVideos[0];
+          const firstEmbedUrl = firstVid.embedUrl || data.embedUrl;
+          
+          let switcherHtml = data.seriesVideos.map((vid, idx) => {
+            const isActive = idx === 0;
+            const activeClasses = isActive ? 'border-purple-500 bg-purple-500/10 text-purple-300' : 'border-white/5 bg-white/5 text-gray-400';
+            return `
+              <button onclick="changeModalVideo('${vid.embedUrl}', this)" class="series-tab flex-1 flex flex-col items-center justify-center p-3 rounded-xl border text-center transition-all duration-300 hover:border-purple-500/50 hover:bg-purple-500/5 cursor-pointer ${activeClasses}">
+                <div class="flex items-center gap-1.5 justify-center">
+                  <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+                  <span class="text-[10px] font-bold tracking-wider uppercase">${vid.title || `Video ${idx + 1}`}</span>
+                </div>
+              </button>
+            `;
+          }).join('');
+          
+          let playlistHtml = '';
+          if (data.playlistUrl) {
+            playlistHtml = `
+              <div class="mt-4 flex flex-col sm:flex-row justify-between items-center gap-3 p-4 rounded-2xl bg-white/[0.02] border border-white/5">
+                <div class="text-left">
+                  <span class="text-[10px] font-bold text-purple-400 uppercase tracking-widest block">Video Series Project</span>
+                  <p class="text-xs text-gray-400 mt-1">This project contains a series of videos. View the full playlist on YouTube.</p>
+                </div>
+                <a href="${data.playlistUrl}" target="_blank" class="btn-primary flex items-center gap-2 px-5 py-2 rounded-full text-white text-xs font-bold whitespace-nowrap">
+                  <i data-lucide="youtube" class="w-4 h-4"></i>
+                  View Full Playlist
+                </a>
+              </div>
+            `;
+          }
+          
+          mediaStage.innerHTML = `
+            <div class="flex flex-col gap-4">
+              <div class="relative w-full overflow-hidden rounded-2xl border border-white/10" style="padding-top: 56.25%;">
+                <iframe src="${firstEmbedUrl}" class="absolute top-0 left-0 w-full h-full" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+              </div>
+              <div class="flex flex-wrap gap-2 w-full mt-1">
+                ${switcherHtml}
+              </div>
+              ${playlistHtml}
+            </div>
+          `;
+        } else {
+          mediaStage.innerHTML = `
+            <div class="relative w-full overflow-hidden rounded-2xl border border-white/10" style="padding-top: 56.25%;">
+              <iframe src="${data.embedUrl}" class="absolute top-0 left-0 w-full h-full" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            </div>
+          `;
+        }
       } else if (data.mediaType === 'graphics' && data.gallery) {
         let gridCols = 'grid-cols-1 sm:grid-cols-2';
         if (data.gallery.length === 1) {
@@ -2420,10 +2311,10 @@
       const galleryStage = document.getElementById('modal-gallery-stage');
       const galleryGrid = document.getElementById('gallery-stage-grid');
       const galleryTitle = document.getElementById('gallery-stage-title');
-
+      
       if (data.mediaType === 'video' && data.gallery && data.gallery.length > 0) {
         galleryTitle.textContent = "Style Frames & Creative Process";
-
+        
         let gridCols = 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4';
         if (data.gallery.length === 1) {
           gridCols = 'grid-cols-1 max-w-md mx-auto';
@@ -2464,12 +2355,28 @@
       document.getElementById('modal-media-stage').innerHTML = '';
     }
 
+    window.changeModalVideo = function(embedUrl, buttonEl) {
+      const container = buttonEl.closest('.flex-col');
+      const iframe = container.querySelector('iframe');
+      if (iframe) {
+        iframe.src = embedUrl;
+      }
+      
+      const buttons = buttonEl.parentElement.querySelectorAll('.series-tab');
+      buttons.forEach(btn => {
+        btn.classList.remove('border-purple-500', 'bg-purple-500/10', 'text-purple-300');
+        btn.classList.add('border-white/5', 'bg-white/5', 'text-gray-400');
+      });
+      buttonEl.classList.add('border-purple-500', 'bg-purple-500/10', 'text-purple-300');
+      buttonEl.classList.remove('border-white/5', 'bg-white/5', 'text-gray-400');
+    };
+
     // Lightbox Control Functions
     function openLightbox(url, caption) {
       const overlay = document.getElementById('lightbox-overlay');
       const img = document.getElementById('lightbox-img');
       const cap = document.getElementById('lightbox-caption');
-
+      
       img.src = url;
       cap.textContent = caption || '';
       overlay.classList.remove('hidden');
@@ -2593,7 +2500,7 @@
       themeToggleBtn.addEventListener('click', () => {
         const isLight = document.body.classList.toggle('light');
         localStorage.setItem('portfolio-theme', isLight ? 'light' : 'dark');
-
+        
         // Sync scroll background immediately if scrolled
         if (appEl.scrollTop > 50) {
           const nav = document.getElementById('navbar');
@@ -2643,17 +2550,17 @@
               glowSvg.classList.remove('is-active');
             }
           }
-
+          
           if (entry.target.classList.contains('case-card')) {
             const caseGlow = entry.target.querySelector('.case-glow-border');
             if (caseGlow) {
-              if (entry.isIntersecting) {
-                caseGlow.classList.remove('is-flashing');
-                void caseGlow.offsetWidth;
-                caseGlow.classList.add('is-flashing');
-              } else {
-                caseGlow.classList.remove('is-flashing');
-              }
+               if (entry.isIntersecting) {
+                 caseGlow.classList.remove('is-flashing');
+                 void caseGlow.offsetWidth;
+                 caseGlow.classList.add('is-flashing');
+               } else {
+                 caseGlow.classList.remove('is-flashing');
+               }
             }
           }
         });
@@ -2692,12 +2599,12 @@
       const form = event.target;
       const submitBtn = form.querySelector('button[type="submit"]');
       const originalBtnText = submitBtn.innerHTML;
-
+      
       submitBtn.disabled = true;
       submitBtn.innerHTML = 'Sending... ✦';
-
+      
       const formData = new FormData(form);
-
+      
       try {
         const response = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
@@ -2707,7 +2614,7 @@
           },
           body: JSON.stringify(Object.fromEntries(formData))
         });
-
+        
         const result = await response.json();
         if (result.success) {
           const formContainer = document.getElementById('form-container');
@@ -2737,9 +2644,9 @@
     function setupScrollTracker() {
       const progressBar = document.getElementById('scrollProgress');
       const appEl = document.getElementById('app');
-
+      
       if (!appEl) return;
-
+      
       appEl.addEventListener('scroll', () => {
         const scrollTop = appEl.scrollTop;
         const scrollHeight = appEl.scrollHeight - appEl.clientHeight;
@@ -2747,7 +2654,7 @@
           const progress = (scrollTop / scrollHeight) * 100;
           if (progressBar) progressBar.style.width = `${progress}%`;
         }
-
+        
         // Parallax background blobs movement
         const scrollY = scrollTop;
         document.documentElement.style.setProperty('--scroll-y', `${scrollY}px`);
@@ -2759,7 +2666,7 @@
           const viewHeight = window.innerHeight;
           const totalScroll = rect.height - viewHeight;
           const startScroll = -rect.top;
-
+          
           let progress = 0;
           if (totalScroll > 0) {
             progress = startScroll / totalScroll;
@@ -2773,12 +2680,12 @@
     // 3D Tilt Card Micro-interaction
     function initTiltEffect() {
       if (window.matchMedia("(max-width: 1023px)").matches || ('ontouchstart' in window)) return;
-
+      
       const selectCards = () => {
         document.querySelectorAll('.case-card, .service-core').forEach(card => {
           if (card.dataset.tiltInitialized) return;
           card.dataset.tiltInitialized = 'true';
-
+          
           card.addEventListener('mousemove', e => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -2787,28 +2694,28 @@
             const yc = rect.height / 2;
             const dx = x - xc;
             const dy = y - yc;
-
+            
             const rx = -(dy / yc) * 6;
             const ry = (dx / xc) * 6;
-
+            
             card.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) scale3d(1.02, 1.02, 1.02)`;
             card.style.setProperty('--mouse-x', `${x}px`);
             card.style.setProperty('--mouse-y', `${y}px`);
           });
-
+          
           card.addEventListener('mouseleave', () => {
             card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
             card.style.transition = 'transform 0.5s ease';
           });
-
+          
           card.addEventListener('mouseenter', () => {
             card.style.transition = 'none';
           });
         });
       };
-
+      
       selectCards();
-
+      
       // Re-run whenever grid content changes
       const portfolioGrid = document.getElementById('portfolio-grid');
       if (portfolioGrid) {
@@ -2820,55 +2727,55 @@
     // Intersection Observer Reveal Seeder & Observer
     function setupScrollAnimations() {
       // 1. Seed reveal classes on landing elements
-
+      
       // Hero elements
       const heroHeadline = document.getElementById('hero-headline');
       if (heroHeadline) heroHeadline.classList.add('reveal');
-
+      
       const heroDescription = document.getElementById('hero-description');
       if (heroDescription) heroDescription.classList.add('reveal', 'delay-100');
-
+      
       const heroCtas = document.getElementById('hero-ctas');
       if (heroCtas) heroCtas.classList.add('reveal', 'delay-200');
-
+      
       const heroImageContainer = document.querySelector('#hero img')?.parentElement;
       if (heroImageContainer) heroImageContainer.classList.add('reveal-right', 'delay-100');
-
+      
       // Intro quote
       const introQuoteCard = document.querySelector('#intro-quote > div');
       if (introQuoteCard) introQuoteCard.classList.add('reveal-scale');
-
+      
       // Specialties
       const servicesHeader = document.querySelector('#services > div.text-center');
       if (servicesHeader) servicesHeader.classList.add('reveal');
-
+      
       const serviceCores = document.querySelectorAll('.service-core');
       if (serviceCores[0]) serviceCores[0].classList.add('reveal-left');
       if (serviceCores[1]) serviceCores[1].classList.add('reveal-right');
-
+      
       const serviceSupport = document.querySelector('.service-support');
       if (serviceSupport) serviceSupport.classList.add('reveal-scale');
-
+      
       // Portfolio
       const portfolioHeader = document.querySelector('#portfolio .text-center');
       if (portfolioHeader) portfolioHeader.classList.add('reveal');
-
+      
       const portfolioFilters = document.getElementById('primary-filters');
       if (portfolioFilters) portfolioFilters.classList.add('reveal', 'delay-100');
-
+      
       // Process
       const processHeader = document.querySelector('#process .text-center');
       if (processHeader) processHeader.classList.add('reveal');
-
+      
       const processStages = document.querySelectorAll('#process .grid > div');
       processStages.forEach((stage, i) => {
         stage.classList.add('reveal-scale', `delay-${i * 100}`);
       });
-
+      
       // About
       const aboutPhoto = document.querySelector('#about img')?.parentElement;
       if (aboutPhoto) aboutPhoto.classList.add('reveal-left');
-
+      
       const aboutContent = document.querySelector('#about img')?.parentElement?.parentElement?.querySelector('div:not(.flex-shrink-0)');
       if (aboutContent) {
         aboutContent.classList.add('reveal-right');
@@ -2877,11 +2784,11 @@
           childNodes[i].classList.add('reveal', `delay-${i * 100}`);
         }
       }
-
+      
       // Testimonials
       const testimonialsHeader = document.querySelector('#testimonials .text-center');
       if (testimonialsHeader) testimonialsHeader.classList.add('reveal');
-
+      
       // Contact
       const contactGateway = document.querySelector('.gateway-container');
       if (contactGateway) contactGateway.classList.add('reveal-scale');
@@ -2908,7 +2815,7 @@
       document.querySelectorAll('[class*="reveal"]').forEach(el => {
         revealObserver.observe(el);
       });
-
+      
       // Also observe dynamic portfolio grid items when they render
       const portfolioGrid = document.getElementById('portfolio-grid');
       if (portfolioGrid) {
@@ -2922,7 +2829,7 @@
         });
         gridObserver.observe(portfolioGrid, { childList: true });
       }
-
+      
       // Testimonials dynamic grid observer
       const testimonialsGrid = document.getElementById('testimonial-grid');
       if (testimonialsGrid) {
@@ -2942,7 +2849,7 @@
     initPortfolioConfig();
     filterPrimary('all');
     lucide.createIcons();
-
+    
     // Setup Animations & Mouse Micro-interactions
     setupScrollAnimations();
     setupScrollTracker();

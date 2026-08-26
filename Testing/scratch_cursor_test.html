@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cursor Calibration Sandbox</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: #f5f5f7;
+      margin: 0; /* Reset margins */
+      cursor: default; 
+      font-family: sans-serif;
+    }
+
+    a, button {
+      cursor: pointer;
+    }
+
+    /* CUSTOM CURSOR: Center natively using transform */
+    .custom-cursor {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 140px;
+      height: 140px;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate3d(-50%, -50%, 0); /* Center exactly on the calculated coordinates */
+      transition: opacity 0.4s ease;
+      opacity: 0;
+    }
+
+    /* Absolute centering of children */
+    .cursor-inner {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(146, 108, 235, 0.15);
+      border: 2px solid #a78bfa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      backdrop-filter: blur(2px);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cursor-text {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 140px;
+      height: 140px;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cursor-text-rotation {
+      width: 100%;
+      height: 100%;
+      animation: rotateText 14s linear infinite;
+    }
+
+    .custom-cursor.cursor-hover .cursor-inner {
+      transform: translate(-50%, -50%) scale(0.6);
+    }
+    .custom-cursor.cursor-hover .cursor-text {
+      transform: translate(-50%, -50%) scale(0.6);
+    }
+
+    @keyframes rotateText {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col items-center justify-center p-6 space-y-8 select-none">
+
+  <div class="text-center max-w-lg space-y-4">
+    <h1 class="text-2xl font-bold text-white">Cursor Calibration & Alignment</h1>
+    <p class="text-xs text-gray-400 leading-relaxed">
+      Let's find the exact pixel offset you need. Move the mouse to see the alignment. 
+      Use the <strong>arrow keys (▲, ▼, ◀, ▶) on your keyboard</strong> to nudge the custom cursor position until the white pointer tip sits exactly where you want it.
+    </p>
+
+    <!-- Calibration Info Panel -->
+    <div class="bg-purple-950/20 border border-purple-500/25 p-4 rounded-2xl max-w-xs mx-auto space-y-2 text-xs font-mono">
+      <div class="text-purple-300 font-bold">Current Calibration Offsets:</div>
+      <div class="flex justify-between text-[11px] text-gray-400">
+        <span>Offset X (Horizontal):</span>
+        <span id="offset-x-readout" class="text-white font-bold">0px</span>
+      </div>
+      <div class="flex justify-between text-[11px] text-gray-400">
+        <span>Offset Y (Vertical):</span>
+        <span id="offset-y-readout" class="text-white font-bold">0px</span>
+      </div>
+    </div>
+
+    <div class="inline-flex items-center gap-2 bg-white/5 px-4 py-2 rounded-xl border border-white/10 text-xs">
+      <input type="checkbox" id="toggle-native" onchange="toggleNativeCursor(this.checked)" class="rounded bg-black border-white/20 text-purple-600 focus:ring-0 cursor-pointer" />
+      <label for="toggle-native" class="text-gray-300 font-semibold cursor-pointer">Hide Native Mouse Cursor</label>
+    </div>
+  </div>
+
+  <!-- Interactive buttons to test hover effects -->
+  <div class="flex gap-4">
+    <button class="px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-xs font-bold text-white hover:scale-105 active:scale-95 transition-all">
+      Hover Button 1
+    </button>
+    <button class="px-6 py-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-xs font-bold text-white hover:scale-105 active:scale-95 transition-all">
+      Hover Button 2
+    </button>
+  </div>
+
+  <!-- Custom Cursor Elements -->
+  <div id="customCursor" class="custom-cursor">
+    <div class="cursor-inner">
+      <i data-lucide="pen-tool"
+        style="width: 28px; height: 28px; color: #a78bfa; fill: rgba(146, 108, 235, 0.2); stroke-width: 2px;"></i>
+    </div>
+    <div class="cursor-text">
+      <div class="cursor-text-rotation">
+        <svg viewBox="0 0 100 100">
+          <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none" />
+          <text class="fill-purple-300 text-[6.5px] uppercase tracking-[3px] font-bold">
+            <textPath href="#circlePath" startOffset="0%">
+              • emmezy studio • case study
+            </textPath>
+          </text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize icons
+    lucide.createIcons();
+
+    const cursor = document.getElementById('customCursor');
+    let cursorTimeout;
+
+    // Default offsets (we will calibrate this using arrow keys)
+    let offsetX = 0;
+    let offsetY = 0;
+
+    let latestMouseX = window.innerWidth / 2;
+    let latestMouseY = window.innerHeight / 2;
+
+    const isMobileDevice = () => {
+      return window.matchMedia("(max-width: 1023px)").matches || ('ontouchstart' in window);
+    };
+
+    function toggleNativeCursor(hide) {
+      document.body.style.cursor = hide ? 'none' : 'default';
+      document.querySelectorAll('a, button').forEach(el => {
+        el.style.cursor = hide ? 'none' : 'pointer';
+      });
+    }
+
+    function updateCursorPosition(x, y) {
+      cursor.style.left = (x + offsetX) + 'px';
+      cursor.style.top = (y + offsetY) + 'px';
+      cursor.style.opacity = '1';
+    }
+
+    // Track mouse coordinates directly on left and top
+    document.addEventListener('mousemove', (e) => {
+      if (!isMobileDevice()) {
+        latestMouseX = e.clientX;
+        latestMouseY = e.clientY;
+        updateCursorPosition(latestMouseX, latestMouseY);
+      }
+    });
+
+    // Keyboard Arrow Key listeners to nudge/calibrate position
+    document.addEventListener('keydown', (e) => {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        e.preventDefault(); // Prevent page scrolling
+        
+        const step = 1; // Move 1px at a time
+        if (e.key === 'ArrowUp') offsetY -= step;
+        if (e.key === 'ArrowDown') offsetY += step;
+        if (e.key === 'ArrowLeft') offsetX -= step;
+        if (e.key === 'ArrowRight') offsetX += step;
+
+        // Update readouts
+        document.getElementById('offset-x-readout').textContent = offsetX + 'px';
+        document.getElementById('offset-y-readout').textContent = offsetY + 'px';
+
+        // Re-render position immediately
+        updateCursorPosition(latestMouseX, latestMouseY);
+      }
+    });
+
+    // Fade out cursor when mouse leaves browser window
+    document.addEventListener('mouseleave', () => {
+      if (!isMobileDevice()) {
+        cursor.style.opacity = '0';
+      }
+    });
+
+    document.addEventListener('mouseenter', () => {
+      if (!isMobileDevice()) {
+        cursor.style.opacity = '1';
+      }
+    });
+
+    // Detect hovers over buttons/links for scaling effects
+    document.addEventListener('mouseover', (e) => {
+      if (!isMobileDevice() && e.target.closest('a, button')) {
+        cursor.classList.add('cursor-hover');
+      }
+    });
+
+    document.addEventListener('mouseout', (e) => {
+      if (!isMobileDevice() && e.target.closest('a, button')) {
+        cursor.classList.remove('cursor-hover');
+      }
+    });
+
+    // Touch tap handler for mobile
+    document.addEventListener('pointerdown', (e) => {
+      if (isMobileDevice()) {
+        latestMouseX = e.clientX;
+        latestMouseY = e.clientY;
+        updateCursorPosition(latestMouseX, latestMouseY);
+
+        if (e.target.closest('a, button')) {
+          cursor.classList.add('cursor-hover');
+        } else {
+          cursor.classList.remove('cursor-hover');
+        }
+
+        cursor.style.opacity = '1';
+
+        clearTimeout(cursorTimeout);
+        cursorTimeout = setTimeout(() => {
+          cursor.style.opacity = '0';
+        }, 800);
+      }
+    });
+  </script>
+</body>
+</html>

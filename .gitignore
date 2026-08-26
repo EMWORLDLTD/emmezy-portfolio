@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Production / Vercel
+.vercel/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / Misc
+.DS_Store
+Thumbs.db
+scratch_*.txt
+

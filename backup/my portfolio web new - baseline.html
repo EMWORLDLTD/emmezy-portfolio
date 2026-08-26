@@ -215,22 +215,24 @@
     /* Custom Cursor WITH FIXED STACK DEPTH OVER MODAL */
     .custom-cursor {
       position: fixed;
-      left: 0;
-      top: 0;
       width: 140px;
       height: 140px;
       pointer-events: none;
       z-index: 99999;
-      transform: translate3d(-50%, -50%, 0);
-      transition: opacity 0.4s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translate(-50%, -50%);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
       opacity: 0;
+    }
+
+    .cursor-hover {
+      transform: translate(-50%, -50%) scale(0.6);
     }
 
     .cursor-inner {
       position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
       width: 64px;
       height: 64px;
       border-radius: 50%;
@@ -241,36 +243,18 @@
       justify-content: center;
       z-index: 10;
       backdrop-filter: blur(2px);
-      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .cursor-text {
       position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
       width: 140px;
       height: 140px;
-      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .cursor-text-rotation {
-      width: 100%;
-      height: 100%;
       animation: rotateText 14s linear infinite;
     }
 
     .cursor-text svg {
       width: 100%;
       height: 100%;
-    }
-
-    .custom-cursor.cursor-hover .cursor-inner {
-      transform: translate(-50%, -50%) scale(0.6);
-    }
-
-    .custom-cursor.cursor-hover .cursor-text {
-      transform: translate(-50%, -50%) scale(0.6);
     }
 
     /* Stats Badges */
@@ -299,8 +283,6 @@
       transition: all 0.4s ease;
       display: flex;
       flex-direction: column;
-      -webkit-mask-image: -webkit-radial-gradient(white, black);
-      mask-image: -webkit-radial-gradient(white, black);
     }
 
     .case-card:hover {
@@ -342,9 +324,9 @@
       background: rgba(20, 20, 30, 0.95);
       border: 1px solid rgba(139, 92, 246, 0.3);
       border-radius: 2rem;
-      max-width: 88rem;
+      max-width: 64rem;
       width: 100%;
-      max-height: 94vh;
+      max-height: 90vh;
       overflow-y: auto;
       position: relative;
       animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -528,7 +510,7 @@
     }
 
     /* === MERGED DESIGN SYSTEM (Option 2 + Option 3) === */
-
+    
     /* 1. Film Grain Overlay */
     .film-grain {
       position: fixed;
@@ -543,31 +525,12 @@
     }
 
     @keyframes grainJitter {
-
-      0%,
-      100% {
-        transform: translate(0, 0);
-      }
-
-      10% {
-        transform: translate(-1%, -1%);
-      }
-
-      30% {
-        transform: translate(1%, -2%);
-      }
-
-      50% {
-        transform: translate(-2%, 1%);
-      }
-
-      70% {
-        transform: translate(2%, 2%);
-      }
-
-      90% {
-        transform: translate(-1%, 2%);
-      }
+      0%, 100% { transform: translate(0, 0); }
+      10% { transform: translate(-1%, -1%); }
+      30% { transform: translate(1%, -2%); }
+      50% { transform: translate(-2%, 1%); }
+      70% { transform: translate(2%, 2%); }
+      90% { transform: translate(-1%, 2%); }
     }
 
     /* 2. Timeline Ping-Pong Playhead Line */
@@ -603,52 +566,58 @@
     @keyframes timelinePingPong {
       0% {
         left: -180px;
+        transform: scaleX(1);
       }
-
+      48% {
+        left: 100%;
+        transform: scaleX(1);
+      }
       50% {
         left: 100%;
+        transform: scaleX(-1); /* Reverse direction of gradient colors on back-trip */
       }
-
+      98% {
+        left: -180px;
+        transform: scaleX(-1);
+      }
       100% {
         left: -180px;
+        transform: scaleX(1);
       }
     }
 
     /* 3. Magnetic Mouse Spotlight card glow (service cores & case studies) */
-    .case-card,
-    .service-core {
+    .case-card, .service-core {
       position: relative;
       overflow: hidden;
     }
 
-    .case-card::before,
-    .service-core::before {
+    .case-card::before, .service-core::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(300px circle at var(--mouse-x, 0) var(--mouse-y, 0),
-          rgba(167, 139, 250, 0.12),
-          transparent 80%);
+      background: radial-gradient(
+        300px circle at var(--mouse-x, 0) var(--mouse-y, 0),
+        rgba(167, 139, 250, 0.12),
+        transparent 80%
+      );
       z-index: 1;
       pointer-events: none;
       opacity: 0;
       transition: opacity 0.4s ease;
     }
 
-    .case-card:hover::before,
-    .service-core:hover::before {
+    .case-card:hover::before, .service-core:hover::before {
       opacity: 1;
     }
 
     /* 4. Cohesive interactive hover/click colors for buttons using Option 2 gradient */
-    .btn-primary:hover,
-    .orb-primary-btn:hover {
+    .btn-primary:hover, .orb-primary-btn:hover {
       background: linear-gradient(135deg, #a78bfa, #fbbf24) !important;
       box-shadow: 0 8px 25px rgba(251, 191, 36, 0.35) !important;
     }
 
-    .btn-primary:active,
-    .orb-primary-btn:active {
+    .btn-primary:active, .orb-primary-btn:active {
       background: linear-gradient(135deg, #fbbf24, #a78bfa) !important;
       transform: scale(0.95) !important;
     }
@@ -664,7 +633,7 @@
       opacity: 0;
       transition: opacity 0.4s ease;
     }
-
+    
     .profile-glow-border rect {
       filter: drop-shadow(0 0 5px rgba(167, 139, 250, 0.7));
     }
@@ -683,7 +652,6 @@
       0% {
         stroke-dashoffset: var(--dash-total, 500);
       }
-
       100% {
         stroke-dashoffset: 0;
       }
@@ -692,35 +660,19 @@
     .case-flash-rect {
       opacity: 0;
     }
-
     @keyframes caseFlash {
-
-      0%,
-      100% {
-        opacity: 0;
-      }
-
-      25%,
-      75% {
-        opacity: 1;
-      }
-
-      50% {
-        opacity: 0;
-      }
+      0%, 100% { opacity: 0; }
+      25%, 75% { opacity: 1; }
+      50% { opacity: 0; }
     }
-
     .case-glow-border.is-flashing .case-flash-rect {
       animation: caseFlash 1.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     @keyframes borderFadeOut {
-
-      0%,
-      72% {
+      0%, 72% {
         opacity: 1;
       }
-
       100% {
         opacity: 0;
       }
@@ -768,433 +720,6 @@
       background-color: #14141f;
       color: #f5f5f7;
     }
-
-    /* === LIGHT MODE OVERRIDES === */
-    body.light {
-      --bg: #f8fafc;
-      --surface: rgba(0, 0, 0, 0.04);
-      --text: #0f172a;
-      --accent: #6d28d9;
-      --accent2: #d97706;
-      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
-    }
-
-    /* Smooth Transitions */
-    body {
-      transition: background 0.4s ease, background-color 0.4s ease, color 0.4s ease;
-    }
-
-    .modal-card,
-    .gateway-container,
-    .form-input,
-    .nav-link,
-    .custom-cursor,
-    select option {
-      transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
-    }
-
-    /* Light Mode Overrides for Tailwind Utility Classes */
-    body.light .text-white {
-      color: #0f172a !important;
-    }
-
-    body.light .text-gray-300,
-    body.light .text-gray-400,
-    body.light .text-neutral-400,
-    body.light .text-zinc-400,
-    body.light .text-gray-500 {
-      color: #475569 !important;
-      /* Tailwind slate-600 */
-    }
-
-    body.light .text-neutral-300 {
-      color: #334155 !important;
-      /* Tailwind slate-700 */
-    }
-
-    /* Ensure white text inside buttons, badges, and playheads stays white */
-    body.light .btn-primary,
-    body.light .btn-primary *,
-    body.light .stat-badge,
-    body.light .stat-badge *,
-    body.light #hero-name-card,
-    body.light #hero-name-card *,
-    body.light #about-experience,
-    body.light #about-experience *,
-    body.light .timeline-playhead-glow,
-    body.light .timeline-playhead-glow *,
-    body.light .badge,
-    body.light .badge * {
-      color: #ffffff !important;
-    }
-
-    /* Border overrides for light mode */
-    body.light .border-white\/10 {
-      border-color: rgba(15, 23, 42, 0.1) !important;
-    }
-
-    body.light .border-white\/5 {
-      border-color: rgba(15, 23, 42, 0.05) !important;
-    }
-
-    body.light .border-white\/20 {
-      border-color: rgba(15, 23, 42, 0.15) !important;
-    }
-
-    body.light .border-white\/40 {
-      border-color: rgba(15, 23, 42, 0.25) !important;
-    }
-
-    /* Background overrides for light mode */
-    body.light .bg-white\/\[0\.02\] {
-      background-color: rgba(15, 23, 42, 0.02) !important;
-    }
-
-    body.light .bg-white\/\[0\.03\] {
-      background-color: rgba(15, 23, 42, 0.03) !important;
-    }
-
-    body.light .bg-white\/5 {
-      background-color: rgba(15, 23, 42, 0.04) !important;
-    }
-
-    body.light .bg-white\/10 {
-      background-color: rgba(15, 23, 42, 0.06) !important;
-    }
-
-    body.light .hover\:bg-white\/10:hover {
-      background-color: rgba(15, 23, 42, 0.08) !important;
-    }
-
-    body.light .hover\:bg-white\/25:hover {
-      background-color: rgba(15, 23, 42, 0.12) !important;
-    }
-
-    body.light .hover\:border-white\/40:hover {
-      border-color: rgba(15, 23, 42, 0.25) !important;
-    }
-
-    body.light .bg-neutral-900 {
-      background-color: #ffffff !important;
-    }
-
-    body.light .bg-black\/90 {
-      background-color: rgba(248, 250, 252, 0.95) !important;
-    }
-
-    /* Glowing radial mesh background for light mode */
-    body.light::before {
-      background: radial-gradient(circle at 20% 50%, rgba(124, 58, 237, 0.04), transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(217, 119, 6, 0.04), transparent 50%);
-    }
-
-    /* Navbar link override */
-    body.light .nav-link {
-      color: #475569 !important;
-    }
-
-    body.light .nav-link:hover {
-      color: #0f172a !important;
-    }
-
-    /* Modal dialog card style updates for light mode */
-    body.light .modal-card {
-      background: rgba(255, 255, 255, 0.98) !important;
-      border: 1px solid rgba(139, 92, 246, 0.2) !important;
-      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15) !important;
-    }
-
-    body.light .modal-card::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.02) !important;
-    }
-
-    /* Contact form input styling */
-    body.light .form-input {
-      background: rgba(0, 0, 0, 0.01) !important;
-      border: 1px solid rgba(139, 92, 246, 0.2) !important;
-      color: #0f172a !important;
-    }
-
-    body.light .form-input:focus {
-      background: rgba(139, 92, 246, 0.02) !important;
-      border-color: #6d28d9 !important;
-    }
-
-    body.light select option {
-      background-color: #ffffff !important;
-      color: #0f172a !important;
-    }
-
-    /* Timeline Divider background line path */
-    body.light .timeline-playhead-line {
-      background: linear-gradient(90deg, transparent 0%, rgba(15, 23, 42, 0.08) 20%, rgba(15, 23, 42, 0.08) 80%, transparent 100%) !important;
-    }
-
-    /* Additional overrides for Case Cards & Tag Pills */
-    body.light .case-card {
-      background: #ffffff !important;
-      border: 1px solid rgba(15, 23, 42, 0.08) !important;
-      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.02) !important;
-    }
-
-    body.light .case-card:hover {
-      border-color: rgba(139, 92, 246, 0.25) !important;
-      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08) !important;
-    }
-
-    body.light .metric-box {
-      background: rgba(139, 92, 246, 0.04) !important;
-      border: 1px solid rgba(139, 92, 246, 0.15) !important;
-    }
-
-    body.light .metric-box p {
-      color: #475569 !important;
-    }
-
-    body.light .tag-pill {
-      border: 1px solid rgba(15, 23, 42, 0.08) !important;
-      color: #475569 !important;
-      background: rgba(15, 23, 42, 0.02) !important;
-    }
-
-    /* Testimonials overrides */
-    body.light #testimonials {
-      background: rgba(15, 23, 42, 0.03) !important;
-    }
-
-    body.light .glass-surface {
-      background: rgba(255, 255, 255, 0.7) !important;
-      border: 1px solid rgba(139, 92, 246, 0.2) !important;
-      box-shadow: 0 8px 32px rgba(15, 23, 42, 0.05) !important;
-    }
-
-    body.light #testimonials p {
-      color: #334155 !important;
-    }
-
-    body.light #testimonials .testimonial-name {
-      color: #0f172a !important;
-    }
-
-    body.light #testimonials .testimonial-role {
-      color: #475569 !important;
-    }
-
-    /* Service Core & Service Support overrides */
-    body.light .service-core {
-      background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(139, 92, 246, 0.02)) !important;
-      border: 1px solid rgba(139, 92, 246, 0.2) !important;
-    }
-
-    body.light .service-support {
-      background: rgba(0, 0, 0, 0.02) !important;
-      border: 1px solid rgba(15, 23, 42, 0.08) !important;
-    }
-
-    body.light .service-support:hover {
-      background: rgba(0, 0, 0, 0.03) !important;
-    }
-
-    body.light .text-gray-200 {
-      color: #0f172a !important;
-    }
-
-    /* Contact Section overrides */
-    body.light .gateway-container {
-      background: #ffffff !important;
-      border: 1px solid rgba(139, 92, 246, 0.2) !important;
-      box-shadow: 0 20px 80px rgba(15, 23, 42, 0.05) !important;
-    }
-
-    body.light .gateway-container #contact-heading {
-      color: #0f172a !important;
-    }
-
-    body.light .gateway-container #contact-description {
-      color: #475569 !important;
-    }
-
-    body.light .gateway-container #contact-email-link {
-      color: #6d28d9 !important;
-    }
-
-    body.light .gateway-container #contact-email-link strong {
-      color: #0f172a !important;
-    }
-
-    /* Inactive and Active filter tabs overrides */
-    body.light .port-tab-primary[class*="bg-purple-500/10"],
-    body.light .port-tab-secondary[class*="bg-purple-500/10"] {
-      background-color: #6d28d9 !important;
-      border-color: #6d28d9 !important;
-      color: #ffffff !important;
-    }
-
-    body.light .port-tab-primary:not([class*="bg-purple-500/10"]),
-    body.light .port-tab-secondary:not([class*="bg-purple-500/10"]) {
-      color: #475569 !important;
-      border-color: rgba(15, 23, 42, 0.15) !important;
-      background-color: rgba(15, 23, 42, 0.02) !important;
-    }
-
-    body.light .port-tab-primary:not([class*="bg-purple-500/10"]):hover,
-    body.light .port-tab-secondary:not([class*="bg-purple-500/10"]):hover {
-      color: #0f172a !important;
-      background-color: rgba(15, 23, 42, 0.05) !important;
-      border-color: rgba(15, 23, 42, 0.25) !important;
-    }
-
-    body.light #mobile-menu {
-      background: rgba(248, 250, 252, 0.95) !important;
-      border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
-    }
-
-    /* === SCROLL PROGRESS BAR === */
-    .scroll-progress-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 3px;
-      width: 0%;
-      background: linear-gradient(90deg, #a78bfa, #fbbf24);
-      z-index: 100;
-      box-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
-      transition: width 0.1s ease-out;
-    }
-
-    /* === PARALLAX BACKGROUND BLOCKS === */
-    .parallax-blob {
-      transform: translate3d(0, calc(var(--scroll-y, 0px) * var(--speed, 0.15)), 0);
-      will-change: transform;
-    }
-
-    /* === INTERSECTION OBSERVER REVEAL ANIMATIONS === */
-    .reveal {
-      opacity: 0 !important;
-      transform: translateY(30px) scale(0.98);
-      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: transform, opacity;
-    }
-
-    .reveal-left {
-      opacity: 0 !important;
-      transform: translateX(-40px);
-      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: transform, opacity;
-    }
-
-    .reveal-right {
-      opacity: 0 !important;
-      transform: translateX(40px);
-      transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: transform, opacity;
-    }
-
-    .reveal-scale {
-      opacity: 0 !important;
-      transform: scale(0.93) translateY(20px);
-      transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: transform, opacity;
-    }
-
-    .reveal-visible {
-      opacity: 1 !important;
-      transform: translateY(0) translateX(0) scale(1) !important;
-    }
-
-    /* Sequence delays */
-    .delay-100 {
-      transition-delay: 100ms;
-    }
-
-    .delay-200 {
-      transition-delay: 200ms;
-    }
-
-    .delay-300 {
-      transition-delay: 300ms;
-    }
-
-    .delay-400 {
-      transition-delay: 400ms;
-    }
-
-    .delay-500 {
-      transition-delay: 500ms;
-    }
-
-    .delay-600 {
-      transition-delay: 600ms;
-    }
-
-    /* Cohesive card 3D tilt transform transition smooth reset */
-    .case-card,
-    .service-core {
-      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
-    }
-
-    /* === CINEMATIC APERTURE REVEAL MASKING === */
-    #aperture-card {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      background: #0d0d18;
-      clip-path: inset(calc(20% * (1 - var(--aperture-progress, 0))) calc(24% * (1 - var(--aperture-progress, 0))) calc(20% * (1 - var(--aperture-progress, 0))) calc(24% * (1 - var(--aperture-progress, 0))) round calc(32px * (1 - var(--aperture-progress, 0))));
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      will-change: clip-path;
-      z-index: 10;
-    }
-
-    #aperture-border {
-      position: absolute;
-      top: calc(20% * (1 - var(--aperture-progress, 0)));
-      bottom: calc(20% * (1 - var(--aperture-progress, 0)));
-      left: calc(24% * (1 - var(--aperture-progress, 0)));
-      right: calc(24% * (1 - var(--aperture-progress, 0)));
-      border: 1px solid rgba(167, 139, 250, calc(0.3 * (1 - var(--aperture-progress, 0))));
-      border-radius: calc(32px * (1 - var(--aperture-progress, 0)));
-      pointer-events: none;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, calc(0.6 * (1 - var(--aperture-progress, 0)))),
-        0 0 40px rgba(167, 139, 250, calc(0.15 * (1 - var(--aperture-progress, 0))));
-      z-index: 15;
-      will-change: top, bottom, left, right, border-radius, border-color, box-shadow;
-    }
-
-    .aperture-parallax {
-      transform: scale(calc(1.15 - (0.1 * var(--aperture-progress, 0)))) translate3d(0, 0, 0);
-      will-change: transform;
-    }
-
-    /* Ensure aperture card text remains light in light mode */
-    body.light #aperture-card *,
-    body.light #aperture-card .text-white,
-    body.light #aperture-card .gradient-text {
-      color: #ffffff !important;
-    }
-
-    body.light #aperture-card .gradient-text {
-      background: linear-gradient(135deg, #a78bfa, #fbbf24);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    body.light #aperture-card .text-gray-400 {
-      color: #9ca3af !important;
-    }
-
-    body.light #aperture-card .text-purple-400\/40 {
-      color: rgba(167, 139, 250, 0.4) !important;
-    }
-
-    body.light #aperture-card .text-purple-400\/80 {
-      color: rgba(167, 139, 250, 0.8) !important;
-    }
   </style>
   <script>
     tailwind.config = {
@@ -1203,19 +728,9 @@
   </script>
   <!-- Umami Analytics -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="43df9c83-2978-4f4c-96f6-5eea5201854e"></script>
-  <script src="data/portfolioData.js"></script>
 </head>
 
 <body class="h-full">
-  <div class="scroll-progress-bar" id="scrollProgress"></div>
-  <script>
-      (function () {
-        const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
-        if (savedTheme === 'light') {
-          document.body.classList.add('light');
-        }
-      })();
-  </script>
 
   <!-- Merged Design: Film Grain Overlay Element -->
   <div class="film-grain"></div>
@@ -1226,52 +741,35 @@
         style="width: 28px; height: 28px; color: #a78bfa; fill: rgba(146, 108, 235, 0.2); stroke-width: 2px;"></i>
     </div>
     <div class="cursor-text">
-      <div class="cursor-text-rotation">
-        <svg viewbox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <path id="circlePath" d="M 70, 70 m -52, 0 a 52,52 0 1,1 104,0 a 52,52 0 1,1 -104,0" fill="none" />
-          </defs>
-          <text font-family="Syne, sans-serif" font-size="13" font-weight="700" fill="#a78bfa">
-            <textpath href="#circlePath" startoffset="0%" textlength="315" lengthadjust="spacing">
-              • EMMEZY STUDIO • CREATIVE LAB
-            </textpath>
-          </text>
-        </svg>
-      </div>
+      <svg viewbox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <path id="circlePath" d="M 70, 70 m -52, 0 a 52,52 0 1,1 104,0 a 52,52 0 1,1 -104,0" fill="none" />
+        </defs>
+        <text font-family="Syne, sans-serif" font-size="13" font-weight="700" fill="#a78bfa">
+          <textpath href="#circlePath" startoffset="0%" textlength="315" lengthadjust="spacing">
+            • EMMEZY STUDIO • CREATIVE LAB
+          </textpath>
+        </text>
+      </svg>
     </div>
   </div>
 
   <div id="app" class="w-full h-full overflow-auto" style="background:var(--bg);">
     <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background:transparent;">
-      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between backdrop-blur-md">
         <a href="#"
           class="font-heading font-bold text-lg sm:text-xl md:text-2xl gradient-text relative z-10 whitespace-nowrap">Emmezy
           Studio</a>
-        <div class="flex items-center gap-4 sm:gap-6">
-          <div class="hidden md:flex items-center gap-8">
-            <a href="#services" class="nav-link text-sm text-gray-300 hover:text-white transition">Services</a>
-            <a href="#portfolio" class="nav-link text-sm text-gray-300 hover:text-white transition">Portfolio</a>
-            <a href="#about" class="nav-link text-sm text-gray-300 hover:text-white transition">About</a>
-            <a href="#testimonials" class="nav-link text-sm text-gray-300 hover:text-white transition">Testimonials</a>
-          </div>
-
-          <!-- Glassmorphic Theme Toggle Button -->
-          <button id="theme-toggle"
-            class="text-gray-300 hover:text-white transition p-2 rounded-full hover:bg-white/10 flex items-center justify-center border border-white/5 bg-white/[0.02]"
-            aria-label="Toggle Theme">
-            <i data-lucide="sun" id="theme-icon-sun" class="w-5 h-5 block"></i>
-            <i data-lucide="moon" id="theme-icon-moon" class="w-5 h-5 hidden"></i>
-          </button>
-
-          <div class="hidden md:block">
-            <a href="#contact" class="btn-primary text-sm px-5 py-2 rounded-full text-white font-medium">Get In
-              Touch</a>
-          </div>
-
-          <button id="mobile-toggle" class="md:hidden text-white">
-            <i data-lucide="menu" style="width:24px;height:24px;"></i>
-          </button>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="#services" class="nav-link text-sm text-gray-300 hover:text-white transition">Services</a>
+          <a href="#portfolio" class="nav-link text-sm text-gray-300 hover:text-white transition">Portfolio</a>
+          <a href="#about" class="nav-link text-sm text-gray-300 hover:text-white transition">About</a>
+          <a href="#testimonials" class="nav-link text-sm text-gray-300 hover:text-white transition">Testimonials</a>
+          <a href="#contact" class="btn-primary text-sm px-5 py-2 rounded-full text-white font-medium">Get In Touch</a>
         </div>
+        <button id="mobile-toggle" class="md:hidden text-white">
+          <i data-lucide="menu" style="width:24px;height:24px;"></i>
+        </button>
       </div>
       <div id="mobile-menu"
         class="hidden md:hidden px-6 pb-4 flex flex-col gap-3 bg-black/90 backdrop-blur-md absolute w-full left-0 top-16">
@@ -1283,23 +781,23 @@
       </div>
     </nav>
 
-    <section id="hero" class="relative w-full overflow-hidden flex items-center" style="min-height:100vh;">
-      <div class="floating-shape parallax-blob"
-        style="width:500px;height:500px;background:rgba(139,92,246,0.15);top:-100px;right:-100px;animation:float1 12s ease-in-out infinite; --speed: 0.15;">
+    <section class="relative w-full overflow-hidden flex items-center" style="min-height:100vh;">
+      <div class="floating-shape"
+        style="width:500px;height:500px;background:rgba(139,92,246,0.15);top:-100px;right:-100px;animation:float1 12s ease-in-out infinite;">
       </div>
-      <div class="floating-shape parallax-blob"
-        style="width:400px;height:400px;background:rgba(245,158,11,0.1);bottom:-50px;left:-100px;animation:float2 15s ease-in-out infinite; --speed: -0.1;">
+      <div class="floating-shape"
+        style="width:400px;height:400px;background:rgba(245,158,11,0.1);bottom:-50px;left:-100px;animation:float2 15s ease-in-out infinite;">
       </div>
-      <div class="floating-shape parallax-blob"
-        style="width:250px;height:250px;background:rgba(139,92,246,0.1);top:40%;left:50%;animation:float3 10s ease-in-out infinite; --speed: 0.05;">
+      <div class="floating-shape"
+        style="width:250px;height:250px;background:rgba(139,92,246,0.1);top:40%;left:50%;animation:float3 10s ease-in-out infinite;">
       </div>
 
       <div
         class="max-w-7xl mx-auto px-6 pt-32 pb-20 relative z-10 flex flex-col lg:flex-row items-center gap-12 lg:gap-16 animate-fade-up w-full">
         <div class="flex-1 w-full lg:max-w-2xl">
-          <span id="hero-tag"
+          <span
             class="inline-block px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold tracking-wider mb-6 border uppercase"
-            style="border-color:rgba(139,92,246,0.3);background:rgba(139,92,246,0.08);color:var(--accent); white-space: nowrap;">
+            style="border-color:rgba(139,92,246,0.3);background:rgba(139,92,246,0.08);color:#a78bfa; white-space: nowrap;">
             ✦ Elevating Brand Quality &amp; Conversion
           </span>
           <h1 id="hero-headline"
@@ -1307,7 +805,7 @@
             Motion Graphics &amp; Video Content That
             <span class="gradient-text">Drive Action.</span>
           </h1>
-          <p id="hero-description" class="mt-6 text-gray-400 text-lg leading-relaxed max-w-xl">
+          <p class="mt-6 text-gray-400 text-lg leading-relaxed max-w-xl">
             I
             <strong class="text-white font-semibold">partner with SaaS, Fintech, and creative agencies
               globally</strong>
@@ -1315,7 +813,7 @@
             <strong class="text-white font-semibold">high-impact motion graphics and cinematic video edits</strong>
             that drive real action.
           </p>
-          <div id="hero-ctas" class="mt-8 flex flex-wrap gap-4">
+          <div class="mt-8 flex flex-wrap gap-4">
             <a href="#portfolio" class="btn-primary px-8 py-3.5 rounded-full text-white font-semibold text-sm">View
               Projects →</a>
           </div>
@@ -1327,12 +825,8 @@
             <div class="rounded-3xl overflow-hidden relative z-10 w-full border border-white/10"
               style="aspect-ratio:3/4;">
               <!-- Glowing SVG Trace Border -->
-              <svg class="profile-glow-border absolute inset-0 w-full h-full pointer-events-none z-20"
-                viewBox="0 0 100 133.3" preserveAspectRatio="none">
-                <path
-                  d="M 0.5 124.8 L 0.5 8.5 A 8 8 0 0 1 8.5 0.5 L 91.5 0.5 A 8 8 0 0 1 99.5 8.5 L 99.5 124.8 A 8 8 0 0 1 91.5 132.8 L 8.5 132.8 A 8 8 0 0 1 0.5 124.8 Z"
-                  fill="none" stroke="url(#glowGradHero)" stroke-width="1.5" vector-effect="non-scaling-stroke"
-                  stroke-dasharray="450" stroke-dashoffset="450" style="--dash-total: 450;" />
+              <svg class="profile-glow-border absolute inset-0 w-full h-full pointer-events-none z-20" viewBox="0 0 100 133.3" preserveAspectRatio="none">
+                <path d="M 0.5 124.8 L 0.5 8.5 A 8 8 0 0 1 8.5 0.5 L 91.5 0.5 A 8 8 0 0 1 99.5 8.5 L 99.5 124.8 A 8 8 0 0 1 91.5 132.8 L 8.5 132.8 A 8 8 0 0 1 0.5 124.8 Z" fill="none" stroke="url(#glowGradHero)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-dasharray="450" stroke-dashoffset="450" style="--dash-total: 450;" />
                 <defs>
                   <linearGradient id="glowGradHero" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="#a78bfa" />
@@ -1340,24 +834,22 @@
                   </linearGradient>
                 </defs>
               </svg>
-              <img id="hero-image" src="https://i.ibb.co/ZsrFknN/My-DP.webp?v=hero" alt="Olaitan Emmanuel"
+              <img src="https://i.ibb.co/ZsrFknN/My-DP.webp?v=hero" alt="Olaitan Emmanuel"
                 class="w-full h-full object-cover block" loading="eager" decoding="sync" oncontextmenu="return false"
                 draggable="false" style="user-select: none; -webkit-user-drag: none;">
             </div>
 
-            <div id="hero-stat1" class="stat-badge"
-              style="top:15%; left:-20%; animation: floatVertical 4s ease-in-out infinite 0.3s;">
+            <div class="stat-badge" style="top:15%; left:-20%; animation: floatVertical 4s ease-in-out infinite 0.3s;">
               <div class="text-white text-xl font-bold">60<span class="symbol-gradient">+</span></div>
               <div class="text-xs text-gray-400">Projects Globally</div>
             </div>
-            <div id="hero-stat2" class="stat-badge text-right"
+            <div class="stat-badge text-right"
               style="top:45%; right:-25%; animation: floatVertical 4s ease-in-out infinite 0.5s;">
               <div class="text-white text-xl font-bold">100<span class="symbol-gradient">%</span></div>
               <div class="text-xs text-gray-400">Satisfaction</div>
             </div>
 
-            <div id="hero-name-card"
-              class="absolute -bottom-8 left-0 right-0 mx-auto w-[110%] rounded-2xl p-5 text-center z-30"
+            <div class="absolute -bottom-8 left-0 right-0 mx-auto w-[110%] rounded-2xl p-5 text-center z-30"
               style="margin-left:-5%; animation: floatTilt 4s ease-in-out infinite; background:rgba(20,20,30,0.85); border:1px solid rgba(139,92,246,0.2); backdrop-filter:blur(20px);">
               <div class="font-heading font-bold text-lg text-white">Olaitan Emmanuel</div>
               <div class="text-sm text-gray-400 mt-1">Motion Designer &amp; Video Editor</div>
@@ -1374,25 +866,16 @@
       </div>
     </div>
 
-    <!-- Dynamic Showreel Video Player Section -->
-    <section id="showreel" class="max-w-5xl mx-auto px-6 py-12 relative z-10 hidden">
-      <div class="relative w-full overflow-hidden rounded-3xl border border-white/10" style="padding-top: 56.25%;">
-        <iframe id="showreel-iframe" class="absolute top-0 left-0 w-full h-full" src="" frameborder="0"
-          allow="autoplay; fullscreen" allowfullscreen></iframe>
-      </div>
-    </section>
-
-    <section id="intro-quote" class="max-w-6xl mx-auto px-6 py-12 relative z-10">
+    <section class="max-w-6xl mx-auto px-6 py-12 relative z-10">
       <div class="glass-surface rounded-3xl p-10 text-center relative overflow-hidden">
         <div
           class="absolute inset-0 bg-gradient-to-r from-transparent via-purple-900/10 to-transparent pointer-events-none">
         </div>
-        <h2 id="intro-quote-heading"
-          class="font-heading font-bold text-2xl sm:text-3xl text-white mb-6 tracking-normal">
+        <h2 class="font-heading font-bold text-2xl sm:text-3xl text-white mb-6 tracking-normal">
           Great design catches the eye.
           <span class="text-purple-400">Motion holds the attention.</span>
         </h2>
-        <p id="intro-quote-text" class="text-gray-400 max-w-3xl mx-auto leading-relaxed text-base">
+        <p class="text-gray-400 max-w-3xl mx-auto leading-relaxed text-base">
           You handle the vision and the footage;
           <strong class="text-white font-semibold">I handle the post-production.</strong>
           Beautiful graphic design is the foundation, but whether you need to
@@ -1450,78 +933,12 @@
       </div>
     </section>
 
-    <!-- Cinematic Viewport Masking Transition -->
-    <section id="aperture-reveal" class="relative -mt-40 -mb-16 w-full overflow-visible" style="height: 160vh;">
-      <div class="aperture-sticky sticky top-0 left-0 w-full h-screen overflow-hidden flex items-center justify-center">
-        <!-- The Floating Window Border -->
-        <div id="aperture-border"></div>
-
-        <!-- The Masked Window Card -->
-        <div id="aperture-card">
-          <!-- Rich Motion Teaser Background -->
-          <div class="absolute inset-0 z-0 bg-cover bg-center select-none pointer-events-none aperture-parallax"
-            style="background: radial-gradient(circle at 30% 20%, rgba(139,92,246,0.2) 0%, transparent 60%), radial-gradient(circle at 70% 80%, rgba(245,158,11,0.15) 0%, transparent 60%), #0a0a14;">
-            <!-- Tech Grid / Focal Guidelines overlay -->
-            <div
-              class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:32px_32px] opacity-60">
-            </div>
-
-            <!-- Focus corner brackets -->
-            <div class="absolute top-8 left-8 w-6 h-6 border-t-2 border-l-2 border-purple-500/30"></div>
-            <div class="absolute top-8 right-8 w-6 h-6 border-t-2 border-r-2 border-purple-500/30"></div>
-            <div class="absolute bottom-8 left-8 w-6 h-6 border-b-2 border-l-2 border-purple-500/30"></div>
-            <div class="absolute bottom-8 right-8 w-6 h-6 border-b-2 border-r-2 border-purple-500/30"></div>
-
-            <!-- Animated glowing energy core -->
-            <div
-              class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-600/10 rounded-full blur-[100px] animate-pulse">
-            </div>
-            <div
-              class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-amber-500/10 rounded-full blur-[80px] animate-pulse"
-              style="animation-delay: 500ms;"></div>
-          </div>
-
-          <!-- Viewport Info HUD overlay -->
-          <div
-            class="absolute inset-x-0 top-8 px-8 flex -mt-16 justify-between items-center text-[10px] font-mono tracking-widest text-purple-400/40 z-10 pointer-events-none select-none">
-            <div class="flex items-center gap-2">
-              <span class="w-1.5 h-1.5 bg-purple-500 rounded-full animate-ping"></span>
-              <span>REC [RAW]</span>
-            </div>
-            <div>00:01:45:12</div>
-            <div>SHR_24FPS</div>
-          </div>
-
-          <!-- Viewport Centered Text Content -->
-          <div class="relative z-10 text-center px-6 max-w-x  l pointer-events-none select-none">
-            <span class="text-xs font-bold tracking-[0.2em] uppercase text-purple-400/80 mb-3 block">Next
-              Experience</span>
-            <h2 class="font-heading font-extrabold text-4xl sm:text-5xl text-white tracking-tight mb-4 leading-none">
-              Entering the <br /><span class="gradient-text">Motion Space</span>
-            </h2>
-            <p class="text-gray-400 text-sm leading-relaxed max-w-sm mx-auto">
-              Peeking through the creative lens to reveal how motion shapes brand experiences.
-            </p>
-          </div>
-
-          <!-- Bottom Metadata HUD -->
-          <div
-            class="absolute inset-x-0 bottom-8 px-8 flex justify-center items-center text-[10px] font-mono tracking-widest text-purple-400/40 z-10 pointer-events-none select-none">
-            <div class="flex items-center gap-2">
-              <span class="w-1.5 h-1.5 bg-purple-500/60 rounded-full animate-ping"></span>
-              <span>SCROLL TO ENTER</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section id="portfolio" class="w-full py-24 relative"
       style="background:linear-gradient(180deg,transparent,rgba(139,92,246,0.03),transparent);">
       <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-12">
           <span class="text-xs font-medium px-4 py-1.5 rounded-full"
-            style="background:rgba(245,158,11,0.08);color:var(--accent2);border:1px solid rgba(245,158,11,0.2);">Portfolio</span>
+            style="background:rgba(245,158,11,0.08);color:#fbbf24;border:1px solid rgba(245,158,11,0.2);">Portfolio</span>
           <h2 class="font-heading font-bold text-2xl sm:text-3xl mt-6 tracking-normal">
             Featured <span class="gradient-text">Case Studies</span>
           </h2>
@@ -1644,16 +1061,11 @@
     <section id="about" class="w-full py-24">
       <div class="max-w-5xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-16">
         <div class="flex-shrink-0 relative">
-          <div
-            class="w-64 h-72 rounded-3xl overflow-hidden flex items-center justify-center relative border border-white/10"
+          <div class="w-64 h-72 rounded-3xl overflow-hidden flex items-center justify-center relative border border-white/10"
             style="background:linear-gradient(135deg,#1a1a2e,#16162a);">
             <!-- Glowing SVG Trace Border -->
-            <svg class="profile-glow-border absolute inset-0 w-full h-full pointer-events-none z-20"
-              viewBox="0 0 100 112.5" preserveAspectRatio="none">
-              <path
-                d="M 0.5 102.0 L 0.5 10.5 A 10 10 0 0 1 10.5 0.5 L 89.5 0.5 A 10 10 0 0 1 99.5 10.5 L 99.5 102.0 A 10 10 0 0 1 89.5 112.0 L 10.5 112.0 A 10 10 0 0 1 0.5 102.0 Z"
-                fill="none" stroke="url(#glowGradAbout)" stroke-width="1.5" vector-effect="non-scaling-stroke"
-                stroke-dasharray="405" stroke-dashoffset="405" style="--dash-total: 405;" />
+            <svg class="profile-glow-border absolute inset-0 w-full h-full pointer-events-none z-20" viewBox="0 0 100 112.5" preserveAspectRatio="none">
+              <path d="M 0.5 102.0 L 0.5 10.5 A 10 10 0 0 1 10.5 0.5 L 89.5 0.5 A 10 10 0 0 1 99.5 10.5 L 99.5 102.0 A 10 10 0 0 1 89.5 112.0 L 10.5 112.0 A 10 10 0 0 1 0.5 102.0 Z" fill="none" stroke="url(#glowGradAbout)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-dasharray="405" stroke-dashoffset="405" style="--dash-total: 405;" />
               <defs>
                 <linearGradient id="glowGradAbout" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stop-color="#a78bfa" />
@@ -1661,12 +1073,11 @@
                 </linearGradient>
               </defs>
             </svg>
-            <img id="about-image" src="https://i.ibb.co/ZsrFknN/My-DP.webp" alt="Emmezy Creative Director"
+            <img src="https://i.ibb.co/ZsrFknN/My-DP.webp" alt="Emmezy Creative Director"
               class="w-full h-full object-cover" loading="lazy" oncontextmenu="return false" draggable="false"
               style="user-select: none; -webkit-user-drag: none;" />
           </div>
-          <div id="about-experience"
-            class="absolute -bottom-4 -right-4 w-24 h-24 rounded-2xl flex items-center justify-center z-30"
+          <div class="absolute -bottom-4 -right-4 w-24 h-24 rounded-2xl flex items-center justify-center z-30"
             style="background:linear-gradient(135deg,var(--accent),var(--accent2));">
             <span class="font-heading font-extrabold text-white text-lg">5+<br /><span
                 class="text-[10px] font-normal">YRS</span></span>
@@ -1676,7 +1087,7 @@
           <span class="text-xs font-medium px-4 py-1.5 rounded-full"
             style="background:rgba(139,92,246,0.08);color:var(--accent);border:1px solid rgba(139,92,246,0.2);">About
             Me</span>
-          <h2 id="about-title" class="font-heading font-bold text-2xl sm:text-3xl mt-6 tracking-normal">
+          <h2 class="font-heading font-bold text-2xl sm:text-3xl mt-6 tracking-normal">
             Crafting Visual <span class="gradient-text">Stories</span>
           </h2>
           <p id="about-text" class="text-gray-400 mt-6 leading-relaxed">
@@ -1690,7 +1101,7 @@
             build credibility, increase engagement, and achieve meaningful
             results.
           </p>
-          <div id="about-tags" class="mt-8 flex flex-wrap gap-3">
+          <div class="mt-8 flex flex-wrap gap-3">
             <span class="px-4 py-2 rounded-full text-xs"
               style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.15);color:var(--accent);">Adobe
               Creative Suite</span>
@@ -1710,7 +1121,7 @@
       </div>
     </section>
 
-    <section id="testimonials" class="w-full py-24">
+    <section id="testimonials" class="w-full py-24" style="background:rgba(20,20,31,0.5);">
       <div class="max-w-5xl mx-auto px-6">
         <div class="text-center mb-16">
           <span class="text-xs font-medium px-4 py-1.5 rounded-full"
@@ -1724,9 +1135,67 @@
             video content.
           </p>
         </div>
-        <div class="relative z-10">
-          <div id="testimonial-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Dynamically populated -->
+        <div class="relative overflow-hidden">
+          <div id="testimonial-track"
+            class="testimonial-track flex transition-transform duration-500 ease-in-out w-full">
+            <div class="flex-shrink-0 w-full px-2">
+              <div class="rounded-2xl p-6 sm:p-8 text-center glass-surface">
+                <div class="text-5xl mb-4">👩&zwj;💼</div>
+                <p class="text-gray-200 text-sm leading-relaxed italic max-w-md mx-auto">
+                  "Emmezy transformed our brand identity completely. The
+                  attention to detail and creative vision exceeded all
+                  expectations. Truly world-class work!"
+                </p>
+                <div class="mt-6 font-heading font-bold text-sm">
+                  Sarah Mitchell
+                </div>
+                <div class="text-xs text-gray-400 mt-1">CEO, BrightBrand</div>
+              </div>
+            </div>
+            <div class="flex-shrink-0 w-full px-2">
+              <div class="rounded-2xl p-6 sm:p-8 text-center glass-surface">
+                <div class="text-5xl mb-4">👨&zwj;💻</div>
+                <p class="text-gray-200 text-sm leading-relaxed italic max-w-md mx-auto">
+                  "The motion design work was incredible. Our engagement rates
+                  tripled after launching the animated content Emmezy created
+                  for us."
+                </p>
+                <div class="mt-6 font-heading font-bold text-sm">
+                  Alex Rivera
+                </div>
+                <div class="text-xs text-gray-400 mt-1">
+                  Marketing Director
+                </div>
+              </div>
+            </div>
+            <div class="flex-shrink-0 w-full px-2">
+              <div class="rounded-2xl p-6 sm:p-8 text-center glass-surface">
+                <div class="text-5xl mb-4">👩&zwj;🎨</div>
+                <p class="text-gray-200 text-sm leading-relaxed italic max-w-md mx-auto">
+                  "Working with Emmezy was seamless. From concept to delivery,
+                  every video was polished, professional, and truly
+                  cinematic."
+                </p>
+                <div class="mt-6 font-heading font-bold text-sm">
+                  Jessica Park
+                </div>
+                <div class="text-xs text-gray-400 mt-1">
+                  Founder, Visionix
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-center gap-3 mt-8 relative z-10">
+            <button onclick="prevTestimonial()"
+              class="w-10 h-10 rounded-full flex items-center justify-center transition hover:bg-purple-500/20"
+              style="border:1px solid rgba(139,92,246,0.3);">
+              <i data-lucide="chevron-left" style="width:18px;height:18px;color:var(--accent);"></i>
+            </button>
+            <button onclick="nextTestimonial()"
+              class="w-10 h-10 rounded-full flex items-center justify-center transition hover:bg-purple-500/20"
+              style="border:1px solid rgba(139,92,246,0.3);">
+              <i data-lucide="chevron-right" style="width:18px;height:18px;color:var(--accent);"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -1739,23 +1208,20 @@
           <!-- Left Info Column -->
           <div class="lg:col-span-5 text-left">
             <span class="text-xs font-bold tracking-widest uppercase text-purple-400 mb-6 block">— Let's Connect</span>
-            <h2 id="contact-heading"
-              class="font-heading font-bold text-3xl sm:text-4xl leading-snug tracking-normal text-white">
+            <h2 class="font-heading font-bold text-3xl sm:text-4xl leading-snug tracking-normal text-white">
               Make Your Brand <br /><span class="gradient-text">Unforgettable.</span>
             </h2>
-            <p id="contact-description" class="text-gray-400 mt-6 text-sm leading-relaxed max-w-sm">
-              Your product deserves to be understood in seconds. Let's build a custom motion graphic or cinematic video
-              edit that sells for you.
+            <p class="text-gray-400 mt-6 text-sm leading-relaxed max-w-sm">
+              Your product deserves to be understood in seconds. Let's build a custom motion graphic or cinematic video edit that sells for you.
             </p>
-
+            
             <div class="mt-8 space-y-4">
-              <a id="contact-booking-btn" href="https://cal.com/olaitan-emmanuel/30min" target="_blank"
-                class="btn-primary inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-white font-semibold text-xs uppercase tracking-wider shadow-lg hover:scale-105 transition-all">
+              <a href="https://cal.com/olaitan-emmanuel/30min" target="_blank" 
+                 class="btn-primary inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-white font-semibold text-xs uppercase tracking-wider shadow-lg hover:scale-105 transition-all">
                 📅 Book a Discovery Call
               </a>
               <div class="pt-2">
-                <a id="contact-email-link" href="mailto:olaitanemmanuel21@gmail.com"
-                  class="text-xs text-purple-300 hover:text-white transition flex items-center gap-2">
+                <a href="mailto:olaitanemmanuel21@gmail.com" class="text-xs text-purple-300 hover:text-white transition flex items-center gap-2">
                   ✉️ Or Email Me: <strong class="text-white">olaitanemmanuel21@gmail.com</strong>
                 </a>
               </div>
@@ -1763,16 +1229,13 @@
 
             <!-- Social Links -->
             <div class="flex gap-3 mt-10">
-              <a id="contact-instagram" href="#"
-                class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
-                style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i
-                  data-lucide="instagram" style="width:16px;height:16px;color:var(--accent);"></i></a>
-              <a id="contact-linkedin" href="#"
-                class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
-                style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i
-                  data-lucide="linkedin" style="width:16px;height:16px;color:var(--accent);"></i></a>
-              <a id="contact-youtube" href="#"
-                class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
+              <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
+                style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="instagram"
+                  style="width:16px;height:16px;color:var(--accent);"></i></a>
+              <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
+                style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="linkedin"
+                  style="width:16px;height:16px;color:var(--accent);"></i></a>
+              <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
                 style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="youtube"
                   style="width:16px;height:16px;color:var(--accent);"></i></a>
             </div>
@@ -1781,13 +1244,11 @@
           <div class="lg:col-span-7 bg-white/[0.02] border border-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8">
             <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-4">Send a Message</span>
             <div id="form-container">
-              <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" class="space-y-4"
-                onsubmit="handleFormSubmit(event)">
-                <input id="contact-web3forms-key" type="hidden" name="access_key"
-                  value="c1a747ea-7db2-4483-abc9-739a57ef6e0c">
+              <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" class="space-y-4" onsubmit="handleFormSubmit(event)">
+                <input type="hidden" name="access_key" value="c1a747ea-7db2-4483-abc9-739a57ef6e0c">
                 <input type="hidden" name="subject" value="New Portfolio Contact Form Submission">
                 <input type="hidden" name="from_name" value="Portfolio Website Notification">
-
+                
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label class="form-label">Name</label>
@@ -1810,11 +1271,9 @@
                 </div>
                 <div>
                   <label class="form-label">Message</label>
-                  <textarea name="message" rows="4" placeholder="Tell me about your project, goals, and timeline..."
-                    class="form-input resize-none" required></textarea>
+                  <textarea name="message" rows="4" placeholder="Tell me about your project, goals, and timeline..." class="form-input resize-none" required></textarea>
                 </div>
-                <button type="submit"
-                  class="btn-primary w-full py-3.5 rounded-xl text-white font-bold text-xs uppercase tracking-wider shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all">
+                <button type="submit" class="btn-primary w-full py-3.5 rounded-xl text-white font-bold text-xs uppercase tracking-wider shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all">
                   Send Message ✦
                 </button>
               </form>
@@ -1901,36 +1360,27 @@
           Key Performance Results
         </h3>
         <div class="grid grid-cols-3 gap-2 sm:gap-4 text-center">
-          <div
-            class="p-2 sm:p-4 bg-purple-900/10 rounded-xl border border-purple-500/10 backdrop-blur-sm flex flex-col justify-center min-h-[64px] sm:min-h-[90px]">
-            <div id="stat-1-val"
-              class="text-sm xs:text-base sm:text-2xl md:text-3xl font-heading font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
+          <div class="p-2 sm:p-4 bg-purple-900/10 rounded-xl border border-purple-500/10 backdrop-blur-sm flex flex-col justify-center min-h-[64px] sm:min-h-[90px]">
+            <div id="stat-1-val" class="text-sm xs:text-base sm:text-2xl md:text-3xl font-heading font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
               0%
             </div>
-            <div id="stat-1-lbl"
-              class="text-[8px] xs:text-[9px] text-neutral-400 uppercase tracking-wider mt-1 leading-normal">
+            <div id="stat-1-lbl" class="text-[8px] xs:text-[9px] text-neutral-400 uppercase tracking-wider mt-1 leading-normal">
               Metric
             </div>
           </div>
-          <div
-            class="p-2 sm:p-4 bg-purple-900/10 rounded-xl border border-purple-500/10 backdrop-blur-sm flex flex-col justify-center min-h-[64px] sm:min-h-[90px]">
-            <div id="stat-2-val"
-              class="text-sm xs:text-base sm:text-2xl md:text-3xl font-heading font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
+          <div class="p-2 sm:p-4 bg-purple-900/10 rounded-xl border border-purple-500/10 backdrop-blur-sm flex flex-col justify-center min-h-[64px] sm:min-h-[90px]">
+            <div id="stat-2-val" class="text-sm xs:text-base sm:text-2xl md:text-3xl font-heading font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
               0%
             </div>
-            <div id="stat-2-lbl"
-              class="text-[8px] xs:text-[9px] text-neutral-400 uppercase tracking-wider mt-1 leading-normal">
+            <div id="stat-2-lbl" class="text-[8px] xs:text-[9px] text-neutral-400 uppercase tracking-wider mt-1 leading-normal">
               Metric
             </div>
           </div>
-          <div
-            class="p-2 sm:p-4 bg-purple-900/10 rounded-xl border border-purple-500/10 backdrop-blur-sm flex flex-col justify-center min-h-[64px] sm:min-h-[90px]">
-            <div id="stat-3-val"
-              class="text-sm xs:text-base sm:text-2xl md:text-3xl font-heading font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
+          <div class="p-2 sm:p-4 bg-purple-900/10 rounded-xl border border-purple-500/10 backdrop-blur-sm flex flex-col justify-center min-h-[64px] sm:min-h-[90px]">
+            <div id="stat-3-val" class="text-sm xs:text-base sm:text-2xl md:text-3xl font-heading font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">
               0x
             </div>
-            <div id="stat-3-lbl"
-              class="text-[8px] xs:text-[9px] text-neutral-400 uppercase tracking-wider mt-1 leading-normal">
+            <div id="stat-3-lbl" class="text-[8px] xs:text-[9px] text-neutral-400 uppercase tracking-wider mt-1 leading-normal">
               Metric
             </div>
           </div>
@@ -1943,327 +1393,122 @@
           Stack
         </div>
         <a href="#contact" onclick="closeCaseModal()"
-          class="btn-primary w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-center text-xs tracking-wider uppercase text-white whitespace-nowrap">Book
-          Call Now</a>
+          class="btn-primary w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-center text-xs tracking-wider uppercase text-white whitespace-nowrap">Book Call Now</a>
       </div>
     </div>
   </div>
 
   <!-- Fullscreen Lightbox Overlay -->
-  <div id="lightbox-overlay"
-    class="fixed inset-0 bg-black/95 z-[999999] hidden flex flex-col items-center justify-center p-4 cursor-zoom-out"
-    onclick="closeLightbox()">
-    <button
-      class="absolute top-6 right-6 text-white hover:text-purple-300 text-3xl font-light transition">&times;</button>
-    <img id="lightbox-img"
-      class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl transition-all duration-300" src=""
-      alt="Lightbox image" />
+  <div id="lightbox-overlay" class="fixed inset-0 bg-black/95 z-[999999] hidden flex flex-col items-center justify-center p-4 cursor-zoom-out" onclick="closeLightbox()">
+    <button class="absolute top-6 right-6 text-white hover:text-purple-300 text-3xl font-light transition">&times;</button>
+    <img id="lightbox-img" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl transition-all duration-300" src="" alt="Lightbox image" />
     <p id="lightbox-caption" class="text-xs text-gray-400 mt-4 text-center tracking-wide font-medium"></p>
   </div>
 
   <script>
-    // Load local draft data if running in a local environment or in preview mode (for editing preview)
-    let isDraftPreview = false;
-    const urlParams = new URLSearchParams(window.location.search);
-    const isPreviewParam = urlParams.get('preview') === 'true';
-    if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || isPreviewParam) {
-      try {
-        const draftString = localStorage.getItem('emmezy_draft_database');
-        if (draftString) {
-          const draft = JSON.parse(draftString);
-          if (draft.categories) window.portfolioCategories = draft.categories;
-          if (draft.data) window.portfolioData = draft.data;
-          if (draft.config) window.portfolioConfig = draft.config;
-          isDraftPreview = true;
-          console.log("EMMEZY STUDIO: Loaded draft workspace from localStorage.");
-        }
-      } catch (e) {
-        console.error("EMMEZY STUDIO: Local draft loader error:", e);
-      }
-    }
-
-    const portfolioCategories = window.portfolioCategories;
-    const portfolioData = window.portfolioData;
+    // Sub-Categories Indexing Catalog
+    const portfolioCategories = {
+      motion: ['Explainer Videos', 'Logo Animation', 'UI Motion', '3D Animation'],
+      video: ['Promotional', 'Commercial', 'YouTube Editing'],
+      graphics: ['Brand Identity', 'Flyers & Posters', 'Product Design']
+    };
 
     let currentPrimary = 'all';
     let currentSecondary = 'all';
 
-    function initPortfolioConfig() {
-      if (!window.portfolioConfig) return;
-      const config = window.portfolioConfig;
-
-      // 1. Reorder & Toggle Landing Page Layout Sections
-      const layoutOrder = config.layoutOrder || ['intro-quote', 'hero', 'showreel', 'services', 'portfolio', 'process', 'about', 'testimonials', 'contact'];
-      const disabledSections = config.disabledSections || [];
-      const app = document.getElementById('app');
-      const footer = app.querySelector('footer');
-      const divider = app.querySelector('.timeline-divider-container');
-
-      const orderedElements = [];
-      layoutOrder.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-          const isDisabled = disabledSections.includes(id);
-          el.classList.toggle('hidden', isDisabled);
-
-          // Hide/show navbar links matching this section
-          document.querySelectorAll(`a[href="#${id}"]`).forEach(link => {
-            link.classList.toggle('hidden', isDisabled);
-          });
-
-          if (!isDisabled) {
-            // Append aperture-reveal right before portfolio if portfolio is active
-            if (id === 'portfolio') {
-              const aperture = document.getElementById('aperture-reveal');
-              if (aperture) {
-                aperture.classList.remove('hidden');
-                app.appendChild(aperture);
-              }
-            }
-            app.appendChild(el);
-            orderedElements.push(el);
-          }
-        }
-      });
-      if (footer) app.appendChild(footer);
-
-      // Always place the timeline divider line immediately below the first ordered section at the top of the page
-      if (divider && orderedElements.length > 0) {
-        const firstSection = orderedElements[0];
-        firstSection.parentNode.insertBefore(divider, firstSection.nextSibling);
+    // Master Consolidated Projects Objects Databank
+    const portfolioData = [
+      {
+        id: 'beff-battery', dept: 'motion', sub: 'Explainer Videos',
+        thumb: 'https://i.ibb.co/30B3b30/placeholder-1.jpg',
+        badge: '⚡ Energy Tech • Motion Campaign',
+        title: 'Beff Battery Expert Center',
+        shortDesc: 'Translating complex energy tech metrics into a dynamic, user-centric 2D educational story.',
+        metric: '<strong>40% Support spikes reduced</strong> systematically',
+        tags: ['2D Animation', 'After Effects', 'Explainer'],
+        brief: 'Explain complex battery chemistry and solar storage logistics systematically to residential homeowners.',
+        approach: 'Deployed a high-end, narrative-driven 2D animation strategy to translate dry technical jargon into dynamic visuals.',
+        outcome: 'Delivered an interactive, intuitive campaign asset that reduced high manual inquiry spikes cleanly by 40%.',
+        before: '65% platform bounce rate, severe user confusion over features, and support lines overwhelmed with basic tech inquiries.',
+        after: '85% video retention achieved, smooth automated pre-education, and structured sales funnels clear of manual support blockages.',
+        stats: [{ val: '40%', lbl: 'Support Cut' }, { val: '85%', lbl: 'Retention' }, { val: '2.5x', lbl: 'Quote Requests' }],
+        tools: 'After Effects • Premiere Pro • Audition',
+        mediaType: 'video',
+        embedUrl: 'https://player.vimeo.com/video/347119375', // Professional motion graphic showcase
+        gallery: [
+          { url: 'https://i.ibb.co/30B3b30/placeholder-1.jpg', caption: 'Vector Concept Art' },
+          { url: 'https://i.ibb.co/yQn7wzY/placeholder-2.jpg', caption: 'Keyframe Style Frame' },
+          { url: 'https://i.ibb.co/L51L1Dq/placeholder-3.jpg', caption: 'Aniamted GIF Loop' }
+        ]
+      },
+      {
+        id: 'shelf21', dept: 'motion', sub: 'UI Motion',
+        thumb: 'https://i.ibb.co/yQn7wzY/placeholder-2.jpg',
+        badge: '🏫 EdTech • UI Motion Strategy',
+        title: 'Shelf21 Reward Experience',
+        shortDesc: 'Animating an integrated product ecosystem workflow to maximize continuous daily user tasks.',
+        metric: '<strong>+42% Engagement parameters</strong> recorded',
+        tags: ['UI Animation', 'Figma', 'EdTech'],
+        brief: 'Simplify and gamify the administrative visual user flow for an intuitive ongoing Teacher Reward Point System.',
+        approach: 'Designed structured micro-interactions and vector UI motion components to visually validate execution milestones.',
+        outcome: 'Increased daily engagement parameters with a clear, automated feedback engine loop.',
+        before: 'Inconsistent system task entries, abstract user interface clarity, and erratic user motivation trends.',
+        after: 'Systemized task execution cycle tracking and complete alignment with a balanced digital system economy.',
+        stats: [{ val: '+42%', lbl: 'Daily Tasks' }, { val: '60 PT', lbl: 'Daily Max' }, { val: '100%', lbl: 'User Clarity' }],
+        tools: 'Figma • After Effects • Illustrator',
+        mediaType: 'video',
+        embedUrl: 'https://player.vimeo.com/video/824804225', // High quality UI animation
+        gallery: [
+          { url: 'https://i.ibb.co/yQn7wzY/placeholder-2.jpg', caption: 'Dashboard UI Concept' },
+          { url: 'https://i.ibb.co/30B3b30/placeholder-1.jpg', caption: 'Micro-interaction Prototype' }
+        ]
+      },
+      {
+        id: 'kajota-video', dept: 'video', sub: 'Promotional',
+        thumb: 'https://i.ibb.co/L51L1Dq/placeholder-3.jpg',
+        badge: '📱 Social Media • Ad Campaign',
+        title: 'Kajota Commercial Showcase',
+        shortDesc: 'A high-converting promotional campaign built to drive client interactions via social channels.',
+        metric: '<strong>3x Content conversion metrics</strong> scaling up',
+        tags: ['VFX Editing', 'Color Grading', 'Premiere Pro'],
+        brief: 'Produce a visual campaign narrative capable of converting cold traffic on cross-platform digital spaces.',
+        approach: 'Implemented dynamic multi-layered transition layouts, custom pacing mechanics, and premium background SFX engineering.',
+        outcome: 'Generated record-high target interactions and user click-through benchmarks within weeks.',
+        before: 'Low asset view retention, high viewer scroll-past patterns, and weak audience retention logs.',
+        after: 'Immediate hooks driving sustained visibility timelines and direct client message click-through paths.',
+        stats: [{ val: '3.1x', lbl: 'CTR Increase' }, { val: '72%', lbl: 'Watch Time' }, { val: '+50%', lbl: 'Ad Conversions' }],
+        tools: 'Premiere Pro • DaVinci Resolve • After Effects',
+        mediaType: 'video',
+        embedUrl: 'https://player.vimeo.com/video/503463870', // Video editing showreel sample
+        gallery: [
+          { url: 'https://i.ibb.co/L51L1Dq/placeholder-3.jpg', caption: 'RAW Flat Color Profile' },
+          { url: 'https://i.ibb.co/ZsrFknN/My-DP.webp', caption: 'Final Color-Graded Frame' }
+        ]
+      },
+      {
+        id: 'queen-branding', dept: 'graphics', sub: 'Brand Identity',
+        thumb: 'https://i.ibb.co/ZsrFknN/My-DP.webp',
+        badge: '👑 Luxury • Identity Blueprint',
+        title: 'Queen EyinjuMi Empire Identity',
+        shortDesc: 'Premium corporate visual development bridging high-end catering and luxury fabric store branches.',
+        metric: '<strong>+65% Demographics recognition</strong> shift',
+        tags: ['Branding', 'Typography', 'Logo Design'],
+        brief: 'Unify two distinct high-end service categories—premium culinary arts and heritage textile retail—under one parent emblem.',
+        approach: 'Drafted tailored, symmetrical typography architectures paired with sharp vector brand guidelines to communicate premium status.',
+        outcome: 'Successfully reframed public perception to naturally attract premium, high-ticket clients.',
+        before: 'Fragmented presentation structures and disjointed client engagement models across branches.',
+        after: 'Unified authority status and clear high-end positioning matching premium pricing mechanics.',
+        stats: [{ val: '+65%', lbl: 'Recognition' }, { val: '100%', lbl: 'Consistency' }, { val: 'Premium', lbl: 'Tier Class' }],
+        tools: 'Illustrator • Photoshop • InDesign',
+        mediaType: 'graphics',
+        gallery: [
+          { url: 'https://i.ibb.co/ZsrFknN/My-DP.webp', caption: 'Empire Logo Badge' },
+          { url: 'https://i.ibb.co/30B3b30/placeholder-1.jpg', caption: 'Branding Banner Poster' },
+          { url: 'https://i.ibb.co/yQn7wzY/placeholder-2.jpg', caption: 'Corporate Color Guidelines' },
+          { url: 'https://i.ibb.co/L51L1Dq/placeholder-3.jpg', caption: 'Luxury Fabric Mockup' }
+        ]
       }
-
-      // 2. Render Hero content
-      if (config.hero) {
-        const h = config.hero;
-        const tag = document.getElementById('hero-tag');
-        if (tag) tag.textContent = h.tag;
-
-        const headline = document.getElementById('hero-headline');
-        if (headline) headline.innerHTML = h.title;
-
-        const desc = document.getElementById('hero-description');
-        if (desc) desc.innerHTML = h.description;
-
-        const img = document.getElementById('hero-image');
-        if (img) img.src = h.image;
-
-        // Render Hero buttons
-        const ctaContainer = document.getElementById('hero-ctas');
-        if (ctaContainer) {
-          let buttonsHtml = `<a href="${h.primaryCtaLink || '#portfolio'}" class="btn-primary px-8 py-3.5 rounded-full text-white font-semibold text-sm">${h.primaryCtaText || 'View Projects →'}</a>`;
-          if (h.showSecondCta && h.secondCtaText) {
-            buttonsHtml += `<a href="${h.secondCtaLink || '#showreel'}" class="border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 px-8 py-3.5 rounded-full text-white font-semibold text-sm transition-all">${h.secondCtaText}</a>`;
-          }
-          ctaContainer.innerHTML = buttonsHtml;
-        }
-
-        // Render Hero stats badges
-        const stat1 = document.getElementById('hero-stat1');
-        if (stat1) {
-          stat1.innerHTML = `
-            <div class="text-white text-xl font-bold">${h.stat1Val}</div>
-            <div class="text-xs text-gray-400">${h.stat1Lbl}</div>
-          `;
-        }
-        const stat2 = document.getElementById('hero-stat2');
-        if (stat2) {
-          stat2.innerHTML = `
-            <div class="text-white text-xl font-bold">${h.stat2Val}</div>
-            <div class="text-xs text-gray-400">${h.stat2Lbl}</div>
-          `;
-        }
-
-        // Render Profile Name Card
-        const nameCard = document.getElementById('hero-name-card');
-        if (nameCard) {
-          nameCard.innerHTML = `
-            <div class="font-heading font-bold text-lg text-white">${h.name}</div>
-            <div class="text-sm text-gray-400 mt-1">${h.role}</div>
-          `;
-        }
-      }
-
-      // 3. Render Showreel Iframe (if URL and showreel section is present and not disabled)
-      const isShowreelDisabled = disabledSections.includes('showreel');
-      if (config.hero && config.hero.showreelUrl && !isShowreelDisabled) {
-        const showreelSection = document.getElementById('showreel');
-        const showreelIframe = document.getElementById('showreel-iframe');
-        if (showreelSection && showreelIframe) {
-          showreelIframe.src = config.hero.showreelUrl;
-          showreelSection.classList.remove('hidden');
-        }
-      } else {
-        const showreelSection = document.getElementById('showreel');
-        if (showreelSection) showreelSection.classList.add('hidden');
-      }
-
-      // 4. Render Intro Quote content
-      if (config.introQuote) {
-        const q = config.introQuote;
-        const heading = document.getElementById('intro-quote-heading');
-        if (heading) heading.innerHTML = q.heading;
-        const text = document.getElementById('intro-quote-text');
-        if (text) text.innerHTML = q.paragraph;
-      }
-
-      // 5. Render About Me content
-      if (config.about) {
-        const a = config.about;
-        const img = document.getElementById('about-image');
-        if (img) img.src = a.image;
-
-        const exp = document.getElementById('about-experience');
-        if (exp) {
-          exp.innerHTML = `<span class="font-heading font-extrabold text-white text-lg">${a.experience}</span>`;
-        }
-
-        const title = document.getElementById('about-title');
-        if (title) title.innerHTML = a.title;
-
-        const desc = document.getElementById('about-text');
-        if (desc) desc.innerHTML = a.text;
-
-        const tagsContainer = document.getElementById('about-tags');
-        if (tagsContainer && a.tags) {
-          tagsContainer.innerHTML = a.tags.map((t, idx) => {
-            const isAltColor = idx % 2 === 1;
-            return isAltColor
-              ? `<span class="px-4 py-2 rounded-full text-xs" style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.15);color:var(--accent2);">${t}</span>`
-              : `<span class="px-4 py-2 rounded-full text-xs" style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.15);color:var(--accent);">${t}</span>`;
-          }).join('');
-        }
-      }
-
-      // 6. Render Contact details
-      if (config.contact) {
-        const c = config.contact;
-        const heading = document.getElementById('contact-heading');
-        if (heading) heading.innerHTML = c.heading;
-
-        const desc = document.getElementById('contact-description');
-        if (desc) desc.textContent = c.description;
-
-        const bookingBtn = document.getElementById('contact-booking-btn');
-        if (bookingBtn) {
-          bookingBtn.href = c.bookingLink;
-        }
-
-        const emailLink = document.getElementById('contact-email-link');
-        if (emailLink) {
-          emailLink.href = `mailto:${c.email}`;
-          emailLink.innerHTML = `✉️ Or Email Me: <strong class="text-white">${c.email}</strong>`;
-        }
-
-        const instagram = document.getElementById('contact-instagram');
-        if (instagram) instagram.href = c.instagram;
-
-        const linkedin = document.getElementById('contact-linkedin');
-        if (linkedin) linkedin.href = c.linkedin;
-
-        const youtube = document.getElementById('contact-youtube');
-        if (youtube) youtube.href = c.youtube;
-
-        const web3formsKey = document.getElementById('contact-web3forms-key');
-        if (web3formsKey) web3formsKey.value = c.web3FormsKey;
-      }
-
-      // 7. Render Testimonials
-      const testimonialsList = config.testimonials || (window.portfolioConfig && window.portfolioConfig.testimonials) || [
-        {
-          "id": "t-1",
-          "avatar": "👩‍💼",
-          "quote": "Emmezy transformed our brand identity completely. The attention to detail and creative vision exceeded all expectations. Truly world-class work!",
-          "name": "Sarah Mitchell",
-          "role": "CEO, BrightBrand",
-          "enabled": true
-        },
-        {
-          "id": "t-2",
-          "avatar": "👨‍💻",
-          "quote": "The motion design work was incredible. Our engagement rates tripled after launching the animated content Emmezy created for us.",
-          "name": "Alex Rivera",
-          "role": "Marketing Director",
-          "enabled": true
-        },
-        {
-          "id": "t-3",
-          "avatar": "👩‍🎨",
-          "quote": "Working with Emmezy was seamless. From concept to delivery, every video was polished, professional, and truly cinematic.",
-          "name": "Jessica Park",
-          "role": "Founder, Visionix",
-          "enabled": true
-        }
-      ];
-
-      const activeTestimonials = testimonialsList.filter(t => t.enabled !== false);
-      const grid = document.getElementById('testimonial-grid');
-      if (grid) {
-        if (activeTestimonials.length > 0) {
-          grid.innerHTML = activeTestimonials.map(t => `
-            <div class="rounded-2xl p-6 sm:p-8 text-center glass-surface flex flex-col justify-between h-full">
-              <div>
-                <div class="text-5xl mb-4">${t.avatar || '👤'}</div>
-                <p class="text-gray-200 text-sm leading-relaxed italic max-w-md mx-auto testimonial-quote">
-                  "${t.quote}"
-                </p>
-              </div>
-              <div>
-                <div class="mt-6 font-heading font-bold text-sm testimonial-name">
-                  ${t.name}
-                </div>
-                <div class="text-xs text-gray-400 mt-1 testimonial-role">${t.role}</div>
-              </div>
-            </div>
-          `).join('');
-        } else {
-          grid.innerHTML = `
-            <div class="col-span-full text-center py-12 glass-surface rounded-2xl p-6 sm:p-8 border border-white/5">
-              <div class="text-4xl mb-3">💬</div>
-              <p class="text-gray-300 text-sm font-medium italic">"Your review is our asset."</p>
-            </div>
-          `;
-        }
-      }
-
-      // 8. Render Primary Filters Dynamically
-      const primaryFilters = document.getElementById('primary-filters');
-      if (primaryFilters) {
-        const disabledCats = config.disabledCategories || [];
-        let html = `
-          <button onclick="filterPrimary('all')" data-dept="all"
-            class="port-tab-primary px-6 py-2.5 rounded-full text-xs font-medium border border-purple-500/30 bg-purple-500/10 text-white transition">
-            All Works
-          </button>
-        `;
-        if (!disabledCats.includes('motion')) {
-          html += `
-            <button onclick="filterPrimary('motion')" data-dept="motion"
-              class="port-tab-primary px-6 py-2.5 rounded-full text-xs font-medium border border-white/10 text-gray-400 hover:text-white transition">
-              Motion Design
-            </button>
-          `;
-        }
-        if (!disabledCats.includes('video')) {
-          html += `
-            <button onclick="filterPrimary('video')" data-dept="video"
-              class="port-tab-primary px-6 py-2.5 rounded-full text-xs font-medium border border-white/10 text-gray-400 hover:text-white transition">
-              Video Editing
-            </button>
-          `;
-        }
-        if (!disabledCats.includes('graphics')) {
-          html += `
-            <button onclick="filterPrimary('graphics')" data-dept="graphics"
-              class="port-tab-primary px-6 py-2.5 rounded-full text-xs font-medium border border-white/10 text-gray-400 hover:text-white transition">
-              Graphic Design
-            </button>
-          `;
-        }
-        primaryFilters.innerHTML = html;
-      }
-    }
-
+    ];
 
     function filterPrimary(dept) {
       currentPrimary = dept;
@@ -2283,8 +1528,7 @@
         secContainer.style.pointerEvents = 'none';
         setTimeout(() => secContainer.innerHTML = '', 300);
       } else {
-        const disabledSubs = (window.portfolioConfig && window.portfolioConfig.disabledSubcategories) || [];
-        const subs = (portfolioCategories[dept] || []).filter(s => !disabledSubs.includes(s));
+        const subs = portfolioCategories[dept] || [];
         secContainer.innerHTML = subs.map(s => `
             <button onclick="filterSecondary('${s}')" data-sub="${s}" class="port-tab-secondary px-4 py-1.5 rounded-full text-xs font-medium border border-white/10 text-gray-400 hover:text-white transition">
               ${s}
@@ -2317,11 +1561,7 @@
 
     function renderPortfolio() {
       const grid = document.getElementById('portfolio-grid');
-      const config = window.portfolioConfig || {};
-      const disabledCats = config.disabledCategories || [];
-      const disabledSubs = config.disabledSubcategories || [];
-
-      let items = portfolioData.filter(p => p.enabled !== false && !disabledCats.includes(p.dept) && !disabledSubs.includes(p.sub));
+      let items = portfolioData;
 
       if (currentPrimary !== 'all') { items = items.filter(p => p.dept === currentPrimary); }
       if (currentSecondary !== 'all') { items = items.filter(p => p.sub === currentSecondary); }
@@ -2337,7 +1577,7 @@
                 </linearGradient>
               </defs>
             </svg>
-            <div class="relative w-full overflow-hidden group" style="aspect-ratio:16/9; border-top-left-radius: 15px; border-top-right-radius: 15px; -webkit-mask-image: -webkit-radial-gradient(white, black); mask-image: -webkit-radial-gradient(white, black);">
+            <div class="relative w-full overflow-hidden group" style="aspect-ratio:16/9;">
               <div class="absolute inset-0 bg-cover bg-center transition-all duration-500 group-hover:scale-105" style="background-image:url('${p.thumb}');"></div>
               <div class="absolute top-4 left-4 z-10 px-3 py-1 bg-black/70 backdrop-blur-md rounded-full text-[9px] font-bold text-purple-400 border border-purple-500/20 uppercase tracking-wider">${p.sub}</div>
               <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center z-20">
@@ -2360,7 +1600,7 @@
             </div>
           </div>
         `).join('');
-
+        
       if (typeof sharedObserver !== 'undefined' && sharedObserver) {
         document.querySelectorAll('.case-card').forEach(card => sharedObserver.observe(card));
       }
@@ -2394,14 +1634,8 @@
           </div>
         `;
       } else if (data.mediaType === 'graphics' && data.gallery) {
-        let gridCols = 'grid-cols-1 sm:grid-cols-2';
-        if (data.gallery.length === 1) {
-          gridCols = 'grid-cols-1 max-w-2xl mx-auto';
-        } else if (data.gallery.length === 3) {
-          gridCols = 'grid-cols-1 sm:grid-cols-3';
-        }
         mediaStage.innerHTML = `
-          <div class="grid gap-4 ${gridCols}">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             ${data.gallery.map(img => `
               <div class="group relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 bg-neutral-900 cursor-zoom-in" onclick="openLightbox('${img.url}', '${img.caption}')">
                 <img src="${img.url}" alt="${img.caption}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
@@ -2420,20 +1654,9 @@
       const galleryStage = document.getElementById('modal-gallery-stage');
       const galleryGrid = document.getElementById('gallery-stage-grid');
       const galleryTitle = document.getElementById('gallery-stage-title');
-
+      
       if (data.mediaType === 'video' && data.gallery && data.gallery.length > 0) {
         galleryTitle.textContent = "Style Frames & Creative Process";
-
-        let gridCols = 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4';
-        if (data.gallery.length === 1) {
-          gridCols = 'grid-cols-1 max-w-md mx-auto';
-        } else if (data.gallery.length === 2) {
-          gridCols = 'grid-cols-2';
-        } else if (data.gallery.length === 3) {
-          gridCols = 'grid-cols-2 sm:grid-cols-3';
-        }
-        galleryGrid.className = `grid gap-4 ${gridCols}`;
-
         galleryGrid.innerHTML = data.gallery.map(img => `
           <div class="group relative aspect-[4/3] rounded-xl overflow-hidden border border-white/5 bg-neutral-900 cursor-zoom-in" onclick="openLightbox('${img.url}', '${img.caption}')">
             <img src="${img.url}" alt="${img.caption}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
@@ -2469,7 +1692,7 @@
       const overlay = document.getElementById('lightbox-overlay');
       const img = document.getElementById('lightbox-img');
       const cap = document.getElementById('lightbox-caption');
-
+      
       img.src = url;
       cap.textContent = caption || '';
       overlay.classList.remove('hidden');
@@ -2497,7 +1720,25 @@
       }
     });
 
-
+    // Testimonial Engine
+    let currentTestimonial = 0;
+    let testimonialTimer;
+    function startTestimonialTimer() {
+      clearInterval(testimonialTimer);
+      testimonialTimer = setInterval(autoNextTestimonial, 5000);
+    }
+    function updateTestimonialPosition() {
+      document.getElementById('testimonial-track').style.transform = `translateX(-${currentTestimonial * 100}%)`;
+    }
+    function autoNextTestimonial() {
+      currentTestimonial = (currentTestimonial + 1) % 3; updateTestimonialPosition();
+    }
+    function nextTestimonial() {
+      currentTestimonial = (currentTestimonial + 1) % 3; updateTestimonialPosition(); startTestimonialTimer();
+    }
+    function prevTestimonial() {
+      currentTestimonial = (currentTestimonial - 1 + 3) % 3; updateTestimonialPosition(); startTestimonialTimer();
+    }
 
     // Cursor animations
     const cursor = document.getElementById('customCursor');
@@ -2566,50 +1807,9 @@
     const appEl = document.getElementById('app');
     appEl.addEventListener('scroll', () => {
       const nav = document.getElementById('navbar');
-      const isLight = document.body.classList.contains('light');
-      if (appEl.scrollTop > 50) {
-        nav.style.background = isLight ? 'rgba(248, 250, 252, 0.4)' : 'rgba(10, 10, 15, 0.4)';
-        nav.style.borderBottom = isLight ? '1px solid rgba(15, 23, 42, 0.08)' : '1px solid rgba(255, 255, 255, 0.08)';
-      } else {
-        nav.style.background = 'transparent';
-        nav.style.borderBottom = 'none';
-      }
+      nav.style.background = appEl.scrollTop > 50 ? 'rgba(10,10,15,0.9)' : 'transparent';
       nav.style.backdropFilter = appEl.scrollTop > 50 ? 'blur(20px)' : 'none';
-      nav.style.webkitBackdropFilter = appEl.scrollTop > 50 ? 'blur(20px)' : 'none';
     });
-
-    // Theme Switcher Sync & Event Handler
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const sunIcon = document.getElementById('theme-icon-sun');
-    const moonIcon = document.getElementById('theme-icon-moon');
-
-    // Sync icon state on load
-    if (document.body.classList.contains('light')) {
-      if (sunIcon) sunIcon.classList.add('hidden');
-      if (moonIcon) moonIcon.classList.remove('hidden');
-    }
-
-    if (themeToggleBtn) {
-      themeToggleBtn.addEventListener('click', () => {
-        const isLight = document.body.classList.toggle('light');
-        localStorage.setItem('portfolio-theme', isLight ? 'light' : 'dark');
-
-        // Sync scroll background immediately if scrolled
-        if (appEl.scrollTop > 50) {
-          const nav = document.getElementById('navbar');
-          nav.style.background = isLight ? 'rgba(248, 250, 252, 0.4)' : 'rgba(10, 10, 15, 0.4)';
-          nav.style.borderBottom = isLight ? '1px solid rgba(15, 23, 42, 0.08)' : '1px solid rgba(255, 255, 255, 0.08)';
-        }
-
-        if (isLight) {
-          if (sunIcon) sunIcon.classList.add('hidden');
-          if (moonIcon) moonIcon.classList.remove('hidden');
-        } else {
-          if (sunIcon) sunIcon.classList.remove('hidden');
-          if (moonIcon) moonIcon.classList.add('hidden');
-        }
-      });
-    }
 
     // Mobile Dropdown Menu Toggle
     document.getElementById('mobile-toggle').addEventListener('click', () => { document.getElementById('mobile-menu').classList.toggle('hidden'); });
@@ -2643,17 +1843,17 @@
               glowSvg.classList.remove('is-active');
             }
           }
-
+          
           if (entry.target.classList.contains('case-card')) {
             const caseGlow = entry.target.querySelector('.case-glow-border');
             if (caseGlow) {
-              if (entry.isIntersecting) {
-                caseGlow.classList.remove('is-flashing');
-                void caseGlow.offsetWidth;
-                caseGlow.classList.add('is-flashing');
-              } else {
-                caseGlow.classList.remove('is-flashing');
-              }
+               if (entry.isIntersecting) {
+                 caseGlow.classList.remove('is-flashing');
+                 void caseGlow.offsetWidth;
+                 caseGlow.classList.add('is-flashing');
+               } else {
+                 caseGlow.classList.remove('is-flashing');
+               }
             }
           }
         });
@@ -2692,12 +1892,12 @@
       const form = event.target;
       const submitBtn = form.querySelector('button[type="submit"]');
       const originalBtnText = submitBtn.innerHTML;
-
+      
       submitBtn.disabled = true;
       submitBtn.innerHTML = 'Sending... ✦';
-
+      
       const formData = new FormData(form);
-
+      
       try {
         const response = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
@@ -2707,7 +1907,7 @@
           },
           body: JSON.stringify(Object.fromEntries(formData))
         });
-
+        
         const result = await response.json();
         if (result.success) {
           const formContainer = document.getElementById('form-container');
@@ -2717,7 +1917,7 @@
                 <i data-lucide="check-circle" class="w-8 h-8 text-emerald-400" style="stroke-width: 2px;"></i>
               </div>
               <h3 class="font-heading font-bold text-xl text-white mb-2">Message Sent!</h3>
-              <p class="text-xs text-gray-400 max-w-xs leading-relaxed">${(window.portfolioConfig && window.portfolioConfig.contact && window.portfolioConfig.contact.successMessage) || "Thank you for reaching out. Olaitan Emmanuel will get back to you within 24 hours."}</p>
+              <p class="text-xs text-gray-400 max-w-xs leading-relaxed">Thank you for reaching out. Olaitan Emmanuel will get back to you within 24 hours.</p>
             </div>
           `;
           lucide.createIcons();
@@ -2733,228 +1933,10 @@
       }
     }
 
-    // Scroll progress bar and background parallax tracker
-    function setupScrollTracker() {
-      const progressBar = document.getElementById('scrollProgress');
-      const appEl = document.getElementById('app');
-
-      if (!appEl) return;
-
-      appEl.addEventListener('scroll', () => {
-        const scrollTop = appEl.scrollTop;
-        const scrollHeight = appEl.scrollHeight - appEl.clientHeight;
-        if (scrollHeight > 0) {
-          const progress = (scrollTop / scrollHeight) * 100;
-          if (progressBar) progressBar.style.width = `${progress}%`;
-        }
-
-        // Parallax background blobs movement
-        const scrollY = scrollTop;
-        document.documentElement.style.setProperty('--scroll-y', `${scrollY}px`);
-
-        // Cinematic Aperture Reveal Progress Tracker
-        const aperture = document.getElementById('aperture-reveal');
-        if (aperture && !aperture.classList.contains('hidden')) {
-          const rect = aperture.getBoundingClientRect();
-          const viewHeight = window.innerHeight;
-          const totalScroll = rect.height - viewHeight;
-          const startScroll = -rect.top;
-
-          let progress = 0;
-          if (totalScroll > 0) {
-            progress = startScroll / totalScroll;
-            progress = Math.max(0, Math.min(1, progress));
-          }
-          aperture.style.setProperty('--aperture-progress', progress);
-        }
-      });
-    }
-
-    // 3D Tilt Card Micro-interaction
-    function initTiltEffect() {
-      if (window.matchMedia("(max-width: 1023px)").matches || ('ontouchstart' in window)) return;
-
-      const selectCards = () => {
-        document.querySelectorAll('.case-card, .service-core').forEach(card => {
-          if (card.dataset.tiltInitialized) return;
-          card.dataset.tiltInitialized = 'true';
-
-          card.addEventListener('mousemove', e => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const xc = rect.width / 2;
-            const yc = rect.height / 2;
-            const dx = x - xc;
-            const dy = y - yc;
-
-            const rx = -(dy / yc) * 6;
-            const ry = (dx / xc) * 6;
-
-            card.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) scale3d(1.02, 1.02, 1.02)`;
-            card.style.setProperty('--mouse-x', `${x}px`);
-            card.style.setProperty('--mouse-y', `${y}px`);
-          });
-
-          card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
-            card.style.transition = 'transform 0.5s ease';
-          });
-
-          card.addEventListener('mouseenter', () => {
-            card.style.transition = 'none';
-          });
-        });
-      };
-
-      selectCards();
-
-      // Re-run whenever grid content changes
-      const portfolioGrid = document.getElementById('portfolio-grid');
-      if (portfolioGrid) {
-        const tiltObserver = new MutationObserver(selectCards);
-        tiltObserver.observe(portfolioGrid, { childList: true });
-      }
-    }
-
-    // Intersection Observer Reveal Seeder & Observer
-    function setupScrollAnimations() {
-      // 1. Seed reveal classes on landing elements
-
-      // Hero elements
-      const heroHeadline = document.getElementById('hero-headline');
-      if (heroHeadline) heroHeadline.classList.add('reveal');
-
-      const heroDescription = document.getElementById('hero-description');
-      if (heroDescription) heroDescription.classList.add('reveal', 'delay-100');
-
-      const heroCtas = document.getElementById('hero-ctas');
-      if (heroCtas) heroCtas.classList.add('reveal', 'delay-200');
-
-      const heroImageContainer = document.querySelector('#hero img')?.parentElement;
-      if (heroImageContainer) heroImageContainer.classList.add('reveal-right', 'delay-100');
-
-      // Intro quote
-      const introQuoteCard = document.querySelector('#intro-quote > div');
-      if (introQuoteCard) introQuoteCard.classList.add('reveal-scale');
-
-      // Specialties
-      const servicesHeader = document.querySelector('#services > div.text-center');
-      if (servicesHeader) servicesHeader.classList.add('reveal');
-
-      const serviceCores = document.querySelectorAll('.service-core');
-      if (serviceCores[0]) serviceCores[0].classList.add('reveal-left');
-      if (serviceCores[1]) serviceCores[1].classList.add('reveal-right');
-
-      const serviceSupport = document.querySelector('.service-support');
-      if (serviceSupport) serviceSupport.classList.add('reveal-scale');
-
-      // Portfolio
-      const portfolioHeader = document.querySelector('#portfolio .text-center');
-      if (portfolioHeader) portfolioHeader.classList.add('reveal');
-
-      const portfolioFilters = document.getElementById('primary-filters');
-      if (portfolioFilters) portfolioFilters.classList.add('reveal', 'delay-100');
-
-      // Process
-      const processHeader = document.querySelector('#process .text-center');
-      if (processHeader) processHeader.classList.add('reveal');
-
-      const processStages = document.querySelectorAll('#process .grid > div');
-      processStages.forEach((stage, i) => {
-        stage.classList.add('reveal-scale', `delay-${i * 100}`);
-      });
-
-      // About
-      const aboutPhoto = document.querySelector('#about img')?.parentElement;
-      if (aboutPhoto) aboutPhoto.classList.add('reveal-left');
-
-      const aboutContent = document.querySelector('#about img')?.parentElement?.parentElement?.querySelector('div:not(.flex-shrink-0)');
-      if (aboutContent) {
-        aboutContent.classList.add('reveal-right');
-        const childNodes = aboutContent.children;
-        for (let i = 0; i < childNodes.length; i++) {
-          childNodes[i].classList.add('reveal', `delay-${i * 100}`);
-        }
-      }
-
-      // Testimonials
-      const testimonialsHeader = document.querySelector('#testimonials .text-center');
-      if (testimonialsHeader) testimonialsHeader.classList.add('reveal');
-
-      // Contact
-      const contactGateway = document.querySelector('.gateway-container');
-      if (contactGateway) contactGateway.classList.add('reveal-scale');
-
-      // 2. Setup Intersection Observer to trigger reveal classes
-      const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('reveal-visible');
-          } else {
-            // Reset when element exits from the bottom of viewport (scrolled up past it)
-            const rect = entry.boundingClientRect;
-            const viewportHeight = window.innerHeight;
-            if (rect.top > viewportHeight - 50) {
-              entry.target.classList.remove('reveal-visible');
-            }
-          }
-        });
-      }, {
-        threshold: 0.05,
-        rootMargin: '0px 0px -20px 0px'
-      });
-
-      document.querySelectorAll('[class*="reveal"]').forEach(el => {
-        revealObserver.observe(el);
-      });
-
-      // Also observe dynamic portfolio grid items when they render
-      const portfolioGrid = document.getElementById('portfolio-grid');
-      if (portfolioGrid) {
-        const gridObserver = new MutationObserver(() => {
-          portfolioGrid.querySelectorAll('.case-card').forEach((card, i) => {
-            if (!card.classList.contains('reveal-scale') && !card.classList.contains('reveal-visible')) {
-              card.classList.add('reveal-scale', `delay-${(i % 3) * 100}`);
-              revealObserver.observe(card);
-            }
-          });
-        });
-        gridObserver.observe(portfolioGrid, { childList: true });
-      }
-
-      // Testimonials dynamic grid observer
-      const testimonialsGrid = document.getElementById('testimonial-grid');
-      if (testimonialsGrid) {
-        const testimonialGridObserver = new MutationObserver(() => {
-          testimonialsGrid.querySelectorAll('.glass-surface').forEach((card, i) => {
-            if (!card.classList.contains('reveal-scale') && !card.classList.contains('reveal-visible')) {
-              card.classList.add('reveal-scale', `delay-${(i % 3) * 100}`);
-              revealObserver.observe(card);
-            }
-          });
-        });
-        testimonialGridObserver.observe(testimonialsGrid, { childList: true });
-      }
-    }
-
     // Initialization Context Renders
-    initPortfolioConfig();
     filterPrimary('all');
+    startTestimonialTimer();
     lucide.createIcons();
-
-    // Setup Animations & Mouse Micro-interactions
-    setupScrollAnimations();
-    setupScrollTracker();
-    initTiltEffect();
-
-    if (isDraftPreview) {
-      const banner = document.createElement('div');
-      banner.id = 'draft-banner';
-      banner.className = 'fixed bottom-4 right-4 z-[99999] bg-purple-950/80 border border-purple-500/20 backdrop-blur-md px-4 py-2 rounded-full text-[10px] text-purple-300 font-bold tracking-wider uppercase flex items-center gap-2 shadow-2xl pointer-events-none select-none';
-      banner.innerHTML = `<span class="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-ping"></span> ⚡ Draft Preview Mode`;
-      document.body.appendChild(banner);
-    }
 
     // Element SDK Configuration Defaults Mapping Loop
     const defaultConfig = {

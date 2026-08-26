@@ -677,6 +677,104 @@
         opacity: 0;
       }
     }
+
+    /* === FORM CUSTOM AESTHETICS === */
+    .form-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(139, 92, 246, 0.15);
+      border-radius: 12px;
+      padding: 14px 16px;
+      color: var(--text);
+      font-size: 14px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      outline: none;
+    }
+
+    .form-input:focus {
+      border-color: #a78bfa;
+      background: rgba(139, 92, 246, 0.04);
+      box-shadow: 0 0 15px rgba(139, 92, 246, 0.12);
+    }
+
+    .form-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #a78bfa;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .form-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23a78bfa'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      background-size: 14px;
+      padding-right: 40px;
+    }
+
+    /* Option Switcher Panel */
+    .switcher-panel {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 15, 30, 0.85);
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      backdrop-filter: blur(15px);
+      border-radius: 9999px;
+      padding: 6px;
+      z-index: 999999;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(139, 92, 246, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .switcher-btn {
+      padding: 10px 20px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .switcher-btn.active {
+      color: #fff;
+      background: linear-gradient(135deg, #a78bfa, #7c3aed);
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+    }
+
+    .switcher-title {
+      font-size: 9px;
+      font-weight: 800;
+      color: #fbbf24;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0 12px;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Option Containers Hide/Show */
+    .contact-preview-container {
+      display: none;
+      animation: previewFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .contact-preview-container.active {
+      display: block;
+    }
+
+    @keyframes previewFadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
   <script>
     tailwind.config = {
@@ -1157,42 +1255,257 @@
     </section>
 
     <section id="contact" class="w-full max-w-5xl mx-auto px-6 py-24">
-      <div
-        class="gateway-container flex flex-col justify-center items-center min-h-[450px] text-center relative py-16 animate-fade-up">
-        <div class="gateway-glow"></div>
-        <div class="relative z-10 px-6 max-w-2xl">
-          <span class="text-xs font-bold tracking-widest uppercase text-purple-400 mb-6 block">— Ready to Start</span>
-          <h2 class="font-heading font-bold text-3xl sm:text-5xl leading-snug tracking-normal">
-            Make Your Brand <br /><span class="gradient-text">Unforgettable.</span>
-          </h2>
-          <p class="text-gray-400 mt-6 text-base max-w-lg mx-auto">
-            Your product deserves to be understood in seconds. Let's talk
-            about what motion can do for your brand.
-          </p>
-        </div>
+      
+      <!-- ================= OPTION 1: SPLIT SCREEN (DEFAULT ACTIVE) ================= -->
+      <div id="contact-opt-1" class="contact-preview-container active w-full">
+        <div class="gateway-container relative p-8 sm:p-12 md:p-16">
+          <div class="gateway-glow"></div>
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+            <!-- Left Info Column -->
+            <div class="lg:col-span-5 text-left">
+              <span class="text-xs font-bold tracking-widest uppercase text-purple-400 mb-6 block">— Let's Connect</span>
+              <h2 class="font-heading font-bold text-3xl sm:text-4xl leading-snug tracking-normal text-white">
+                Make Your Brand <br /><span class="gradient-text">Unforgettable.</span>
+              </h2>
+              <p class="text-gray-400 mt-6 text-sm leading-relaxed max-w-sm">
+                Your product deserves to be understood in seconds. Let's build a custom motion graphic or cinematic video edit that sells for you.
+              </p>
+              
+              <div class="mt-8 space-y-4">
+                <a href="https://cal.com/olaitan-emmanuel/30min" target="_blank" 
+                   class="btn-primary inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-white font-semibold text-xs uppercase tracking-wider shadow-lg hover:scale-105 transition-all">
+                  📅 Book a Discovery Call
+                </a>
+                <div class="pt-2">
+                  <a href="mailto:olaitanemmanuel21@gmail.com" class="text-xs text-purple-300 hover:text-white transition flex items-center gap-2">
+                    ✉️ Or Email Me: <strong class="text-white">olaitanemmanuel21@gmail.com</strong>
+                  </a>
+                </div>
+              </div>
 
-        <div class="relative z-10 mt-10">
-          <div class="responsive-orb-wrap" id="ctaOrbContainer" tabindex="0">
-            <a href="https://cal.com/olaitan-emmanuel/30min" target="_blank" id="primaryCallLink"
-              class="orb-primary-btn block" onclick="handleMobileCTATap(event)">Book a Discovery Call ✦</a>
-            <div class="orb-secondary-label">
-              <a href="mailto:olaitanemmanuel21@gmail.com" class="orb-secondary-link block">Or Email Me Directly</a>
+              <!-- Social Links -->
+              <div class="flex gap-3 mt-10">
+                <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
+                  style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="instagram"
+                    style="width:16px;height:16px;color:var(--accent);"></i></a>
+                <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
+                  style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="linkedin"
+                    style="width:16px;height:16px;color:var(--accent);"></i></a>
+                <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:scale-110"
+                  style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="youtube"
+                    style="width:16px;height:16px;color:var(--accent);"></i></a>
+              </div>
+            </div>
+
+            <!-- Right Form Column -->
+            <div class="lg:col-span-7 bg-white/[0.02] border border-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8">
+              <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-4">Send a Message</span>
+              <form class="space-y-4" onsubmit="event.preventDefault(); alert('Demo Submit! In production, this form will submit to your email.');">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="form-label">Name</label>
+                    <input type="text" placeholder="Your Name" class="form-input" required />
+                  </div>
+                  <div>
+                    <label class="form-label">Email</label>
+                    <input type="email" placeholder="Your Email" class="form-input" required />
+                  </div>
+                </div>
+                <div>
+                  <label class="form-label">Project Type</label>
+                  <select class="form-input form-select" required>
+                    <option value="" disabled selected>Select a service...</option>
+                    <option value="motion">🎬 Motion Design / Animation</option>
+                    <option value="video">🎥 Video Editing</option>
+                    <option value="graphics">🎨 Graphic Design</option>
+                    <option value="other">💼 Other Creative Inquiry</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="form-label">Message</label>
+                  <textarea rows="4" placeholder="Tell me about your project, goals, and timeline..." class="form-input resize-none" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary w-full py-3.5 rounded-xl text-white font-bold text-xs uppercase tracking-wider shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all">
+                  Send Message ✦
+                </button>
+              </form>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="flex justify-center gap-4 mt-16 relative z-10">
-          <a href="#" class="w-11 h-11 rounded-full flex items-center justify-center transition hover:scale-110"
-            style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="instagram"
-              style="width:18px;height:18px;color:var(--accent);"></i></a>
-          <a href="#" class="w-11 h-11 rounded-full flex items-center justify-center transition hover:scale-110"
-            style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="linkedin"
-              style="width:18px;height:18px;color:var(--accent);"></i></a>
-          <a href="#" class="w-11 h-11 rounded-full flex items-center justify-center transition hover:scale-110"
-            style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="youtube"
-              style="width:18px;height:18px;color:var(--accent);"></i></a>
+      <!-- ================= OPTION 2: CENTERED CARD EXPANSION ================= -->
+      <div id="contact-opt-2" class="contact-preview-container w-full">
+        <div class="gateway-container flex flex-col justify-center items-center text-center relative py-16 px-6 sm:px-12">
+          <div class="gateway-glow"></div>
+          <div class="relative z-10 max-w-2xl w-full">
+            <span class="text-xs font-bold tracking-widest uppercase text-purple-400 mb-6 block">— Ready to Start</span>
+            <h2 class="font-heading font-bold text-3xl sm:text-5xl leading-snug tracking-normal">
+              Make Your Brand <br /><span class="gradient-text">Unforgettable.</span>
+            </h2>
+            <p class="text-gray-400 mt-6 text-base max-w-lg mx-auto">
+              Your product deserves to be understood in seconds. Let's talk about what motion can do for your brand.
+            </p>
+          </div>
+
+          <div class="relative z-10 mt-10 flex flex-col items-center">
+            <!-- Cal.com & Email CTA -->
+            <div class="responsive-orb-wrap" id="ctaOrbContainerOpt2" tabindex="0">
+              <a href="https://cal.com/olaitan-emmanuel/30min" target="_blank" class="orb-primary-btn block">Book a Discovery Call ✦</a>
+              <div class="orb-secondary-label">
+                <a href="mailto:olaitanemmanuel21@gmail.com" class="orb-secondary-link block">Or Email Me Directly</a>
+              </div>
+            </div>
+            
+            <!-- Toggle Form Button -->
+            <button onclick="toggleExpandForm()" class="mt-6 text-xs text-purple-300 hover:text-white underline underline-offset-4 decoration-purple-500/50 hover:decoration-white transition-all flex items-center gap-1.5">
+              <span>Or write a message instead</span> <i data-lucide="mail" style="width:12px;height:12px;"></i>
+            </button>
+          </div>
+
+          <!-- Expandable Form Container -->
+          <div id="expandableFormWrap" class="relative z-10 max-h-0 overflow-hidden w-full max-w-lg mt-8 transition-all duration-700 ease-in-out text-left">
+            <div class="bg-white/[0.02] border border-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8 mt-2">
+              <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-4">Send a Message</span>
+              <form class="space-y-4" onsubmit="event.preventDefault(); alert('Demo Submit! In production, this form will submit to your email.');">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="form-label">Name</label>
+                    <input type="text" placeholder="Your Name" class="form-input" required />
+                  </div>
+                  <div>
+                    <label class="form-label">Email</label>
+                    <input type="email" placeholder="Your Email" class="form-input" required />
+                  </div>
+                </div>
+                <div>
+                  <label class="form-label">Project Type</label>
+                  <select class="form-input form-select" required>
+                    <option value="" disabled selected>Select a service...</option>
+                    <option value="motion">🎬 Motion Design / Animation</option>
+                    <option value="video">🎥 Video Editing</option>
+                    <option value="graphics">🎨 Graphic Design</option>
+                    <option value="other">💼 Other Creative Inquiry</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="form-label">Message</label>
+                  <textarea rows="4" placeholder="Tell me about your project, goals, and timeline..." class="form-input resize-none" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary w-full py-3.5 rounded-xl text-white font-bold text-xs uppercase tracking-wider shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all">
+                  Send Message ✦
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Socials -->
+          <div class="flex justify-center gap-4 mt-12 relative z-10">
+            <a href="#" class="w-11 h-11 rounded-full flex items-center justify-center transition hover:scale-110"
+              style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="instagram"
+                style="width:18px;height:18px;color:var(--accent);"></i></a>
+            <a href="#" class="w-11 h-11 rounded-full flex items-center justify-center transition hover:scale-110"
+              style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="linkedin"
+                style="width:18px;height:18px;color:var(--accent);"></i></a>
+            <a href="#" class="w-11 h-11 rounded-full flex items-center justify-center transition hover:scale-110"
+              style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="youtube"
+                style="width:18px;height:18px;color:var(--accent);"></i></a>
+          </div>
         </div>
       </div>
+
+      <!-- ================= OPTION 3: TABBED INTERFACE ================= -->
+      <div id="contact-opt-3" class="contact-preview-container w-full">
+        <div class="gateway-container flex flex-col items-center relative py-12 px-6 sm:px-12">
+          <div class="gateway-glow"></div>
+          
+          <div class="relative z-10 text-center max-w-2xl w-full">
+            <span class="text-xs font-bold tracking-widest uppercase text-purple-400 mb-6 block">— Get in Touch</span>
+            <h2 class="font-heading font-bold text-3xl sm:text-4xl leading-snug tracking-normal text-white">
+              Let's Create Something <span class="gradient-text">Unforgettable.</span>
+            </h2>
+          </div>
+
+          <!-- Micro-Animated Tab Selector -->
+          <div class="relative z-10 mt-8 bg-black/40 border border-purple-500/20 rounded-full p-1.5 flex max-w-md w-full relative">
+            <div id="tabIndicator" class="absolute top-1.5 left-1.5 bottom-1.5 w-[calc(50%-6px)] bg-gradient-to-r from-purple-500/20 to-purple-600/30 border border-purple-500/40 rounded-full transition-all duration-300 ease-in-out"></div>
+            
+            <button onclick="switchContactTab('call')" id="tabBtnCall" class="flex-1 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider relative z-10 text-white transition-all">
+              📅 Book Call
+            </button>
+            <button onclick="switchContactTab('msg')" id="tabBtnMsg" class="flex-1 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider relative z-10 text-gray-400 hover:text-white transition-all">
+              ✉️ Message Form
+            </button>
+          </div>
+
+          <!-- Tab Panels Container -->
+          <div class="relative z-10 w-full max-w-lg mt-10 min-h-[300px]">
+            
+            <!-- Call Tab Panel -->
+            <div id="tabPanelCall" class="w-full flex flex-col items-center text-center transition-all duration-300">
+              <p class="text-gray-400 text-sm max-w-sm mb-8 leading-relaxed">
+                Prefer to sync face-to-face? Book a brief 30-minute introductory meeting on my calendar immediately.
+              </p>
+              
+              <div class="responsive-orb-wrap" id="ctaOrbContainerOpt3" tabindex="0">
+                <a href="https://cal.com/olaitan-emmanuel/30min" target="_blank" class="orb-primary-btn block">Book a Discovery Call ✦</a>
+                <div class="orb-secondary-label">
+                  <a href="mailto:olaitanemmanuel21@gmail.com" class="orb-secondary-link block">Or Email Me Directly</a>
+                </div>
+              </div>
+              
+              <!-- Social Links -->
+              <div class="flex justify-center gap-4 mt-12 w-full">
+                <a href="#" class="w-11 h-11 rounded-full flex items-center justify-center transition hover:scale-110"
+                  style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="instagram"
+                    style="width:18px;height:18px;color:var(--accent);"></i></a>
+                <a href="#" class="w-11 h-11 rounded-full flex items-center justify-center transition hover:scale-110"
+                  style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="linkedin"
+                    style="width:18px;height:18px;color:var(--accent);"></i></a>
+                <a href="#" class="w-11 h-11 rounded-full flex items-center justify-center transition hover:scale-110"
+                  style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.15);"><i data-lucide="youtube"
+                    style="width:18px;height:18px;color:var(--accent);"></i></a>
+              </div>
+            </div>
+
+            <!-- Message Form Tab Panel -->
+            <div id="tabPanelMsg" class="w-full hidden transition-all duration-300 text-left bg-white/[0.02] border border-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8">
+              <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-4">Send a Message</span>
+              <form class="space-y-4" onsubmit="event.preventDefault(); alert('Demo Submit! In production, this form will submit to your email.');">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="form-label">Name</label>
+                    <input type="text" placeholder="Your Name" class="form-input" required />
+                  </div>
+                  <div>
+                    <label class="form-label">Email</label>
+                    <input type="email" placeholder="Your Email" class="form-input" required />
+                  </div>
+                </div>
+                <div>
+                  <label class="form-label">Project Type</label>
+                  <select class="form-input form-select" required>
+                    <option value="" disabled selected>Select a service...</option>
+                    <option value="motion">🎬 Motion Design / Animation</option>
+                    <option value="video">🎥 Video Editing</option>
+                    <option value="graphics">🎨 Graphic Design</option>
+                    <option value="other">💼 Other Creative Inquiry</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="form-label">Message</label>
+                  <textarea rows="4" placeholder="Tell me about your project, goals, and timeline..." class="form-input resize-none" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary w-full py-3.5 rounded-xl text-white font-bold text-xs uppercase tracking-wider shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all">
+                  Send Message ✦
+                </button>
+              </form>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
     </section>
 
     <footer class="w-full py-12" style="border-top:1px solid rgba(139,92,246,0.08);">
@@ -1697,6 +2010,63 @@
     startTestimonialTimer();
     lucide.createIcons();
 
+    // === CONTACT FORM SWITCHER AND INTERACTIVE OPTIONS JS ===
+    function setContactPreviewOption(optionIndex) {
+      document.querySelectorAll('.contact-preview-container').forEach(c => {
+        c.classList.remove('active');
+      });
+      document.querySelectorAll('.switcher-btn').forEach(b => {
+        b.classList.remove('active');
+      });
+      
+      const selectedContainer = document.getElementById(`contact-opt-${optionIndex}`);
+      const selectedBtn = document.getElementById(`switchBtn-${optionIndex}`);
+      
+      if (selectedContainer) selectedContainer.classList.add('active');
+      if (selectedBtn) selectedBtn.classList.add('active');
+      
+      // Re-render Lucide icons inside newly visible elements
+      lucide.createIcons();
+    }
+    
+    // Option 2 Form Collapse/Expand toggle
+    let isOpt2FormExpanded = false;
+    function toggleExpandForm() {
+      const wrap = document.getElementById('expandableFormWrap');
+      isOpt2FormExpanded = !isOpt2FormExpanded;
+      if (isOpt2FormExpanded) {
+        wrap.style.maxHeight = '650px';
+      } else {
+        wrap.style.maxHeight = '0px';
+      }
+    }
+    
+    // Option 3 Tab switcher
+    function switchContactTab(tabType) {
+      const btnCall = document.getElementById('tabBtnCall');
+      const btnMsg = document.getElementById('tabBtnMsg');
+      const panelCall = document.getElementById('tabPanelCall');
+      const panelMsg = document.getElementById('tabPanelMsg');
+      const indicator = document.getElementById('tabIndicator');
+      
+      if (tabType === 'call') {
+        indicator.style.left = '6px';
+        btnCall.className = 'flex-1 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider relative z-10 text-white transition-all';
+        btnMsg.className = 'flex-1 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider relative z-10 text-gray-400 hover:text-white transition-all';
+        
+        panelCall.classList.remove('hidden');
+        panelMsg.classList.add('hidden');
+      } else {
+        indicator.style.left = 'calc(50% + 0px)';
+        btnCall.className = 'flex-1 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider relative z-10 text-gray-400 hover:text-white transition-all';
+        btnMsg.className = 'flex-1 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider relative z-10 text-white transition-all';
+        
+        panelCall.classList.add('hidden');
+        panelMsg.classList.remove('hidden');
+      }
+      lucide.createIcons();
+    }
+
     // Element SDK Configuration Defaults Mapping Loop
     const defaultConfig = {
       about_text: "I help businesses communicate their value through strategic design, motion graphics, and video content that attracts attention, strengthens brand presence, and connects with the right audience. With over 5 years of experience, I have worked on branding, motion graphics, and video projects for businesses, organizations, and entrepreneurs. My goal is to create visual content that not only looks professional but also helps clients build credibility, increase engagement, and achieve meaningful results.",
@@ -1742,6 +2112,14 @@
       ])
     });
   </script>
+
+  <!-- Interactive Design Preview Switcher Panel (Floating at bottom) -->
+  <div class="switcher-panel">
+    <div class="switcher-title">Contact Options</div>
+    <button id="switchBtn-1" onclick="setContactPreviewOption(1)" class="switcher-btn active">Option 1: Split</button>
+    <button id="switchBtn-2" onclick="setContactPreviewOption(2)" class="switcher-btn">Option 2: Expand</button>
+    <button id="switchBtn-3" onclick="setContactPreviewOption(3)" class="switcher-btn">Option 3: Tabbed</button>
+  </div>
 </body>
 
 </html>

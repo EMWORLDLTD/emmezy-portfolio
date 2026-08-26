@@ -525,6 +525,30 @@
                 </div>
               </div>
 
+              <!-- Video Series / Playlist support -->
+              <div id="proj-series-toggle-container" class="border-t border-white/5 pt-4">
+                <div class="flex items-center gap-2 mb-2">
+                  <input id="proj-is-series" type="checkbox" onchange="toggleProjectSeriesInput(this.checked)" class="rounded border-purple-500 bg-black text-purple-600 focus:ring-0 focus:ring-offset-0 cursor-pointer" />
+                  <label for="proj-is-series" class="text-xs font-bold text-white uppercase tracking-wider cursor-pointer">Is this project a Video Series / Playlist?</label>
+                </div>
+                
+                <div id="proj-series-inputs" class="hidden space-y-4 bg-purple-950/20 border border-purple-500/10 rounded-2xl p-4 mt-2">
+                  <div>
+                    <label class="block text-[10px] font-bold text-purple-300 uppercase tracking-wider mb-1.5">YouTube Playlist Link URL</label>
+                    <input id="proj-playlist-url" type="text" placeholder="https://youtube.com/playlist?list=..." class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" />
+                  </div>
+                  <div>
+                    <label class="block text-[10px] font-bold text-purple-300 uppercase tracking-wider mb-1.5">Featured Videos in Series (Up to 3 clips)</label>
+                    <div id="proj-series-list" class="space-y-2 mt-2">
+                      <!-- Dynamic series inputs go here -->
+                    </div>
+                    <button type="button" onclick="addSeriesVideoItemInput()" id="add-series-video-btn" class="mt-3 text-[10px] font-bold text-purple-400 hover:text-purple-300 flex items-center gap-1 cursor-pointer">
+                      + Add Featured Series Video
+                    </button>
+                  </div>
+                </div>
+              </div>
+
               <div>
                 <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Homepage Card Short Summary</label>
                 <input id="proj-shortdesc" type="text" class="glass-input w-full px-4 py-2.5 rounded-xl text-xs text-white" required />
@@ -1495,6 +1519,35 @@
 
     function toggleProjectEmbedInput(mediaType) {
       document.getElementById('proj-embed-container').classList.toggle('hidden', mediaType !== 'video');
+      document.getElementById('proj-series-toggle-container').classList.toggle('hidden', mediaType !== 'video');
+    }
+
+    function toggleProjectSeriesInput(isSeries) {
+      document.getElementById('proj-series-inputs').classList.toggle('hidden', !isSeries);
+    }
+    
+    function addSeriesVideoItemInput(title = '', embedUrl = '') {
+      const list = document.getElementById('proj-series-list');
+      const count = list.querySelectorAll('div.flex').length;
+      if (count >= 3) {
+        alert("You can add up to 3 featured videos in the series.");
+        return;
+      }
+      const div = document.createElement('div');
+      div.className = 'flex gap-2 items-center';
+      div.innerHTML = `
+        <input type="text" placeholder="Video Title (e.g. Episode 1)" value="${title}" class="series-title glass-input flex-grow px-3 py-1.5 rounded-lg text-[10px] text-white" required />
+        <input type="text" placeholder="YouTube Embed URL (https://www.youtube.com/embed/...)" value="${embedUrl}" class="series-embed glass-input flex-grow px-3 py-1.5 rounded-lg text-[10px] text-white" required />
+        <button type="button" onclick="this.parentElement.remove(); updateSeriesAddButtonState();" class="text-red-400 hover:text-red-600 font-semibold text-xs px-1">&times;</button>
+      `;
+      list.appendChild(div);
+      updateSeriesAddButtonState();
+    }
+
+    function updateSeriesAddButtonState() {
+      const list = document.getElementById('proj-series-list');
+      const count = list.querySelectorAll('div.flex').length;
+      document.getElementById('add-series-video-btn').classList.toggle('hidden', count >= 3);
     }
 
     // Gallery editor items helper
@@ -1527,6 +1580,11 @@
         populateSubcategoriesDropdown('motion');
         document.getElementById('proj-mediatype').value = 'video';
         toggleProjectEmbedInput('video');
+        document.getElementById('proj-is-series').checked = false;
+        document.getElementById('proj-playlist-url').value = '';
+        document.getElementById('proj-series-list').innerHTML = '';
+        toggleProjectSeriesInput(false);
+        updateSeriesAddButtonState();
         document.getElementById('proj-title').value = '';
         document.getElementById('proj-badge').value = '';
         document.getElementById('proj-enabled').checked = true;
@@ -1560,6 +1618,17 @@
         populateSubcategoriesDropdown(p.dept, p.sub);
         document.getElementById('proj-mediatype').value = p.mediaType || 'video';
         toggleProjectEmbedInput(p.mediaType || 'video');
+        
+        const isSeries = p.isSeries === true;
+        document.getElementById('proj-is-series').checked = isSeries;
+        document.getElementById('proj-playlist-url').value = p.playlistUrl || '';
+        const seriesList = document.getElementById('proj-series-list');
+        seriesList.innerHTML = '';
+        if (isSeries && p.seriesVideos && p.seriesVideos.length > 0) {
+          p.seriesVideos.forEach(v => addSeriesVideoItemInput(v.title, v.embedUrl));
+        }
+        toggleProjectSeriesInput(isSeries);
+        updateSeriesAddButtonState();
         
         document.getElementById('proj-title').value = p.title || '';
         document.getElementById('proj-badge').value = p.badge || '';
@@ -1618,6 +1687,20 @@
         }
       });
 
+      const isSeries = document.getElementById('proj-is-series').checked;
+      const playlistUrl = document.getElementById('proj-playlist-url').value;
+      const seriesVideos = [];
+      if (isSeries) {
+        const list = document.getElementById('proj-series-list');
+        list.querySelectorAll('div.flex').forEach(div => {
+          const title = div.querySelector('.series-title').value;
+          const embedUrl = div.querySelector('.series-embed').value;
+          if (title && embedUrl) {
+            seriesVideos.push({ title, embedUrl });
+          }
+        });
+      }
+
       return {
         id: document.getElementById('proj-id').value,
         enabled: document.getElementById('proj-enabled').checked,
@@ -1630,6 +1713,9 @@
         tags: document.getElementById('proj-tags').value.split(',').map(s => s.trim()).filter(Boolean),
         thumb: document.getElementById('proj-thumb').value,
         embedUrl: document.getElementById('proj-embed').value,
+        isSeries: isSeries,
+        playlistUrl: playlistUrl,
+        seriesVideos: seriesVideos,
         shortDesc: document.getElementById('proj-shortdesc').value,
         brief: document.getElementById('proj-brief').value,
         approach: document.getElementById('proj-approach').value,
@@ -1676,11 +1762,57 @@
       
       const media = document.getElementById('prev-modal-media-stage');
       if (p.mediaType === 'video' && p.embedUrl) {
-        media.innerHTML = `
-          <div class="relative w-full overflow-hidden rounded-xl border border-white/10" style="padding-top: 56.25%;">
-            <iframe src="${p.embedUrl}" class="absolute top-0 left-0 w-full h-full" frameborder="0"></iframe>
-          </div>
-        `;
+        if (p.isSeries && p.seriesVideos && p.seriesVideos.length > 0) {
+          const firstVid = p.seriesVideos[0];
+          const firstEmbedUrl = firstVid.embedUrl || p.embedUrl;
+          
+          let switcherHtml = p.seriesVideos.map((vid, idx) => {
+            const isActive = idx === 0;
+            const activeClasses = isActive ? 'border-purple-500 bg-purple-500/10 text-purple-300' : 'border-white/5 bg-white/5 text-gray-400';
+            return `
+              <button onclick="changeModalVideo('${vid.embedUrl}', this)" class="series-tab flex-1 flex flex-col items-center justify-center p-3 rounded-xl border text-center transition-all duration-300 hover:border-purple-500/50 hover:bg-purple-500/5 cursor-pointer ${activeClasses}">
+                <div class="flex items-center gap-1.5 justify-center">
+                  <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+                  <span class="text-[10px] font-bold tracking-wider uppercase">${vid.title || `Video ${idx + 1}`}</span>
+                </div>
+              </button>
+            `;
+          }).join('');
+          
+          let playlistHtml = '';
+          if (p.playlistUrl) {
+            playlistHtml = `
+              <div class="mt-4 flex flex-col sm:flex-row justify-between items-center gap-3 p-4 rounded-2xl bg-white/[0.02] border border-white/5">
+                <div class="text-left">
+                  <span class="text-[10px] font-bold text-purple-400 uppercase tracking-widest block">Video Series Project</span>
+                  <p class="text-xs text-gray-400 mt-1">This project contains a series of videos. View the full playlist on YouTube.</p>
+                </div>
+                <a href="${p.playlistUrl}" target="_blank" class="btn-primary flex items-center gap-2 px-5 py-2 rounded-full text-white text-xs font-bold whitespace-nowrap">
+                  <i data-lucide="youtube" class="w-4 h-4"></i>
+                  View Full Playlist
+                </a>
+              </div>
+            `;
+          }
+          
+          media.innerHTML = `
+            <div class="flex flex-col gap-4">
+              <div class="relative w-full overflow-hidden rounded-xl border border-white/10" style="padding-top: 56.25%;">
+                <iframe src="${firstEmbedUrl}" class="absolute top-0 left-0 w-full h-full" frameborder="0"></iframe>
+              </div>
+              <div class="flex flex-wrap gap-2 w-full mt-1">
+                ${switcherHtml}
+              </div>
+              ${playlistHtml}
+            </div>
+          `;
+        } else {
+          media.innerHTML = `
+            <div class="relative w-full overflow-hidden rounded-xl border border-white/10" style="padding-top: 56.25%;">
+              <iframe src="${p.embedUrl}" class="absolute top-0 left-0 w-full h-full" frameborder="0"></iframe>
+            </div>
+          `;
+        }
       } else if (p.mediaType === 'graphics' && p.gallery) {
         let gridCols = 'grid-cols-1 sm:grid-cols-2';
         if (p.gallery.length === 1) {
@@ -1734,7 +1866,24 @@
       document.getElementById('prev-modal-tools').textContent = p.tools || 'Stack';
 
       document.getElementById('preview-modal-sandbox').classList.remove('hidden');
+      lucide.createIcons();
     }
+
+    window.changeModalVideo = function(embedUrl, buttonEl) {
+      const container = buttonEl.closest('.flex-col');
+      const iframe = container.querySelector('iframe');
+      if (iframe) {
+        iframe.src = embedUrl;
+      }
+      
+      const buttons = buttonEl.parentElement.querySelectorAll('.series-tab');
+      buttons.forEach(btn => {
+        btn.classList.remove('border-purple-500', 'bg-purple-500/10', 'text-purple-300');
+        btn.classList.add('border-white/5', 'bg-white/5', 'text-gray-400');
+      });
+      buttonEl.classList.add('border-purple-500', 'bg-purple-500/10', 'text-purple-300');
+      buttonEl.classList.remove('border-white/5', 'bg-white/5', 'text-gray-400');
+    };
 
     function closeSandboxModalPreview() {
       document.getElementById('preview-modal-sandbox').classList.add('hidden');
@@ -1808,7 +1957,7 @@ window.portfolioData = ${dataJson};
 
     function previewLocalSite() {
       saveDraftToLocalStorage();
-      window.open('my portfolio web new.html?preview=true', '_blank');
+      window.open('index.html?preview=true', '_blank');
     }
 
     function downloadConfigJS() {

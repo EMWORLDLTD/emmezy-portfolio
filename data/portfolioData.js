@@ -307,37 +307,58 @@ window.portfolioData = [
     "mediaType": "graphics"
   },
   {
-    "id": "project-1780487221079",
+    "id": "beth-series",
     "dept": "motion",
     "sub": "Explainer Videos",
     "mediaType": "video",
-    "title": "gh",
-    "badge": "cvvv",
-    "metric": "",
-    "tags": [],
-    "thumb": "https://player.vimeo.com/video/347119375",
-    "embedUrl": "https://player.vimeo.com/video/347119375",
-    "shortDesc": "d",
-    "brief": "d",
-    "approach": "d",
-    "outcome": "d",
-    "before": "d",
-    "after": "d",
-    "stats": [
+    "title": "Beth Financial - 14 Part Series",
+    "badge": "🏢 FinTech • Video Series Campaign",
+    "metric": "<strong>+310% Engagement spike</strong> across channels",
+    "tags": [
+      "Motion Campaign",
+      "Adobe After Effects",
+      "Brand Storytelling"
+    ],
+    "thumb": "https://i.ibb.co/30B3b30/placeholder-1.jpg",
+    "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    "isSeries": true,
+    "playlistUrl": "https://www.youtube.com/playlist?list=PLD7nPL1U-R5r3a_M1u1F1-S44M3n87w3T",
+    "seriesVideos": [
       {
-        "val": "d",
-        "lbl": "d"
+        "title": "Episode 1: The Vision",
+        "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
       },
       {
-        "val": "d",
-        "lbl": "d"
+        "title": "Episode 2: Platform Flow",
+        "embedUrl": "https://www.youtube.com/embed/9bZkp7q19f0"
       },
       {
-        "val": "d",
-        "lbl": "d"
+        "title": "Episode 3: Security Pillars",
+        "embedUrl": "https://www.youtube.com/embed/kJQP7kiw5Fk"
       }
     ],
-    "tools": "d",
-    "gallery": []
+    "shortDesc": "An immersive 14-part post-production video and motion campaign driving SaaS conversions.",
+    "brief": "Translate a multi-layered Fintech SaaS product journey into a cohesive 14-part social and platform campaign.",
+    "approach": "Scripted and animated 3 distinct stylistic pillars (intro, platform demo, security) cross-cutting all 14 motion visual outputs.",
+    "outcome": "Created a high-converting asset library driving 310% customer conversion spikes on target landing landing frames.",
+    "before": "High friction onboardings, disjointed product messaging, and low video CTR on social ad spots.",
+    "after": "Complete brand message alignment, high retention funnels, and a modular video library ready for scaling.",
+    "stats": [
+      {
+        "val": "14 Video",
+        "lbl": "Complete Series"
+      },
+      {
+        "val": "+310%",
+        "lbl": "Engagement"
+      },
+      {
+        "val": "4.2m+",
+        "lbl": "Campaign Views"
+      }
+    ],
+    "tools": "After Effects • Premiere Pro • Illustrator",
+    "gallery": [],
+    "enabled": true
   }
 ];
